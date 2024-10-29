@@ -110,7 +110,7 @@ public class WelcomeView extends VerticalLayout {
                 .set("justify-content","center");
         menuContent = new VerticalLayout(minimize); // Ensure menuContent is initialized
         menuContent.getStyle().set("max-width","400px")
-                .set("height","calc(100vh - 20px)")
+                .set("height","calc(100dvh - 20px)")
                 .set("border-radius","10px")
                 .set("transition","all 0.3s ease-in-out")
                 .set("background-color","var(--lumo-base-color)")

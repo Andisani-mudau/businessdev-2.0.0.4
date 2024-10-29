@@ -1,13 +1,21 @@
 .v-loading-indicator {
+    color: #fff !important;
     background-color: #000 !important;
     border-radius: 2px !important;
+    margin: 1px;
+    width: calc(100% - 3px) !important;
 }
-.v-reconnect-dialog{
+.v-reconnect-dialog,.v-system-error{
     color: #fff !important;
+    background: black !important;
 }
 *{
     font-family: "poppins", sans-serif !important;
     color: #000;
+    -webkit-user-select: none; /* Chrome, Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* Internet Explorer */
+    user-select: none;         /* Standard */
 }
 *::-webkit-scrollbar{
     display: none;
@@ -23,6 +31,8 @@ svg{
     position: relative;
     width: calc(100% - 20px);
     transition: all 0.3s ease-in-out;
+    overflow: hidden !important;
+    outline: none;
 }
 .link:hover{
     /*background-color: #0044ff09;
@@ -34,6 +44,10 @@ svg{
 }
 .link:focus{
     background-color: var(--lumo-shade-10pct);
+    outline: none !important;
+}
+.link:active{
+    background-color: var(--lumo-shade-15pct);
 }
 .linkText{
     margin: 0;
