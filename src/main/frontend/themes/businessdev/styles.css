@@ -1,0 +1,41 @@
+.v-loading-indicator {
+    background-color: #000 !important;
+    border-radius: 2px !important;
+}
+.v-reconnect-dialog{
+    color: #fff !important;
+}
+*{
+    font-family: "poppins", sans-serif !important;
+    color: #000;
+}
+*::-webkit-scrollbar{
+    display: none;
+}
+svg{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.link{
+    position: relative;
+    width: calc(100% - 20px);
+    transition: all 0.3s ease-in-out;
+}
+.link:hover{
+    /*background-color: #0044ff09;
+    background-color: var(--lumo-primary-color-50pct);*/
+    background-color: var(--lumo-shade-5pct);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 10px 0px 10px 20px !important;
+}
+.link:focus{
+    background-color: var(--lumo-shade-10pct);
+}
+.linkText{
+    margin: 0;
+    padding: 0;
+}
