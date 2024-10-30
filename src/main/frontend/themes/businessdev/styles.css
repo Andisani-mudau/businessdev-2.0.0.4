@@ -35,8 +35,6 @@ svg{
     outline: none;
 }
 .link:hover{
-    /*background-color: #0044ff09;
-    background-color: var(--lumo-primary-color-50pct);*/
     background-color: var(--lumo-shade-5pct);
     text-decoration: none;
     font-weight: 500;
@@ -52,4 +50,11 @@ svg{
 .linkText{
     margin: 0;
     padding: 0;
+}
+
+@media only screen and (max-width: 768px) {
+    /* Your CSS rules for mobile devices go here */
+    #Layer_2 {
+        height: 25px !important;
+    }
 }

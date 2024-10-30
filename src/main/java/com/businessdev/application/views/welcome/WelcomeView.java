@@ -62,6 +62,7 @@ public class WelcomeView extends VerticalLayout {
                 .set("width","50px")
                 .set("height","50px");
         Div logo2 = new Div();
+	logo2.setClassName("logo");
         logo2.getStyle().set("margin", "0")
                 .set("padding", "0");
         logo2.getElement().setProperty("innerHTML", "<svg id=\"Layer_2\" data-name=\"Layer 2\" xmlns=\"http://www.w3.org/2000/svg\" height=\"30\" viewBox=\"0 0 484.41 66.89\">\n" +
@@ -109,6 +110,7 @@ public class WelcomeView extends VerticalLayout {
                 .set("align-items","center")
                 .set("justify-content","center");
         menuContent = new VerticalLayout(minimize); // Ensure menuContent is initialized
+	menuContent.setClassName("menu-popup");
         menuContent.getStyle().set("max-width","400px")
                 .set("height","calc(100dvh - 20px)")
                 .set("border-radius","10px")
@@ -128,7 +130,8 @@ public class WelcomeView extends VerticalLayout {
         menuDots.addClickListener(e -> {
             menu.add(menuContent);
             minimize.addClickListener(f -> {
-                menu.remove(menuContent);
+		    // Close after animation
+		    menu.remove(menuContent);
             });
         });
 
@@ -139,7 +142,7 @@ public class WelcomeView extends VerticalLayout {
         // Apply styles to navBar
         navBar.getStyle().set("justify-content", "space-between")
                 .set("align-items", "center")
-                .set("position", "absolute")
+                .set("position", "fixed")
                 .set("top", "10px")
                 .set("left", "10px")
                 .set("right", "10px")
