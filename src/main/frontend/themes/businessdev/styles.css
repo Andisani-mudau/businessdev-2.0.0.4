@@ -1,3 +1,4 @@
+@import "theme-editor.css";
 .v-loading-indicator {
     color: #fff !important;
     background-color: #000 !important;
@@ -5,13 +6,13 @@
     margin: 1px;
     width: calc(100% - 3px) !important;
 }
+/*
 .v-reconnect-dialog,.v-system-error{
     color: #fff !important;
     background: black !important;
-}
+} */
 *{
     font-family: "poppins", sans-serif !important;
-    color: #000;
     -webkit-user-select: none; /* Chrome, Safari */
     -moz-user-select: none;    /* Firefox */
     -ms-user-select: none;     /* Internet Explorer */

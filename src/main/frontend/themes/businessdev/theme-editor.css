@@ -1,0 +1,15 @@
+/*
+ * This file has been created by the Vaadin Theme Editor. Please note that
+ * manual changes to individual CSS properties may be overwritten by the theme editor.
+ */
+@import url(https://cdn.jsdelivr.net/fontsource/css/poppins@latest/index.css);
+
+html {
+  --lumo-base-color:rgba(255,255,255,1);
+  --lumo-error-text-color:hsl(3,89%,42%);
+  --lumo-font-family:Poppins;
+  --lumo-primary-color-10pct:rgba(0,0,0,0.1);
+  --lumo-primary-color-50pct:rgba(0,0,0,0.5);
+  --lumo-primary-color:rgba(0,0,0,1);
+  --lumo-primary-text-color:rgba(0,0,0,1);
+}

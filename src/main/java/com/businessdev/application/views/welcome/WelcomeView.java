@@ -5,6 +5,7 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
@@ -41,6 +42,7 @@ public class WelcomeView extends VerticalLayout {
         hello = new HorizontalLayout(name, sayHello);
         setHorizontalComponentAlignment(Alignment.END, name, sayHello);
         navBar();
+	banner();
         //add(hello);
     }
 
@@ -50,7 +52,7 @@ public class WelcomeView extends VerticalLayout {
             Div dot = new Div();  // Create a new Div for each dot
             dot.getStyle().set("width", "5px")
                     .set("height", "5px")
-                    .set("background-color", "#000")
+                    .set("background-color", "var(--lumo-primary-color)")
                     .set("border-radius", "50%");
             menuDotsLayout.getStyle().set("gap", "3px");
             menuDotsLayout.add(dot);  // Add each new dot to the layout
@@ -248,5 +250,26 @@ public class WelcomeView extends VerticalLayout {
         menuContent.add(navSection1, navSection2, navSection3);
         // Add navBar and hello layout to the main layout
         add(navBar);
+    }
+
+    public void banner(){
+	H1 heading = new H1("Business Lives Matters");
+	Paragraph paragraph = new Paragraph("Our mission is to become a leading company in connecting businesses and driving innovation by providing cutting-edge solutions to everyday business problems.");
+	Button moreInfo = new Button("Learn more...");
+	Image image = new Image("https://illustrations.popsy.co/gray/home-office.svg", "Man on office");
+	image.getStyle().set("width", "100%");
+	VerticalLayout sectionOne  = new VerticalLayout(heading, paragraph, moreInfo);
+	sectionOne.getStyle().set("padding", "0")
+	    .set("margin", "0");
+	//.set("padding-top", "60px");
+	VerticalLayout sectionTwo  = new VerticalLayout(image);
+	sectionTwo.getStyle().set("padding", "0")
+	    .set("margin", "0");
+	HorizontalLayout banner = new HorizontalLayout(sectionOne, sectionTwo);
+	banner.getStyle().set("flex-wrap", "wrap")
+	.set("height", "calc(100dvh - 32px)")
+	    .set("flex-direction","column-reverse")
+	    .set("justify-content","center");
+	add(banner);
     }
 }
