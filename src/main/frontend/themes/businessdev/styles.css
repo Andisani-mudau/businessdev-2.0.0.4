@@ -1,6 +1,7 @@
 @import "theme-editor.css";
 .v-loading-indicator {
     color: #fff !important;
+    fill: #fff !important;
     background-color: #000 !important;
     border-radius: 2px !important;
     margin: 1px;
@@ -18,8 +19,24 @@
     -ms-user-select: none;     /* Internet Explorer */
     user-select: none;         /* Standard */
 }
+*{
+    -webkit-user-drag: none; /* Chrome, Safari */
+    -moz-user-drag: none;    /* Firefox */
+    -ms-user-drag: none;     /* Internet Explorer */
+    user-drag: none;         /* Standard */
+}
+img, svg {
+    pointer-events: none;
+}
+a {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
 *::-webkit-scrollbar{
     display: none;
+}
+.logo svg{
+    fill: var(--lumo-primary-color);
 }
 svg{
     margin: 0;
@@ -54,7 +71,6 @@ svg{
 }
 
 @media only screen and (max-width: 768px) {
-    /* Your CSS rules for mobile devices go here */
     #Layer_2 {
         height: 25px !important;
     }

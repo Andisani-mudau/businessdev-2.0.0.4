@@ -17,8 +17,8 @@ import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-@PageTitle("Welcome")
-@Route("")
+@PageTitle("businessdev.")
+@Route(" ")
 public class WelcomeView extends VerticalLayout {
 
     private TextField name;
@@ -43,7 +43,6 @@ public class WelcomeView extends VerticalLayout {
         setHorizontalComponentAlignment(Alignment.END, name, sayHello);
         navBar();
 	banner();
-        //add(hello);
     }
 
     public void navBar(){
@@ -239,7 +238,7 @@ public class WelcomeView extends VerticalLayout {
         //contact.setWidthFull();
         contact.setClassName("link");
         contact.getStyle().setPadding("10px").setBorderRadius("5px");
-        navSection2.add(home, offers, services, about, contact);
+        navSection2.add(home, offers, services, contact, about);
         //...
         TextField chat = new TextField();
         chat.getStyle().set("flex", "1");
@@ -254,9 +253,9 @@ public class WelcomeView extends VerticalLayout {
 
     public void banner(){
 	H1 heading = new H1("Business Lives Matters");
-	Paragraph paragraph = new Paragraph("Our mission is to become a leading company in connecting businesses and driving innovation by providing cutting-edge solutions to everyday business problems.");
+	Paragraph paragraph = new Paragraph("Our mission is to become a leading company in connecting businesses and driving innovation by providing best solutions to everyday business problems.");
 	Button moreInfo = new Button("Learn more...");
-	Image image = new Image("https://illustrations.popsy.co/gray/home-office.svg", "Man on office");
+	Image image = new Image("https://illustrations.popsy.co/gray/home-office.svg", "Man in home office");
 	image.getStyle().set("width", "100%");
 	VerticalLayout sectionOne  = new VerticalLayout(heading, paragraph, moreInfo);
 	sectionOne.getStyle().set("padding", "0")
