@@ -42,7 +42,17 @@ public class WelcomeView extends VerticalLayout {
         hello = new HorizontalLayout(name, sayHello);
         setHorizontalComponentAlignment(Alignment.END, name, sayHello);
         navBar();
-	banner();
+	//banner();
+	VerticalLayout welcomeLayout = new VerticalLayout(banner1(), banner2(), banner3(), banner4());
+	welcomeLayout.getStyle().set("margin","0")
+	    .set("padding","0")
+	    .set("scroll-snap-type", "y mandatory")
+	    .set("overflow-y", "scroll")
+	    .set("overflow-x", "hidden")
+	    .set("max-height", "calc(100dvh - 32px)")
+	    .set("gap", "32px");
+	    
+	add(welcomeLayout);
     }
 
     public void navBar(){
@@ -65,7 +75,10 @@ public class WelcomeView extends VerticalLayout {
         Div logo2 = new Div();
 	logo2.setClassName("logo");
         logo2.getStyle().set("margin", "0")
-                .set("padding", "0");
+                .set("padding", "0")
+                .set("position", "relative")
+                .set("mix-blend-mode", "difference"); /* Changes color based on background */
+                //.set("filter", "invert(1)"); /* Inverts color from black to white */;
         logo2.getElement().setProperty("innerHTML", "<svg id=\"Layer_2\" data-name=\"Layer 2\" xmlns=\"http://www.w3.org/2000/svg\" height=\"30\" viewBox=\"0 0 484.41 66.89\">\n" +
                 "  <defs>\n" +
                 "    <style>\n" +
@@ -251,7 +264,7 @@ public class WelcomeView extends VerticalLayout {
         add(navBar);
     }
 
-    public void banner(){
+    private HorizontalLayout banner1(){
 	H1 heading = new H1("Business Lives Matters");
 	Paragraph paragraph = new Paragraph("Our mission is to become a leading company in connecting businesses and driving innovation by providing best solutions to everyday business problems.");
 	Button moreInfo = new Button("Learn more...");
@@ -260,15 +273,87 @@ public class WelcomeView extends VerticalLayout {
 	VerticalLayout sectionOne  = new VerticalLayout(heading, paragraph, moreInfo);
 	sectionOne.getStyle().set("padding", "0")
 	    .set("margin", "0");
-	//.set("padding-top", "60px");
 	VerticalLayout sectionTwo  = new VerticalLayout(image);
 	sectionTwo.getStyle().set("padding", "0")
 	    .set("margin", "0");
 	HorizontalLayout banner = new HorizontalLayout(sectionOne, sectionTwo);
 	banner.getStyle().set("flex-wrap", "wrap")
-	.set("height", "calc(100dvh - 32px)")
+	    .set("min-height", "calc(100dvh - 32px)")
 	    .set("flex-direction","column-reverse")
-	    .set("justify-content","center");
-	add(banner);
+	    .set("justify-content","center")
+	    .set("scroll-snap-align", "start")
+	    .set("padding", "0")
+	    .set("margin", "0");
+	
+	return banner;
+    }
+
+    private HorizontalLayout banner2(){
+	H1 heading = new H1("No To Outdated Infrustructure");
+	Paragraph paragraph = new Paragraph("Businesses are seeking innovative ways to remain competitive and adapt to technological advancements. We collaborate with professional individuals from all over the world to make this possible.");
+	Button moreInfo = new Button("Learn more...");
+	Image image = new Image("https://illustrations.popsy.co/gray/designer.svg", "Man in home office");
+	image.getStyle().set("width", "100%");
+	VerticalLayout sectionOne  = new VerticalLayout(heading, paragraph, moreInfo);
+	sectionOne.getStyle().set("padding", "0")
+	    .set("margin", "0");
+	VerticalLayout sectionTwo  = new VerticalLayout(image);
+	sectionTwo.getStyle().set("padding", "0")
+	    .set("margin", "0");
+	HorizontalLayout banner = new HorizontalLayout(sectionOne, sectionTwo);
+	banner.getStyle().set("flex-wrap", "wrap")
+	    .set("min-height", "calc(100dvh - 32px)")
+	    .set("flex-direction","column-reverse")
+	    .set("justify-content","center")
+	    .set("scroll-snap-align", "start")
+	    .set("padding", "0")
+	    .set("margin", "0");
+	return banner;
+    }
+
+    private HorizontalLayout banner3(){
+	H1 heading = new H1("Solutions Architecture");
+	Paragraph paragraph = new Paragraph("We aim to improve the way businesses innovate and solve problems. Identifying and analysing business problems and specialising modern business practices.");
+	Button moreInfo = new Button("Learn more...");
+	Image image = new Image("https://illustrations.popsy.co/gray/keynote-presentation.svg", "Man in home office");
+	image.getStyle().set("width", "100%");
+	VerticalLayout sectionOne  = new VerticalLayout(heading, paragraph, moreInfo);
+	sectionOne.getStyle().set("padding", "0")
+	    .set("margin", "0");
+	VerticalLayout sectionTwo  = new VerticalLayout(image);
+	sectionTwo.getStyle().set("padding", "0")
+	    .set("margin", "0");
+	HorizontalLayout banner = new HorizontalLayout(sectionOne, sectionTwo);
+	banner.getStyle().set("flex-wrap", "wrap")
+	.set("min-height", "calc(100dvh - 32px)")
+	.set("flex-direction","column-reverse")
+	.set("justify-content","center")
+	.set("scroll-snap-align", "start")                                                              
+	.set("padding", "0")
+	.set("margin", "0");
+	return banner;
+    }
+
+    private HorizontalLayout banner4(){
+	H1 heading = new H1("Graduate Support");
+	Paragraph paragraph = new Paragraph("We also focus on job placement and entrepreneurship support for recent graduates. We support recent graduates in securing employment or starting their own businesses.");
+	Button moreInfo = new Button("Learn more...");
+	Image image = new Image("https://illustrations.popsy.co/gray/student-going-to-school.svg", "Man in home office");
+	image.getStyle().set("width", "100%");
+	VerticalLayout sectionOne  = new VerticalLayout(heading, paragraph, moreInfo);
+	sectionOne.getStyle().set("padding", "0")
+	    .set("margin", "0");
+	VerticalLayout sectionTwo  = new VerticalLayout(image);
+	sectionTwo.getStyle().set("padding", "0")
+	    .set("margin", "0");
+	HorizontalLayout banner = new HorizontalLayout(sectionOne, sectionTwo);
+	banner.getStyle().set("flex-wrap", "wrap")
+	    .set("min-height", "calc(100dvh - 32px)")
+	    .set("flex-direction","column-reverse")
+	    .set("justify-content","center")
+	    .set("scroll-snap-align", "start")
+	    .set("padding", "0")
+	    .set("margin", "0");
+	return banner;
     }
 }
