@@ -18,12 +18,10 @@
     -moz-user-select: none;    /* Firefox */
     -ms-user-select: none;     /* Internet Explorer */
     user-select: none;         /* Standard */
-}
-*{
     -webkit-user-drag: none; /* Chrome, Safari */
     -moz-user-drag: none;    /* Firefox */
     -ms-user-drag: none;     /* Internet Explorer */
-    user-drag: none;         /* Standard */
+    draggable: none;         /* Standard */
 }
 img, svg {
     pointer-events: none;
@@ -69,6 +67,39 @@ svg{
     margin: 0;
     padding: 0;
 }
+/* 
+.main-nav{
+    margin-top: 0px !important;
+    padding-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+    background-color: #000 !important;
+    height: 0px !important;
+    overflow: hidden !important;
+}
+.app-layout{
+    margin-top: 0px !important;
+    padding-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    border-bottom: none !important;
+    background-color: #000 !important;
+    height: 0px !important;
+} */
+vaadin-vertical-layout {
+    margin: 0;
+    padding: 0;
+    border: none !important;
+}
+vaadin-horizontal-layout {
+    margin: 0;
+    padding: 0;
+    border: none !important;
+}
+/* .app-layout {
+    background-color: #ff1515;  Set background for the entire AppLayout 
+} */
 
 @media only screen and (max-width: 768px) {
     #Layer_2 {
