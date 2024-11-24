@@ -4,11 +4,11 @@
   "type": "module",
   "dependencies": {
     "@polymer/polymer": "3.5.2",
-    "@vaadin/bundles": "24.5.0",
+    "@vaadin/bundles": "24.5.3",
     "@vaadin/common-frontend": "0.0.19",
     "@vaadin/polymer-legacy-adapter": "24.5.0",
     "@vaadin/react-components": "24.5.0",
-    "@vaadin/react-components-pro": "24.5.0",
+    "@vaadin/react-components-pro": "24.5.3",
     "@vaadin/router": "2.0.0",
     "@vaadin/vaadin-development-mode-detector": "2.0.7",
     "@vaadin/vaadin-lumo-styles": "24.5.0",
@@ -47,11 +47,11 @@
   "vaadin": {
     "dependencies": {
       "@polymer/polymer": "3.5.2",
-      "@vaadin/bundles": "24.5.0",
+      "@vaadin/bundles": "24.5.3",
       "@vaadin/common-frontend": "0.0.19",
       "@vaadin/polymer-legacy-adapter": "24.5.0",
       "@vaadin/react-components": "24.5.0",
-      "@vaadin/react-components-pro": "24.5.0",
+      "@vaadin/react-components-pro": "24.5.3",
       "@vaadin/router": "2.0.0",
       "@vaadin/vaadin-development-mode-detector": "2.0.7",
       "@vaadin/vaadin-lumo-styles": "24.5.0",
@@ -87,7 +87,7 @@
       "workbox-core": "7.1.0",
       "workbox-precaching": "7.1.0"
     },
-    "hash": "956819d93f92add00822e374a383f306219689bfb4127e5dbd80fc825cdb85ca"
+    "hash": "bf12150b93e2e99e95cc771609b6cf85c172fe64b4892e9f6e712cfa1a90be3b"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
