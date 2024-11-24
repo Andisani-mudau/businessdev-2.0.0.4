@@ -4,17 +4,18 @@
   "type": "module",
   "dependencies": {
     "@polymer/polymer": "3.5.2",
-    "@vaadin/bundles": "24.5.3",
+    "@vaadin/bundles": "24.5.0",
     "@vaadin/common-frontend": "0.0.19",
     "@vaadin/polymer-legacy-adapter": "24.5.0",
     "@vaadin/react-components": "24.5.0",
-    "@vaadin/react-components-pro": "24.5.3",
+    "@vaadin/react-components-pro": "24.5.0",
     "@vaadin/router": "2.0.0",
     "@vaadin/vaadin-development-mode-detector": "2.0.7",
     "@vaadin/vaadin-lumo-styles": "24.5.0",
     "@vaadin/vaadin-material-styles": "24.5.0",
     "@vaadin/vaadin-themable-mixin": "24.5.0",
     "@vaadin/vaadin-usage-statistics": "2.1.3",
+    "@vaadin/vertical-layout": "^24.5.0",
     "construct-style-sheets-polyfill": "3.1.0",
     "date-fns": "2.29.3",
     "lit": "3.2.1",
@@ -28,6 +29,7 @@
     "@preact/signals-react-transform": "0.4.0",
     "@rollup/plugin-replace": "6.0.1",
     "@rollup/pluginutils": "5.1.2",
+    "@types/node": "^22.9.3",
     "@types/react": "18.3.11",
     "@types/react-dom": "18.3.0",
     "@vitejs/plugin-react": "4.3.2",
@@ -47,11 +49,11 @@
   "vaadin": {
     "dependencies": {
       "@polymer/polymer": "3.5.2",
-      "@vaadin/bundles": "24.5.3",
+      "@vaadin/bundles": "24.5.0",
       "@vaadin/common-frontend": "0.0.19",
       "@vaadin/polymer-legacy-adapter": "24.5.0",
       "@vaadin/react-components": "24.5.0",
-      "@vaadin/react-components-pro": "24.5.3",
+      "@vaadin/react-components-pro": "24.5.0",
       "@vaadin/router": "2.0.0",
       "@vaadin/vaadin-development-mode-detector": "2.0.7",
       "@vaadin/vaadin-lumo-styles": "24.5.0",
@@ -87,7 +89,7 @@
       "workbox-core": "7.1.0",
       "workbox-precaching": "7.1.0"
     },
-    "hash": "bf12150b93e2e99e95cc771609b6cf85c172fe64b4892e9f6e712cfa1a90be3b"
+    "hash": "f0e59bf9f2b4948cf43840ed95942fa926219f8f469b81c636b3f37d467534bd"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -108,6 +110,7 @@
     "proj4": "$proj4",
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
     "@vaadin/vaadin-lumo-styles": "$@vaadin/vaadin-lumo-styles",
-    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles"
+    "@vaadin/vaadin-material-styles": "$@vaadin/vaadin-material-styles",
+    "@vaadin/vertical-layout": "$@vaadin/vertical-layout"
   }
 }
