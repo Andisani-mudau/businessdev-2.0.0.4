@@ -22,6 +22,7 @@ import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.AttachNotifier;
 import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.component.html.ListItem;
 import com.vaadin.flow.component.html.Div;
@@ -35,177 +36,234 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.QueryParameters;
+import com.vaadin.flow.router.Location;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.component.AttachNotifier;
 
 @PageTitle("Pricing")
-@Route(value = "pricing", layout = MainLayout.class)
+@Route(value = "offers/pricing", layout = MainLayout.class)
 public class Pricing extends VerticalLayout {
-    public Pricing() {
-        setClassName("sectionTwo");
-        add(sectionOne());
+    private H1 heading;
+    
+    public Pricing() { 
+        heading = new H1("Web Application Development");
+        
+        UI.getCurrent().access(() -> {
+            Location location = UI.getCurrent().getInternals().getActiveViewLocation();
+            QueryParameters queryParameters = location.getQueryParameters();
+            
+            if (queryParameters.getParameters().containsKey("service")) {
+                String service = queryParameters.getParameters().get("service").get(0);
+                heading.setText(service);
+                add(pricing());
+            }
+        });
+        
     }
     
-    private HorizontalLayout sectionOne() {
-        Main main = new Main();
-        main.addClassName("main");
-        main.addClassName("flow");
+    // @Override
+    // protected void onAttach(AttachEvent attachEvent) {
+    //     super.onAttach(attachEvent);
+        
+    //     UI.getCurrent().access(() -> {
+    //         Location location = UI.getCurrent().getInternals().getActiveViewLocation();
+    //         QueryParameters queryParameters = location.getQueryParameters();
+            
+    //         if (queryParameters.getParameters().containsKey("service")) {
+    //             String service = queryParameters.getParameters().get("service").get(0);
+    //             heading.setText(service);
+    //         }
+    //     });
+    // }
+    
+    private HorizontalLayout pricing() {
+        setClassName("sectionTwo");
+        Main mainLayout = new Main();
+        mainLayout.addClassName("main_pricing");
+        mainLayout.addClassName("flow_pricing");
 
-        H1 mainHeading = new H1("");
-        mainHeading.addClassName("main__heading");
+        heading.addClassName("main__heading_pricing");
 
-        Div mainCards = new Div();
-        mainCards.addClassNames("main__cards", "cards");
+        Div cardsLayout = new Div();
+        cardsLayout.addClassName("main__cards_pricing");
+        cardsLayout.addClassName("cards_pricing");
 
         Div cardsInner = new Div();
-        cardsInner.addClassName("cards__inner");
+        cardsInner.addClassName("cards__inner_pricing");
 
-        // Web Development Card
-        Div webDevCard = new Div();
-        webDevCard.addClassNames("cards__card", "card", "offersCard", "map");
-        H2 webDevHeading = new H2("About");
-        webDevHeading.addClassName("card__heading");
-        Paragraph webDevPrice = new Paragraph("About");
-        webDevPrice.addClassName("card__price");
-        UnorderedList webDevBullets = new UnorderedList();
-        webDevBullets.addClassNames("card__bullets", "flow");
-        webDevBullets.add(
-            new ListItem("Access to standard workouts and nutrition plans"),
-            new ListItem("Email support")
+        String service = heading.getText();
+        String[][] planDetails = getPlanDetailsForService(service);
+
+        // Basic Plan
+        Div basicCard = createPricingCard(
+            "Basic",
+            planDetails[0][0], // price
+            planDetails[0][1].split("\\|"), // features array
+            "Get Started",
+            "#basic"
         );
-        Anchor webDevCta = new Anchor("#basic", "Get Started");
-        webDevCta.addClassNames("card__cta", "cta");
-        webDevCard.add(webDevHeading, webDevPrice, webDevBullets);
 
-        // App Development Card
-        Div appDevCard = new Div();
-        appDevCard.addClassNames("cards__card", "card", "offersCard");
-        H2 appDevHeading = new H2("Mission");
-        appDevHeading.addClassName("card__heading");
-        Paragraph appDevPrice = new Paragraph("Mission");
-        appDevPrice.addClassName("card__price");
-        UnorderedList appDevBullets = new UnorderedList();
-        appDevBullets.addClassNames("card__bullets", "flow");
-        appDevBullets.add(
-            new ListItem("Access to advanced workouts and nutrition plans"),
-            new ListItem("Priority Email support"),
-            new ListItem("Exclusive access to live Q&A sessions")
+        // Pro Plan
+        Div proCard = createPricingCard(
+            "Pro",
+            planDetails[1][0], // price
+            planDetails[1][1].split("\\|"), // features array
+            "Upgrade to Pro",
+            "#pro"
         );
-        Anchor appDevCta = new Anchor("#pro", "Upgrade to Pro");
-        appDevCta.addClassNames("card__cta", "cta");
-        appDevCard.add(appDevHeading, appDevPrice, appDevBullets);
 
-        // UI Design Card
-        Div uiDesignCard = new Div();
-        uiDesignCard.addClassNames("cards__card", "card", "offersCard");
-        H2 uiDesignHeading = new H2("Vision");
-        uiDesignHeading.addClassName("card__heading");
-        Paragraph uiDesignPrice = new Paragraph("Vision");
-        uiDesignPrice.addClassName("card__price");
-        UnorderedList uiDesignBullets = new UnorderedList();
-        uiDesignBullets.addClassNames("card__bullets", "flow");
-        uiDesignBullets.add(
-            new ListItem("Access to all premium workouts and nutrition plans"),
-            new ListItem("24/7 Priority support"),
-            new ListItem("1-on-1 virtual coaching session every month"),
-            new ListItem("Exclusive content and early access to new features")
+        // Ultimate Plan
+        Div ultimateCard = createPricingCard(
+            "Ultimate",
+            planDetails[2][0], // price
+            planDetails[2][1].split("\\|"), // features array
+            "Go Ultimate",
+            "#ultimate"
         );
-        Anchor uiDesignCta = new Anchor("#ultimate", "Go Ultimate");
-        uiDesignCta.addClassNames("card__cta", "cta");
-        uiDesignCard.add(uiDesignHeading, uiDesignPrice, uiDesignBullets);
 
-        // Logo Design Card
-        Div logoDesignCard = new Div();
-        logoDesignCard.addClassNames("cards__card", "card", "offersCard");
-        H2 logoDesignHeading = new H2("About");
-        logoDesignHeading.addClassName("card__heading");
-        Paragraph logoDesignPrice = new Paragraph("About");
-        logoDesignPrice.addClassName("card__price");
-        UnorderedList logoDesignBullets = new UnorderedList();
-        logoDesignBullets.addClassNames("card__bullets", "flow");
-        logoDesignBullets.add(
-            new ListItem("Access to standard workouts and nutrition plans"),
-            new ListItem("Email support")
-        );
-        Anchor logoDesignCta = new Anchor("#basic", "Get Started");
-        logoDesignCta.addClassNames("card__cta", "cta");
-        logoDesignCard.add(logoDesignHeading, logoDesignPrice, logoDesignBullets);
-
-        // Graphic Design Card
-        Div graphicDesignCard = new Div();
-        graphicDesignCard.addClassNames("cards__card", "card", "offersCard");
-        H2 graphicDesignHeading = new H2("Mission");
-        graphicDesignHeading.addClassName("card__heading");
-        Paragraph graphicDesignPrice = new Paragraph("Mission");
-        graphicDesignPrice.addClassName("card__price");
-        UnorderedList graphicDesignBullets = new UnorderedList();
-        graphicDesignBullets.addClassNames("card__bullets", "flow");
-        graphicDesignBullets.add(
-            new ListItem("Access to advanced workouts and nutrition plans"),
-            new ListItem("Priority Email support"),
-            new ListItem("Exclusive access to live Q&A sessions")
-        );
-        Anchor graphicDesignCta = new Anchor("#pro", "Upgrade to Pro");
-        graphicDesignCta.addClassNames("card__cta", "cta");
-        graphicDesignCard.add(graphicDesignHeading, graphicDesignPrice, graphicDesignBullets);
-
-        //...
-        cardsInner.add(webDevCard, appDevCard, uiDesignCard, 
-            logoDesignCard, graphicDesignCard);
-
+        cardsInner.add(basicCard, proCard, ultimateCard);
+        // Create overlay div
         Div overlay = new Div();
-        overlay.addClassNames("overlay", "cards__inner");
+        overlay.addClassName("overlay_pricing");
+        overlay.addClassName("cards__inner_pricing");
 
-        mainCards.add(cardsInner, overlay);
-        main.add(mainHeading, mainCards);
+        cardsLayout.add(cardsInner, overlay);
+        mainLayout.add(heading, cardsLayout);
 
-        //Script
-        UI.getCurrent().getPage().executeJs(
-            "console.clear();\n" +
-                    "\n" +
-                    "const cardsContainer = document.querySelector(\".cards\");\n" +
-                    "const cardsContainerInner = document.querySelector(\".cards__inner\");\n" +
-                    "const cards = Array.from(document.querySelectorAll(\".card\"));\n" +
-                    "const overlay = document.querySelector(\".overlay\");\n" +
-                    "\n" +
-                    "const applyOverlayMask = (e) => {\n" +
-                    "  const overlayEl = e.currentTarget;\n" +
-                    "  const x = e.pageX - cardsContainer.offsetLeft;\n" +
-                    "  const y = e.pageY - cardsContainer.offsetTop;\n" +
-                    "\n" +
-                    "  overlayEl.style = `--opacity: 1; --x: ${x}px; --y:${y}px;`;\n" +
-                    "};\n" +
-                    "\n" +
-                    "const createOverlayCta = (overlayCard, ctaEl) => {\n" +
-                    "  const overlayCta = document.createElement(\"div\");\n" +
-                    "  overlayCta.classList.add(\"cta\");\n" +
-                    "  overlayCta.textContent = ctaEl.textContent;\n" +
-                    "  overlayCta.setAttribute(\"aria-hidden\", true);\n" +
-                    "  overlayCard.append(overlayCta);\n" +
-                    "};\n" +
-                    "\n" +
-                    "const observer = new ResizeObserver((entries) => {\n" +
-                    "  entries.forEach((entry) => {\n" +
-                    "    const cardIndex = cards.indexOf(entry.target);\n" +
-                    "    let width = entry.borderBoxSize[0].inlineSize;\n" +
-                    "    let height = entry.borderBoxSize[0].blockSize;\n" +
-                    "\n" +
-                    "    if (cardIndex >= 0) {\n" +
-                    "      overlay.children[cardIndex].style.width = `${width}px`;\n" +
-                    "      overlay.children[cardIndex].style.height = `${height}px`;\n" +
-                    "    }\n" +
-                    "  });\n" +
-                    "});\n" +
-                    "\n" +
-                    "const initOverlayCard = (cardEl) => {\n" +
-                    "  const overlayCard = document.createElement(\"div\");\n" +
-                    "  overlayCard.classList.add(\"card\");\n" +
-                    "  overlayCard.classList.add(\"offersCard\");\n" +
-                    "  overlay.append(overlayCard);\n" +
-                    "  observer.observe(cardEl);\n" +
-                    "};\n" +
-                    "\n" +
-                    "cards.forEach(initOverlayCard);\n" +
-                    "document.body.addEventListener(\"pointermove\", applyOverlayMask);"
-        );
-        return new HorizontalLayout(main);
+        // Add JavaScript
+        UI.getCurrent().getPage().executeJs("""
+            const cardsContainer = document.querySelector(".cards_pricing");
+            const cardsContainerInner = document.querySelector(".cards__inner_pricing");
+            const cards = Array.from(document.querySelectorAll(".card_pricing"));
+            const overlay = document.querySelector(".overlay_pricing");
+
+            const applyOverlayMask = (e) => {
+                const overlayEl = e.currentTarget;
+                const x = e.pageX - cardsContainer.offsetLeft;
+                const y = e.pageY - cardsContainer.offsetTop;
+                
+                overlayEl.style = `--opacity: 1; --x: ${x}px; --y:${y}px;`;
+            };
+
+            const createOverlayCta = (overlayCard, ctaEl) => {
+                const overlayCta = document.createElement("div");
+                overlayCta.classList.add("cta_pricing");
+                overlayCta.textContent = ctaEl.textContent;
+                overlayCta.setAttribute("aria-hidden", true);
+                overlayCard.append(overlayCta);
+            };
+
+            const observer = new ResizeObserver((entries) => {
+                entries.forEach((entry) => {
+                    const cardIndex = cards.indexOf(entry.target);
+                    let width = entry.borderBoxSize[0].inlineSize;
+                    let height = entry.borderBoxSize[0].blockSize;
+
+                    if (cardIndex >= 0) {
+                        overlay.children[cardIndex].style.width = `${width}px`;
+                        overlay.children[cardIndex].style.height = `${height}px`;
+                    }
+                });
+            });
+
+            const initOverlayCard = (cardEl) => {
+                const overlayCard = document.createElement("div");
+                overlayCard.classList.add("card_pricing");
+                createOverlayCta(overlayCard, cardEl.lastElementChild);
+                overlay.append(overlayCard);
+                observer.observe(cardEl);
+            };
+
+            cards.forEach(initOverlayCard);
+            document.body.addEventListener("pointermove", applyOverlayMask);
+        """);
+        
+        return new HorizontalLayout(mainLayout);
+    }
+
+    private Div createPricingCard(String title, String price, String[] features, String ctaText, String href) {
+        Div card = new Div();
+        card.addClassName("cards__card_pricing");
+        card.addClassName("card_pricing");
+
+        H2 cardHeading = new H2(title);
+        cardHeading.addClassName("card__heading_pricing");
+
+        Paragraph priceText = new Paragraph(price);
+        priceText.addClassName("card__price_pricing");
+
+        UnorderedList featuresList = new UnorderedList();
+        featuresList.addClassName("card__bullets_pricing");
+        featuresList.addClassName("flow_pricing");
+        featuresList.getElement().setAttribute("role", "list");
+
+        for (String feature : features) {
+            ListItem item = new ListItem(feature);
+            featuresList.add(item);
+        }
+
+        Anchor cta = new Anchor(href, ctaText);
+        cta.addClassName("card__cta_pricing");
+        cta.addClassName("cta_pricing");
+
+        card.add(cardHeading, priceText, featuresList, cta);
+        return card;
+    }
+
+    private String[][] getPlanDetailsForService(String service) {
+        return switch (service) {
+            case "Web Application Development" -> new String[][] {
+                {"$999", "Basic web app development|Single page application|Basic database integration|Standard security features"},
+                {"$2,499", "Advanced web app development|Multi-page application|Advanced database integration|Enhanced security|API integration|Basic analytics"},
+                {"$4,999", "Enterprise web solutions|Microservices architecture|Full-scale database solutions|Advanced security features|Complete API suite|Advanced analytics|24/7 support"}
+            };
+            case "Mobile Application Development" -> new String[][] {
+                {"$1,499", "Single platform (iOS or Android)|Basic features|Standard UI|Local data storage"},
+                {"$2,999", "Dual platform development|Advanced features|Custom UI/UX|Cloud storage integration"},
+                {"$5,999", "Cross-platform enterprise solution|Premium features|Advanced UI/UX|Full backend integration|Analytics"}
+            };
+            case "UI/UX Design" -> new String[][] {
+                {"$799", "Basic UI design|2 design iterations|Essential user flows|Basic prototype"},
+                {"$1,499", "Advanced UI/UX design|4 design iterations|Detailed user flows|Interactive prototype"},
+                {"$2,999", "Complete design system|Unlimited iterations|Complex user flows|Advanced prototypes|User testing"}
+            };
+            case "Brand Identity Design" -> new String[][] {
+                {"$599", "Logo design|Basic brand guidelines|2 revisions|Basic color palette"},
+                {"$1,299", "Logo design suite|Comprehensive guidelines|5 revisions|Extended color palette"},
+                {"$2,499", "Full brand identity|Complete style guide|Unlimited revisions|Marketing materials"}
+            };
+            case "Graphic Design" -> new String[][] {
+                {"$399", "Basic design elements|2 concepts|2 revisions|Single format"},
+                {"$799", "Advanced design package|4 concepts|4 revisions|Multiple formats"},
+                {"$1,499", "Premium design suite|Unlimited concepts|Unlimited revisions|All formats"}
+            };
+            case "Construction Architecture" -> new String[][] {
+                {"$1,999", "Basic floor plans|3D exterior views|Basic material list|2 revisions"},
+                {"$3,999", "Detailed plans|Full 3D modeling|Complete material specs|4 revisions"},
+                {"$7,999", "Complete architectural package|Advanced 3D visualization|Full documentation|Unlimited revisions"}
+            };
+            case "3D Modeling & Visualization" -> new String[][] {
+                {"$799", "Basic 3D model|2 rendering views|Basic texturing|2 revisions"},
+                {"$1,599", "Detailed 3D model|5 rendering views|Advanced texturing|4 revisions"},
+                {"$2,999", "Complex 3D model|Unlimited views|Premium texturing|Animation|Unlimited revisions"}
+            };
+            case "Business Analysis" -> new String[][] {
+                {"$1,499", "Basic requirements analysis|Process mapping|Basic documentation|Weekly reports"},
+                {"$2,999", "Detailed business analysis|Process optimization|Full documentation|Bi-weekly reports"},
+                {"$5,999", "Enterprise analysis|Complete optimization|Strategic planning|Daily reports|Implementation support"}
+            };
+            case "Solutions Architecture" -> new String[][] {
+                {"$2,499", "Basic architecture design|System documentation|Basic scalability plan|Standard security"},
+                {"$4,999", "Advanced architecture design|Detailed documentation|Scalability strategy|Enhanced security"},
+                {"$9,999", "Enterprise architecture|Complete documentation|Full scaling strategy|Premium security|24/7 support"}
+            };
+            default -> new String[][] {
+                {"$0", "No features available"},
+                {"$0", "No features available"},
+                {"$0", "No features available"}
+            };
+        };
     }
 }

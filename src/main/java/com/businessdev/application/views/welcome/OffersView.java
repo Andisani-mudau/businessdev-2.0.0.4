@@ -29,6 +29,10 @@ import com.vaadin.flow.component.html.Main;
 @PageTitle("offers")
 @Route(value = "offers", layout = MainLayout.class)
 public class OffersView extends VerticalLayout {
+    private void addPricingButtonListener(Button button, String service) {
+        button.addClickListener(e -> UI.getCurrent().navigate("offers/pricing?service=" + service));
+    }
+
     public OffersView() {
         add(sectionOne());
     }
@@ -62,6 +66,7 @@ public class OffersView extends VerticalLayout {
         pricing.addClassName("pricing");
         pricing.setWidth("100%");
         pricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        addPricingButtonListener(pricing, "Web Application Development");
         HorizontalLayout tools = new HorizontalLayout();
         tools.addClassName("tools-container");
         
@@ -97,6 +102,7 @@ public class OffersView extends VerticalLayout {
         appDevPricing.addClassName("pricing");
         appDevPricing.setWidth("100%");
         appDevPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        addPricingButtonListener(appDevPricing, "Mobile Application Development");
         HorizontalLayout appDevTools = new HorizontalLayout();
         appDevTools.addClassName("tools-container");
         
@@ -126,6 +132,7 @@ public class OffersView extends VerticalLayout {
         uiDesignPricing.addClassName("pricing");
         uiDesignPricing.setWidth("100%");
         uiDesignPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        addPricingButtonListener(uiDesignPricing, "UI/UX Design");
         HorizontalLayout uiDesignTools = new HorizontalLayout();
         uiDesignTools.addClassName("tools-container");
         
@@ -157,6 +164,7 @@ public class OffersView extends VerticalLayout {
         logoDesignPricing.addClassName("pricing");
         logoDesignPricing.setWidth("100%");
         logoDesignPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        addPricingButtonListener(logoDesignPricing, "Brand Identity Design");
         HorizontalLayout logoDesignTools = new HorizontalLayout();
         logoDesignTools.addClassName("tools-container");
         
@@ -187,6 +195,7 @@ public class OffersView extends VerticalLayout {
         graphicDesignPricing.addClassName("pricing");
         graphicDesignPricing.setWidth("100%");
         graphicDesignPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        addPricingButtonListener(graphicDesignPricing, "Graphic Design");
         HorizontalLayout graphicDesignTools = new HorizontalLayout();
         graphicDesignTools.addClassName("tools-container");
         
@@ -222,6 +231,7 @@ public class OffersView extends VerticalLayout {
         architecturePricing.addClassName("pricing");
         architecturePricing.setWidth("100%");
         architecturePricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        addPricingButtonListener(architecturePricing, "Construction Architecture");
         HorizontalLayout architectureTools = new HorizontalLayout();
         architectureTools.addClassName("tools-container");
         
@@ -253,6 +263,7 @@ public class OffersView extends VerticalLayout {
         modellingPricing.addClassName("pricing");
         modellingPricing.setWidth("100%");
         modellingPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        addPricingButtonListener(modellingPricing, "3D Modeling & Visualization");
         HorizontalLayout modellingTools = new HorizontalLayout();
         modellingTools.addClassName("tools-container");
         
@@ -280,6 +291,7 @@ public class OffersView extends VerticalLayout {
         businessAnalysisPricing.addClassName("pricing");
         businessAnalysisPricing.setWidth("100%");
         businessAnalysisPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        addPricingButtonListener(businessAnalysisPricing, "Business Analysis");
         HorizontalLayout businessAnalysisTools = new HorizontalLayout();
         businessAnalysisTools.addClassName("tools-container");
         
@@ -313,6 +325,7 @@ public class OffersView extends VerticalLayout {
         solutionsArchPricing.addClassName("pricing");
         solutionsArchPricing.setWidth("100%");
         solutionsArchPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        addPricingButtonListener(solutionsArchPricing, "Solutions Architecture");
         HorizontalLayout solutionsArchTools = new HorizontalLayout();
         solutionsArchTools.addClassName("tools-container");
         
