@@ -354,8 +354,9 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
         
         // Add a back button
         Button backButton = new Button("Back");
+        backButton.getStyle().set("flex", "1");
+        scheduleButton.getStyle().set("flex", "2");
         backButton.addClickListener(e -> handleBackButton());
-        
         meetingName.setRequired(true);
         meetingName.getStyle().set("width", "100%");
         meetingEmail.setRequired(true);
@@ -367,13 +368,16 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
 
         scheduleButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         scheduleButton.getStyle().set("font-weight", "200");
+
+        HorizontalLayout buttonLayout = new HorizontalLayout(backButton, scheduleButton);
+        buttonLayout.setSpacing(true);
+        buttonLayout.getStyle().set("width", "100%");
         meetingDetailsForm.add(
-            backButton,
             meetingName,
             meetingEmail,
             meetingPhone,
             meetingNotes,
-            scheduleButton
+            buttonLayout
         );
         
         // Hide the next button when showing meeting details form
@@ -382,7 +386,6 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
     }
     
     private void handleBackButton() {
-        // Show scheduling fields and next button
         datePicker.setVisible(true);
         timeSlot.setVisible(true);
         durationSelect.setVisible(true);
@@ -641,6 +644,9 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
             // Make the fields visible
             service.setVisible(true);
             serviceType.setVisible(true);
+        }else{
+            service.setVisible(false);
+            serviceType.setVisible(false);
         }
     }
 }
