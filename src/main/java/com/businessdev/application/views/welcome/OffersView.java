@@ -30,7 +30,7 @@ import com.vaadin.flow.component.html.Main;
 @Route(value = "offers", layout = MainLayout.class)
 public class OffersView extends VerticalLayout {
     private void addPricingButtonListener(Button button, String service) {
-        button.addClickListener(e -> UI.getCurrent().navigate("offers/pricing?service=" + service));
+        button.addClickListener(e -> UI.getCurrent().navigate("pricing?service=" + service));
     }
 
     public OffersView() {

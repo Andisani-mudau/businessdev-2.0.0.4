@@ -140,7 +140,7 @@ ul {
     color: var(--lumo-body-text-color);
     background-color: var(--lumo-shade-5pct);
     border: 1px solid #eceff133;
-    border-radius: 15px;
+    border-radius: 10px;
   }
   .contactCard, .contactDetailsCard{
     max-width: 400px;
@@ -155,7 +155,7 @@ ul {
     color: var(--lumo-body-text-color);
     background-color: var(--lumo-shade-5pct);
     border: 1px solid #eceff133;
-    border-radius: 15px;
+    border-radius: 10px;
   }
   .offersCard{
     max-width: 400px;
@@ -172,7 +172,7 @@ ul {
     color: var(--lumo-body-text-color);
     background-color: var(--lumo-shade-5pct);
     border: 1px solid #eceff133;
-    border-radius: 15px;
+    border-radius: 10px;
   }
   .card:nth-child(1), .contactCard:nth-child(1) {
     --hue: 165;
@@ -264,12 +264,12 @@ ul {
   .cta {
     display: block;
     align-self: end;
-    margin: 1em 0 0.5em 0;
+    margin: 0.7em 0 0.5em 0;
     text-align: center;
     text-decoration: none;
     color: #fff;
     background-color: #0d0d0d;
-    padding: 0.7em;
+    padding: 0.3em;
     border-radius: 10px;
     font-size: 1rem;
     
@@ -414,7 +414,7 @@ ul {
   color: var(--lumo-body-text-color);
   background-color: var(--lumo-shade-5pct);
   border: 1px solid #eceff133;
-  border-radius: 15px;
+  border-radius: 10px;
 }
 
 .card-Offer:nth-child(1) {
@@ -460,7 +460,7 @@ ul {
   text-decoration: none;
   color: #fff;
   background-color: var(--lumo-primary-color);
-  padding: 0.7em;
+  padding: 0.3em;
   border-radius: 10px;
   font-size: 1rem;
 }
@@ -517,7 +517,7 @@ ul {
   font-size: var(--lumo-font-size-xs);
 }
 .pricing{
-  padding: 20px 0px !important;
+  padding: 0.3em 0px;
   font-weight: 500;
 }
 
@@ -553,7 +553,7 @@ ul {
   display: grid;
   grid-template-rows: auto auto auto 1fr;
   align-items: start;
-  gap: 1.25em;
+  gap: 0.25em;
   color: var(--lumo-body-text-color);
   background-color: var(--lumo-shade-5pct);
   border: 1px solid #eceff133;
@@ -611,24 +611,20 @@ ul {
   align-self: end;
   margin: 1em 0 0.5em 0;
   text-align: center;
-  text-decoration: none;
-  color: #fff;
-  background-color: #0d0d0d;
-  padding: 0.7em;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 500;
+  /* text-decoration: none; */
+  /* padding: 0.7em; */
+  color: var(--lumo-base-color);
+  padding: 0.3em 0;
+  border-radius: 5px;
+  /* font-size: 1rem; */
+  font-weight: 500; 
 }
+
 .cta_pricing:hover{
   text-decoration: none;
 }
 .overlay_pricing {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: 3;
   inset: 0;
   pointer-events: none;
   user-select: none;

@@ -32,10 +32,13 @@ import java.util.ArrayList;
 import java.util.List;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.NotificationVariant;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.router.QueryParameters;
 
 @PageTitle("contact")
 @Route(value = "contact", layout = MainLayout.class)
-public class ContactView extends VerticalLayout {
+public class ContactView extends VerticalLayout implements BeforeEnterObserver {
     private final VerticalLayout contactFormSection = new VerticalLayout();
     private final VerticalLayout schedulingSection = new VerticalLayout();
     
@@ -61,6 +64,8 @@ public class ContactView extends VerticalLayout {
     private final TextField meetingPhone = new TextField("Phone");
     private final TextField meetingNotes = new TextField("Additional Notes");
     private final Button nextButton = new Button("Next");
+    private final TextField service = new TextField("Service");
+    private final TextField serviceType = new TextField("Service Type");
     
     public ContactView() {
         add(sectionOne());
@@ -88,14 +93,6 @@ public class ContactView extends VerticalLayout {
         basicHeading.addClassName("card__heading");
         Paragraph basicPrice = new Paragraph("Contact Us");
         basicPrice.addClassName("card__price");
-        // UnorderedList basicBullets = new UnorderedList();
-        // basicBullets.addClassNames("card__bullets", "flow");
-        // basicBullets.add(
-        //     new ListItem("Access to standard workouts and nutrition plans"),
-        //     new ListItem("Email support")
-        // );
-        // Anchor basicCta = new Anchor("#basic", "Get Started");
-        // basicCta.addClassNames("card__cta", "cta");
         basicCard.add(basicHeading, createContactForm());
 
         // Pro Card
@@ -105,15 +102,6 @@ public class ContactView extends VerticalLayout {
         proHeading.addClassName("card__heading");
         Paragraph proPrice = new Paragraph("Schedule Meeting");
         proPrice.addClassName("card__price");
-        // UnorderedList proBullets = new UnorderedList();
-        // proBullets.addClassNames("card__bullets", "flow");
-        // proBullets.add(
-        //     new ListItem("Access to advanced workouts and nutrition plans"),
-        //     new ListItem("Priority Email support"),
-        //     new ListItem("Exclusive access to live Q&A sessions")
-        // );
-        // Anchor proCta = new Anchor("#pro", "Upgrade to Pro");
-        // proCta.addClassNames("card__cta", "cta");
         proCard.add(proHeading, createInitialSchedulingStep());
 
         // Ultimate Card
@@ -123,8 +111,6 @@ public class ContactView extends VerticalLayout {
         ultimateHeading.addClassName("card__heading");
         Paragraph ultimatePrice = new Paragraph("Contact details");
         ultimatePrice.addClassName("card__price");
-        // Anchor ultimateCta = new Anchor("#ultimate", "Go Ultimate");
-        // ultimateCta.addClassNames("card__cta", "cta");
         ultimateCard.add(ultimateHeading, socialLinks());
 
         cardsInner.add(basicCard, proCard, ultimateCard);
@@ -219,14 +205,18 @@ public class ContactView extends VerticalLayout {
         VerticalLayout layout = new VerticalLayout();
         layout.setSpacing(true);
         layout.setPadding(false);
-        
         layout.getStyle().set("width", "100%");
-        
+        service.setVisible(false);
+        service.getStyle().set("width", "100%");
+        serviceType.setVisible(false);
+        serviceType.getStyle().set("flex", "1").set("min-width", "130px");
         datePicker.setRequired(true);
-        datePicker.getStyle().set("width", "100%");
+        datePicker.getStyle().set("flex", "1").set("min-width", "130px");
         datePicker.setMin(LocalDate.now());
         datePicker.setMax(LocalDate.now().plusMonths(3));
-        
+        HorizontalLayout serviceLayout = new HorizontalLayout(serviceType, datePicker);
+        serviceLayout.getStyle().set("width", "100%").set("flex-wrap", "wrap").set("flex-direction", "row-reverse");
+        serviceLayout.setSpacing(true);
         // Create all selections and show them
         setupTimeSelection();
         setupDurationSelection();
@@ -247,7 +237,8 @@ public class ContactView extends VerticalLayout {
         
         // Add all components to the layout
         layout.add(
-            datePicker, 
+            service,
+            serviceLayout, 
             timeSlot, 
             durationSelect, 
             platformSelect, 
@@ -631,5 +622,25 @@ public class ContactView extends VerticalLayout {
                 .set("height", "unset");
         linkIcon.getElement().setProperty("innerHTML", "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"black\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-link-2\"><path d=\"M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3\"></path><line x1=\"8\" y1=\"12\" x2=\"16\" y2=\"12\"></line></svg>");
         return linkIcon;
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        QueryParameters queryParameters = event.getLocation().getQueryParameters();
+        
+        if (queryParameters.getParameters().containsKey("service") && 
+            queryParameters.getParameters().containsKey("serviceType")) {
+            
+            String serviceValue = queryParameters.getParameters().get("service").get(0);
+            String serviceTypeValue = queryParameters.getParameters().get("serviceType").get(0);
+            
+            // Set the values in the text fields
+            service.setValue(serviceValue);
+            serviceType.setValue(serviceTypeValue);
+            
+            // Make the fields visible
+            service.setVisible(true);
+            serviceType.setVisible(true);
+        }
     }
 }

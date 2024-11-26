@@ -41,9 +41,10 @@ import com.vaadin.flow.router.Location;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.component.AttachNotifier;
+import java.util.Map;
 
 @PageTitle("Pricing")
-@Route(value = "offers/pricing", layout = MainLayout.class)
+@Route(value = "pricing", layout = MainLayout.class)
 public class Pricing extends VerticalLayout {
     private H1 heading;
     
@@ -58,25 +59,12 @@ public class Pricing extends VerticalLayout {
                 String service = queryParameters.getParameters().get("service").get(0);
                 heading.setText(service);
                 add(pricing());
+            }else{
+                add(backToOffer());
             }
         });
         
     }
-    
-    // @Override
-    // protected void onAttach(AttachEvent attachEvent) {
-    //     super.onAttach(attachEvent);
-        
-    //     UI.getCurrent().access(() -> {
-    //         Location location = UI.getCurrent().getInternals().getActiveViewLocation();
-    //         QueryParameters queryParameters = location.getQueryParameters();
-            
-    //         if (queryParameters.getParameters().containsKey("service")) {
-    //             String service = queryParameters.getParameters().get("service").get(0);
-    //             heading.setText(service);
-    //         }
-    //     });
-    // }
     
     private HorizontalLayout pricing() {
         setClassName("sectionTwo");
@@ -204,9 +192,21 @@ public class Pricing extends VerticalLayout {
             featuresList.add(item);
         }
 
-        Anchor cta = new Anchor(href, ctaText);
+        Button cta = new Button(ctaText);
+        cta.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         cta.addClassName("card__cta_pricing");
         cta.addClassName("cta_pricing");
+        
+        // Add click listener to handle navigation
+        cta.addClickListener(e -> {
+            String service = heading.getText();
+            UI.getCurrent().navigate("contact", 
+                QueryParameters.simple(Map.of(
+                    "service", service,
+                    "serviceType", title
+                ))
+            );
+        });
 
         card.add(cardHeading, priceText, featuresList, cta);
         return card;
@@ -265,5 +265,31 @@ public class Pricing extends VerticalLayout {
                 {"$0", "No features available"}
             };
         };
+    }
+
+    private VerticalLayout backToOffer(){
+        VerticalLayout backToOffer = new VerticalLayout();
+        backToOffer.setHeight("calc(100dvh - 30px)");
+        backToOffer.setAlignItems(Alignment.CENTER);
+        backToOffer.setJustifyContentMode(JustifyContentMode.CENTER);
+        VerticalLayout mainContainter = new VerticalLayout();
+        mainContainter.setSpacing(true);
+        mainContainter.setMaxWidth("500px");
+        mainContainter.setAlignItems(Alignment.CENTER);
+        mainContainter.setJustifyContentMode(JustifyContentMode.CENTER);
+        
+        
+        VerticalLayout imageContainer = new VerticalLayout();
+        //imageContainer.setHeight("400px");
+        Image image = new Image("https://illustrations.popsy.co/amber/page-under-construction.svg", "Page under construcion");
+        image.setWidth("100%");
+        Paragraph text = new Paragraph("Oops! You skipped your way here, ");
+        Anchor goBackToOffers = new Anchor("offers", "go back to offers.");
+        text.add(goBackToOffers);
+
+        imageContainer.add(image);
+        mainContainter.add(imageContainer, text);
+        backToOffer.add(mainContainter);
+        return backToOffer;
     }
 }
