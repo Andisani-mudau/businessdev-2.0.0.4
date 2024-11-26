@@ -107,9 +107,9 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
         // Ultimate Card
         Div ultimateCard = new Div();
         ultimateCard.addClassNames("cards__card", "contactCard");
-        H2 ultimateHeading = new H2("Contact details");
+        H2 ultimateHeading = new H2("Contact Details");
         ultimateHeading.addClassName("card__heading");
-        Paragraph ultimatePrice = new Paragraph("Contact details");
+        Paragraph ultimatePrice = new Paragraph("Contact Details");
         ultimatePrice.addClassName("card__price");
         ultimateCard.add(ultimateHeading, socialLinks());
 

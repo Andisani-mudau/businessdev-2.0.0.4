@@ -220,7 +220,7 @@ public class MainNavigation extends VerticalLayout{
         sendChat.addClickShortcut(Key.ENTER);
         navSection3.add(chat, sendChat);
         setHorizontalComponentAlignment(FlexComponent.Alignment.END, chat, sendChat);
-        menuContent.add(navSection1, navSection2, navSection3);
+        menuContent.add(navSection1, navSection2);
         // Adding navBar and hello layout to the main layout
         add(navBar);
     }

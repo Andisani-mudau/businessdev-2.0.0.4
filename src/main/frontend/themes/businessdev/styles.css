@@ -107,12 +107,12 @@ ul {
 
   .main {
     max-width: 75rem;
-    padding: 3em 1em 1em 1em;
+    padding: 5em 1.5em 2em 1.5em;
   }
   .main__heading {
     font-weight: 600;
     font-size: 2.25em;
-    text-align: center;
+    text-align: start;
     color: var(--lumo-body-text-color);
   }
   
@@ -158,9 +158,9 @@ ul {
     border-radius: 10px;
   }
   .offersCard{
-    max-width: 400px;
     --flow-space: 0.5em;
     --hsl: var(--hue), var(--saturation), var(--lightness);
+    max-width: 400px;
     flex: 1 1 19.8rem;
     padding: 1.5em 2em;
     display: flex;
@@ -383,12 +383,12 @@ ul {
 /* ...Offers */ 
 .main-Offer {
   max-width: 75rem;
-  padding: 3em 1.5em;
+  padding: 5em 1.5em 2em 1.5em;
 }
 
 .main__heading-Offer {
   margin-bottom: 0.75em;
-  text-align: center;
+  text-align: start;
   color: var(--lumo-body-text-color);
 }
 
@@ -523,32 +523,37 @@ ul {
 
 /* Pricing */
 .main_pricing {
-  max-width: 75rem;
-  padding: 3em 1.5em;
+  width: 100dvw;
+  padding: 5em 1.5em 2em 1.5em;
 }
 
 .main__heading_pricing {
+
   font-weight: 600;
   font-size: 2.25em;
   margin-bottom: 0.75em;
-  text-align: center;
+  text-align: start;
   color: var(--lumo-body-text-color);
 }
 
 .cards_pricing {
   position: relative;
+  width: 100%;
 }
 
 .cards__inner_pricing {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 2.5em;
+  width: 100%;
 }
 
 .card_pricing {
   --flow-space: 0.5em;
   --hsl: var(--hue), var(--saturation), var(--lightness);
-  flex: 1 1 14rem;
+  max-width: 400px;
+  flex: 1 1 19.8rem;
   padding: 1.5em 2em;
   display: grid;
   grid-template-rows: auto auto auto 1fr;

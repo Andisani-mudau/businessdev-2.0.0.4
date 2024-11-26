@@ -67,6 +67,7 @@ public class Pricing extends VerticalLayout {
     }
     
     private HorizontalLayout pricing() {
+        setWidth("100%");
         setClassName("sectionTwo");
         Main mainLayout = new Main();
         mainLayout.addClassName("main_pricing");
