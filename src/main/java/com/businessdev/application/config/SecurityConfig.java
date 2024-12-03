@@ -24,9 +24,4 @@ public class SecurityConfig {
                     .policy("camera=(), microphone=(), geolocation=()")))
             .build();
     }
-
-    @Bean
-    public ServerHttpSecurity serverHttpSecurity() {
-        return ServerHttpSecurity.http();
-    }
 } 
