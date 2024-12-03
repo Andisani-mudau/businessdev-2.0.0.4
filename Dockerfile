@@ -4,7 +4,7 @@ WORKDIR /app
 COPY pom.xml . 
 COPY src ./src
 VOLUME /root/.m2  # Cache Maven dependencies
-RUN mvn clean package
+RUN mvn clean package -Pproduction
 
 # Run stage
 FROM eclipse-temurin:17-jre-alpine
