@@ -26,3 +26,5 @@ src/main/resources/businessdev-calender-api-5ddd33a1bed7.json
 
 # Environment variables
 .env
+*.env
+!.env.example
