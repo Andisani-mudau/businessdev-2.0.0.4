@@ -1,29 +1,18 @@
 package com.businessdev.application.views.welcome;
 
 import com.businessdev.application.views.welcome.MainLayout;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.component.AttachEvent;
-import com.vaadin.flow.component.html.UnorderedList;
-import com.vaadin.flow.component.html.ListItem;
 import com.vaadin.flow.component.html.Main;
 
 @PageTitle("offers")
@@ -76,6 +65,7 @@ public class OffersView extends VerticalLayout {
         Span ts = new Span("TypeScript");
         Span java = new Span("Java");
         Span spring = new Span("Spring");
+        Span springBoot = new Span("Spring-boot");
         Span vaadin = new Span("Vaadin");
         Span react = new Span("React");
         Span vue = new Span("Vue");
@@ -83,7 +73,7 @@ public class OffersView extends VerticalLayout {
         Span node = new Span("Node.js");
         Span mongodb = new Span("MongoDB");
         
-        tools.add(html, css, js, ts, java, spring, vaadin, react, vue, angular, node, mongodb);
+        tools.add(html, css, js, ts, java, spring, springBoot, vaadin, react, vue, angular, node, mongodb);
         tools.setSpacing(true);
         wrapper.add(tools, pricing);
         webDevCard.add(content_container, wrapper);
@@ -254,7 +244,7 @@ public class OffersView extends VerticalLayout {
         modellingCard.addClassNames("cards__card", "card", "offersCard");
         Image modellingImage = new Image("https://illustrations.popsy.co/gray/creative-work.svg", "3D Modeling");
         modellingImage.setWidth("100%");
-        H2 modellingHeading = new H2("3D Modeling & Visualization");
+        H2 modellingHeading = new H2("3D Modeling");
         modellingHeading.addClassNames("card__heading", "offer-heading");
         VerticalLayout modellingContent = new VerticalLayout(modellingImage, modellingHeading);
         
@@ -263,7 +253,7 @@ public class OffersView extends VerticalLayout {
         modellingPricing.addClassName("pricing");
         modellingPricing.setWidth("100%");
         modellingPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        addPricingButtonListener(modellingPricing, "3D Modeling & Visualization");
+        addPricingButtonListener(modellingPricing, "3D Modeling");
         HorizontalLayout modellingTools = new HorizontalLayout();
         modellingTools.addClassName("tools-container");
         

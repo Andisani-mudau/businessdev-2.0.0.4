@@ -1,9 +1,6 @@
 package com.businessdev.application.views.welcome;
 
 import com.businessdev.application.views.welcome.MainLayout;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
@@ -11,20 +8,14 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.component.html.ListItem;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Main;
-import com.vaadin.flow.component.html.ListItem;
 import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.uitest.model.chat.Link;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.Text;
 
 @PageTitle("about")
 @Route(value = "about", layout = MainLayout.class)
@@ -61,16 +52,10 @@ public class AboutView extends VerticalLayout {
             new ListItem("Access to standard workouts and nutrition plans"),
             new ListItem("Email support")
         );
-        VerticalLayout paragraphContainer = new VerticalLayout();
-        Paragraph aboutText1 = new Paragraph("We specialize in providing comprehensive business and IT solutions tailored to meet the unique needs of our clients. Established in 2024, we use latest technology and industry best practices to drive efficiency and innovation across various sectors. We collaborate with professionals with expertise in IT system development, designs, and business process optimisation.");
-        Paragraph aboutText2 = new Paragraph();
-        aboutText2.add("We are aware that the landscape of technology is constantly evolving, and we are committed to staying ahead of the curve. By conducting thorough user research and employing data-driven methodologies, we ensure our solutions not only address current challenges but also anticipate future needs. Our client-centric approach mirrors successful strategies employed by industry leaders like ");
-        aboutText2.add(new Anchor("https://www.zaizi.com/blog/our-user-research-mission-statement-for-2022/", "Zaizi"));
-        aboutText2.add(", which emphasizes understanding user behavior to inform product development and policy-making.");
-        paragraphContainer.add(aboutText1, aboutText2);
+        Paragraph aboutText1 = new Paragraph("We specialise in providing comprehensive business and IT solutions designed to meet the unique needs of our clients. Established in 2024, we use latest technology and industry best practices to drive efficiency and innovation across various sectors. We collaborate with professionals with expertise in IT system development, designs, and business process optimisation. We are aware that the landscape of technology is constantly evolving, and we are committed to staying ahead of the curve.");
         Anchor basicCta = new Anchor("#basic", "Get Started");
         basicCta.addClassNames("card__cta", "cta");
-        basicCard.add(basicHeading, paragraphContainer);
+        basicCard.add(basicHeading, aboutText1);
 
         // Pro Card
         Div proCard = new Div();
@@ -79,18 +64,13 @@ public class AboutView extends VerticalLayout {
         proHeading.addClassName("card__heading");
         Paragraph proPrice = new Paragraph("Mission");
         proPrice.addClassName("card__price");
-        UnorderedList proBullets = new UnorderedList();
-        proBullets.addClassNames("card__bullets", "flow");
-        proBullets.add(
-            new ListItem("Provide innovative solutions that enhance operational efficiency and facilitate growth."),
-            new ListItem("Build strong partnerships with our clients, understanding their challenges and working together to achieve their goals."),
-            new ListItem("Stay at the forefront of technology trends, ensuring our clients benefit from the latest advancements and best practices."),
-            new ListItem("Protect our clients' data and systems through robust cybersecurity measures, enabling them to focus on what they do best.")
-           
+        Paragraph missionText = new Paragraph(
+            "Our mission is to become a leading company in connecting businesses and driving innovation by providing best solutions to everyday business problems."+
+            "And to provide innovative solutions that enhance operational efficiency and facilitate growth. " +
+            "We build strong partnerships with our clients, understanding their challenges and working together to achieve their goals. " +
+            "We stay at the forefront of technology trends, ensuring our clients benefit from the latest advancements and best practices. "
         );
-        Anchor proCta = new Anchor("#pro", "Upgrade to Pro");
-        proCta.addClassNames("card__cta", "cta");
-        proCard.add(proHeading, proBullets);
+        proCard.add(proHeading, missionText);
 
         // Ultimate Card
         Div ultimateCard = new Div();
@@ -99,16 +79,16 @@ public class AboutView extends VerticalLayout {
         ultimateHeading.addClassName("card__heading");
         Paragraph ultimatePrice = new Paragraph("Vision");
         ultimatePrice.addClassName("card__price");
-        UnorderedList ultimateBullets = new UnorderedList();
-        ultimateBullets.addClassNames("card__bullets", "flow");
-        ultimateBullets.add(
-            new ListItem("Just as companies like HubSpot have successfully integrated technology into marketing strategies, we aspire to revolutionize how businesses operate through tailored technology solutions that enhance productivity and engagement."),
-            new ListItem("We believe in fostering long-term partnerships with our clients, similar to the collaborative approaches seen in successful firms. Our goal is to unlock the full potential of organizations by implementing strategic solutions that drive sustainable growth."),
-            new ListItem("We envision a digital ecosystem where businesses can thrive through collaboration and shared knowledge, akin to the interdisciplinary communication methods promoted by leading research organizations3. By integrating innovative technologies with effective management practices, we aim to create a future where businesses are not only connected but also empowered to succeed.")
+        Paragraph visionText = new Paragraph();
+        Anchor hubspotLink = new Anchor("https://www.hubspot.com", "HubSpot");
+        hubspotLink.getStyle().set("text-decoration", "underline");
+        visionText.add(
+            new Text("Just as companies like "), 
+            hubspotLink,
+            new Text(" have successfully integrated technology into marketing strategies, we aspire to revolutionise how businesses operate through specific designed technology solutions that enhance productivity and engagement. " +
+            "We believe in keeping long-term partnerships with our clients, similar to the collaborative approaches seen in successful firms. Our goal is to unlock the full potential of businesses by implementing strategic solutions that drive sustainable growth.")
         );
-        Anchor ultimateCta = new Anchor("#ultimate", "Go Ultimate");
-        ultimateCta.addClassNames("card__cta", "cta");
-        ultimateCard.add(ultimateHeading, ultimateBullets);
+        ultimateCard.add(ultimateHeading, visionText);
 
         // More info Card
         Div moreInfoCard = new Div();
@@ -117,15 +97,6 @@ public class AboutView extends VerticalLayout {
         moreInfoHeading.addClassName("card__heading");
         Paragraph moreInfoPrice = new Paragraph("Why us?");
         moreInfoPrice.addClassName("card__price");
-        UnorderedList moreInfoBullets = new UnorderedList();
-        moreInfoBullets.addClassNames("card__bullets", "flow");
-        moreInfoBullets.add(
-            new ListItem("Access to advanced workouts and nutrition plans"),
-            new ListItem("Priority Email support"),
-            new ListItem("Exclusive access to live Q&A sessions")
-        );
-        Anchor moreInfoCta = new Anchor("#moreInfo", "Upgrade to moreInfo");
-        moreInfoCta.addClassNames("card__cta", "cta");
         moreInfoCard.add(moreInfoHeading, research());
 
         cardsInner.add(basicCard, proCard, ultimateCard, moreInfoCard);
@@ -187,277 +158,12 @@ public class AboutView extends VerticalLayout {
         );
         return new HorizontalLayout(main);
     }
-    private HorizontalLayout sectionThree(){
-        setClassName("sectionTwo");
-        Main main = new Main();
-        main.addClassName("main");
-        main.addClassName("flow");
 
-        H1 mainHeading = new H1("");
-        mainHeading.addClassName("main__heading");
-
-        Div mainCards = new Div();
-        mainCards.addClassNames("main__cards", "cards");
-
-        Div cardsInner = new Div();
-        cardsInner.addClassName("cards__inner");
-
-        // Basic Card
-        Div basicCard = new Div();
-        basicCard.addClassNames("cards__card", "card");
-        H2 basicHeading = new H2("About");
-        basicHeading.addClassName("card__heading");
-        Paragraph basicPrice = new Paragraph("$9.99");
-        basicPrice.addClassName("card__price");
-        UnorderedList basicBullets = new UnorderedList();
-        basicBullets.addClassNames("card__bullets", "flow");
-        basicBullets.add(
-            new ListItem("Access to standard workouts and nutrition plans"),
-            new ListItem("Email support")
-        );
-        Anchor basicCta = new Anchor("#basic", "Get Started");
-        basicCta.addClassNames("card__cta", "cta");
-        basicCard.add(basicHeading, basicPrice, basicBullets, basicCta);
-
-        // Pro Card
-        Div proCard = new Div();
-        proCard.addClassNames("cards__card", "card");
-        H2 proHeading = new H2("Mission");
-        proHeading.addClassName("card__heading");
-        Paragraph proPrice = new Paragraph("$19.99");
-        proPrice.addClassName("card__price");
-        UnorderedList proBullets = new UnorderedList();
-        proBullets.addClassNames("card__bullets", "flow");
-        proBullets.add(
-            new ListItem("Access to advanced workouts and nutrition plans"),
-            new ListItem("Priority Email support"),
-            new ListItem("Exclusive access to live Q&A sessions")
-        );
-        Anchor proCta = new Anchor("#pro", "Upgrade to Pro");
-        proCta.addClassNames("card__cta", "cta");
-        proCard.add(proHeading, proPrice, proBullets, proCta);
-
-        // Ultimate Card
-        Div ultimateCard = new Div();
-        ultimateCard.addClassNames("cards__card", "card");
-        H2 ultimateHeading = new H2("Vision");
-        ultimateHeading.addClassName("card__heading");
-        Paragraph ultimatePrice = new Paragraph("$29.99");
-        ultimatePrice.addClassName("card__price");
-        UnorderedList ultimateBullets = new UnorderedList();
-        ultimateBullets.addClassNames("card__bullets", "flow");
-        ultimateBullets.add(
-            new ListItem("Access to all premium workouts and nutrition plans"),
-            new ListItem("24/7 Priority support"),
-            new ListItem("1-on-1 virtual coaching session every month"),
-            new ListItem("Exclusive content and early access to new features")
-        );
-        Anchor ultimateCta = new Anchor("#ultimate", "Go Ultimate");
-        ultimateCta.addClassNames("card__cta", "cta");
-        ultimateCard.add(ultimateHeading, ultimatePrice, ultimateBullets, ultimateCta);
-
-        cardsInner.add(basicCard, proCard, ultimateCard);
-
-        Div overlay = new Div();
-        overlay.addClassNames("overlay", "cards__inner");
-
-        mainCards.add(cardsInner, overlay);
-        main.add(mainHeading, mainCards);
-
-        //Script
-        UI.getCurrent().getPage().executeJs(
-            "console.clear();\n" +
-                    "\n" +
-                    "const cardsContainer = document.querySelector(\".cards\");\n" +
-                    "const cardsContainerInner = document.querySelector(\".cards__inner\");\n" +
-                    "const cards = Array.from(document.querySelectorAll(\".card\"));\n" +
-                    "const overlay = document.querySelector(\".overlay\");\n" +
-                    "\n" +
-                    "const applyOverlayMask = (e) => {\n" +
-                    "  const overlayEl = e.currentTarget;\n" +
-                    "  const x = e.pageX - cardsContainer.offsetLeft;\n" +
-                    "  const y = e.pageY - cardsContainer.offsetTop;\n" +
-                    "\n" +
-                    "  overlayEl.style = `--opacity: 1; --x: ${x}px; --y:${y}px;`;\n" +
-                    "};\n" +
-                    "\n" +
-                    "const createOverlayCta = (overlayCard, ctaEl) => {\n" +
-                    "  const overlayCta = document.createElement(\"div\");\n" +
-                    "  overlayCta.classList.add(\"cta\");\n" +
-                    "  overlayCta.textContent = ctaEl.textContent;\n" +
-                    "  overlayCta.setAttribute(\"aria-hidden\", true);\n" +
-                    "  overlayCard.append(overlayCta);\n" +
-                    "};\n" +
-                    "\n" +
-                    "const observer = new ResizeObserver((entries) => {\n" +
-                    "  entries.forEach((entry) => {\n" +
-                    "    const cardIndex = cards.indexOf(entry.target);\n" +
-                    "    let width = entry.borderBoxSize[0].inlineSize;\n" +
-                    "    let height = entry.borderBoxSize[0].blockSize;\n" +
-                    "\n" +
-                    "    if (cardIndex >= 0) {\n" +
-                    "      overlay.children[cardIndex].style.width = `${width}px`;\n" +
-                    "      overlay.children[cardIndex].style.height = `${height}px`;\n" +
-                    "    }\n" +
-                    "  });\n" +
-                    "});\n" +
-                    "\n" +
-                    "const initOverlayCard = (cardEl) => {\n" +
-                    "  const overlayCard = document.createElement(\"div\");\n" +
-                    "  overlayCard.classList.add(\"card\");\n" +
-                    "  overlayCard.classList.add(\"moreInfocard\");\n" +
-                    "  createOverlayCta(overlayCard, cardEl.lastElementChild);\n" +
-                    "  overlay.append(overlayCard);\n" +
-                    "  observer.observe(cardEl);\n" +
-                    "};\n" +
-                    "\n" +
-                    "cards.forEach(initOverlayCard);\n" +
-                    "document.body.addEventListener(\"pointermove\", applyOverlayMask);"
-        );
-        return new HorizontalLayout(main);
-    }
-    private HorizontalLayout sectionFour(){
-        setClassName("sectionTwo");
-        Main main = new Main();
-        main.addClassName("main");
-        main.addClassName("flow");
-
-        H1 mainHeading = new H1("");
-        mainHeading.addClassName("main__heading");
-
-        Div mainCards = new Div();
-        mainCards.addClassNames("main__cards", "cards");
-
-        Div cardsInner = new Div();
-        cardsInner.addClassName("cards__inner");
-
-        // Basic Card
-        Div basicCard = new Div();
-        basicCard.addClassNames("cards__card", "card");
-        H2 basicHeading = new H2("About");
-        basicHeading.addClassName("card__heading");
-        Paragraph basicPrice = new Paragraph("$9.99");
-        basicPrice.addClassName("card__price");
-        UnorderedList basicBullets = new UnorderedList();
-        basicBullets.addClassNames("card__bullets", "flow");
-        basicBullets.add(
-            new ListItem("Access to standard workouts and nutrition plans"),
-            new ListItem("Email support")
-        );
-        Anchor basicCta = new Anchor("#basic", "Get Started");
-        basicCta.addClassNames("card__cta", "cta");
-        basicCard.add(basicHeading, basicPrice, basicBullets, basicCta);
-
-        // Pro Card
-        Div proCard = new Div();
-        proCard.addClassNames("cards__card", "card");
-        H2 proHeading = new H2("Mission");
-        proHeading.addClassName("card__heading");
-        Paragraph proPrice = new Paragraph("$19.99");
-        proPrice.addClassName("card__price");
-        UnorderedList proBullets = new UnorderedList();
-        proBullets.addClassNames("card__bullets", "flow");
-        proBullets.add(
-            new ListItem("Access to advanced workouts and nutrition plans"),
-            new ListItem("Priority Email support"),
-            new ListItem("Exclusive access to live Q&A sessions")
-        );
-        Anchor proCta = new Anchor("#pro", "Upgrade to Pro");
-        proCta.addClassNames("card__cta", "cta");
-        proCard.add(proHeading, proPrice, proBullets, proCta);
-
-        // Ultimate Card
-        Div ultimateCard = new Div();
-        ultimateCard.addClassNames("cards__card", "card");
-        H2 ultimateHeading = new H2("Vision");
-        ultimateHeading.addClassName("card__heading");
-        Paragraph ultimatePrice = new Paragraph("$29.99");
-        ultimatePrice.addClassName("card__price");
-        UnorderedList ultimateBullets = new UnorderedList();
-        ultimateBullets.addClassNames("card__bullets", "flow");
-        ultimateBullets.add(
-            new ListItem("Access to all premium workouts and nutrition plans"),
-            new ListItem("24/7 Priority support"),
-            new ListItem("1-on-1 virtual coaching session every month"),
-            new ListItem("Exclusive content and early access to new features")
-        );
-        Anchor ultimateCta = new Anchor("#ultimate", "Go Ultimate");
-        ultimateCta.addClassNames("card__cta", "cta");
-        ultimateCard.add(ultimateHeading, ultimatePrice, ultimateBullets, ultimateCta);
-
-        cardsInner.add(basicCard, proCard, ultimateCard);
-
-        Div overlay = new Div();
-        overlay.addClassNames("overlay", "cards__inner");
-
-        mainCards.add(cardsInner, overlay);
-        main.add(mainHeading, mainCards);
-
-        //Script
-        UI.getCurrent().getPage().executeJs(
-            "console.clear();\n" +
-                    "\n" +
-                    "const cardsContainer = document.querySelector(\".cards\");\n" +
-                    "const cardsContainerInner = document.querySelector(\".cards__inner\");\n" +
-                    "const cards = Array.from(document.querySelectorAll(\".card\"));\n" +
-                    "const overlay = document.querySelector(\".overlay\");\n" +
-                    "\n" +
-                    "const applyOverlayMask = (e) => {\n" +
-                    "  const overlayEl = e.currentTarget;\n" +
-                    "  const x = e.pageX - cardsContainer.offsetLeft;\n" +
-                    "  const y = e.pageY - cardsContainer.offsetTop;\n" +
-                    "\n" +
-                    "  overlayEl.style = `--opacity: 1; --x: ${x}px; --y:${y}px;`;\n" +
-                    "};\n" +
-                    "\n" +
-                    "const createOverlayCta = (overlayCard, ctaEl) => {\n" +
-                    "  const overlayCta = document.createElement(\"div\");\n" +
-                    "  overlayCta.classList.add(\"cta\");\n" +
-                    "  overlayCta.textContent = ctaEl.textContent;\n" +
-                    "  overlayCta.setAttribute(\"aria-hidden\", true);\n" +
-                    "  overlayCard.append(overlayCta);\n" +
-                    "};\n" +
-                    "\n" +
-                    "const observer = new ResizeObserver((entries) => {\n" +
-                    "  entries.forEach((entry) => {\n" +
-                    "    const cardIndex = cards.indexOf(entry.target);\n" +
-                    "    let width = entry.borderBoxSize[0].inlineSize;\n" +
-                    "    let height = entry.borderBoxSize[0].blockSize;\n" +
-                    "\n" +
-                    "    if (cardIndex >= 0) {\n" +
-                    "      overlay.children[cardIndex].style.width = `${width}px`;\n" +
-                    "      overlay.children[cardIndex].style.height = `${height}px`;\n" +
-                    "    }\n" +
-                    "  });\n" +
-                    "});\n" +
-                    "\n" +
-                    "const initOverlayCard = (cardEl) => {\n" +
-                    "  const overlayCard = document.createElement(\"div\");\n" +
-                    "  overlayCard.classList.add(\"card\");\n" +
-                    "  createOverlayCta(overlayCard, cardEl.lastElementChild);\n" +
-                    "  overlay.append(overlayCard);\n" +
-                    "  observer.observe(cardEl);\n" +
-                    "};\n" +
-                    "\n" +
-                    "cards.forEach(initOverlayCard);\n" +
-                    "document.body.addEventListener(\"pointermove\", applyOverlayMask);"
-        );
-        return new HorizontalLayout(main);
-    }
     private VerticalLayout research() {
         VerticalLayout research = new VerticalLayout();
         
-        Image introductionImage = new Image();
-        introductionImage.setSrc(""); // You'll need to set the correct image path
-        introductionImage.setAlt("Introduction image");
-        introductionImage.setWidth("100%");
-        introductionImage.addClassName("introduction-image");
-        
-        H2 introduction = new H2("Introduction");
-        introduction.addClassName("section-heading");
-        
         Paragraph introductionParagraph = new Paragraph(
-            "Our company is a pioneer in delivering high-quality, versatile services, including " +
+            "Our company focuses on delivering high-quality, versatile services, including, " +
             "Web Application Development, Mobile Application Development, UI/UX Design, Brand Identity Design, " +
             "Graphic Design, Construction Architecture, 3D Modeling & Visualization, Business Analysis, and " +
             "Solutions Architecture. Operating with zero employees apart from the CEO, we stand out as one of " +
@@ -468,28 +174,20 @@ public class AboutView extends VerticalLayout {
         introductionParagraph.addClassName("introduction-text");
         
         // Industry Analysis Section
-        H2 industryAnalysis = new H2("Industry Analysis");
+        H2 industryAnalysis = new H2("Industry analysis");
         industryAnalysis.addClassName("section-heading");
         
         // Market Size and Growth subsection
-        H3 marketSize = new H3("Market Size and Growth");
+        H3 marketSize = new H3("Market size and growth");
         marketSize.addClassName("subsection-heading");
         
         Paragraph marketSizeParagraph = new Paragraph(
-            "The global web and mobile application development market is booming. According to recent studies, " +
-            "the market for web application development alone is projected to grow significantly in the coming years, " +
-            "driven by the increasing use of smartphones, internet penetration, and businesses transitioning to " +
-            "digital platforms. Mobile applications, essential for modern-day businesses, are seeing similar growth, " +
-            "particularly with the shift toward mobile-first strategies."
-        );
-        
-        Paragraph marketImplication = new Paragraph(
-            "This rapid expansion highlights the importance of offering services like ours, which cater to a " +
-            "wide array of industries needing innovative, user-friendly digital solutions."
+            "The global web and mobile application development market is booming. According to recent studies, the market for web application development alone is projected to grow significantly in the coming years, driven by the increasing use of smartphones, internet penetration, and businesses transitioning to digital platforms. Mobile applications, essential for modern-day businesses, are seeing similar growth, particularly with the shift toward mobile-first strategies. "+
+            "This rapid expansion highlights the importance of offering services like ours, which cater to a wide array of industries needing innovative, user-friendly digital solutions."
         );
         
         // Trends subsection
-        H3 trends = new H3("Trends Shaping the Market");
+        H3 trends = new H3("Trends shaping the market");
         trends.addClassName("subsection-heading");
         
         Paragraph trendsContent = new Paragraph(
@@ -505,71 +203,57 @@ public class AboutView extends VerticalLayout {
         );
         
         // Customer Segmentation Section
-        H2 customerSegmentation = new H2("Customer Segmentation");
+        H2 customerSegmentation = new H2("Customer segmentation");
         customerSegmentation.addClassName("section-heading");
         
         // Target Audience subsection
-        H3 targetAudience = new H3("Target Audience Identification");
+        H3 targetAudience = new H3("Target audience identification");
         targetAudience.addClassName("subsection-heading");
         
-        Paragraph targetIntro = new Paragraph("Our services are designed for:");
-        
-        UnorderedList targetList = new UnorderedList();
-        targetList.addClassNames("target-list", "flow");
-        targetList.add(
-            new ListItem("Startups: Entrepreneurs seeking brand identity design to establish their business in competitive markets."),
-            new ListItem("Businesses: Organizations requiring custom software solutions to improve operations and enhance customer engagement."),
-            new ListItem("Industries: Sectors like construction and real estate needing 3D modeling and visualization services for projects and proposals.")
+        Paragraph targetIntro = new Paragraph("Our services are designed for:"+
+            "Our target audience includes Startups - entrepreneurs seeking brand identity design to establish their business in competitive markets; " +
+            "Businesses - organisations requiring custom software solutions to improve operations and enhance customer engagement; and " +
+            "Industries - sectors like construction and real estate needing 3D modeling and visualisation services for projects and proposals."
         );
         
         // Behavioral Insights subsection
-        H3 behavioralInsights = new H3("Behavioral Insights");
+        H3 behavioralInsights = new H3("Behavioral insights");
         behavioralInsights.addClassName("subsection-heading");
         
-        Paragraph insightsIntro = new Paragraph("Analytics and surveys reveal that customers prioritize:");
-        
-        UnorderedList insightsList = new UnorderedList();
-        insightsList.addClassNames("insights-list", "flow");
-        insightsList.add(
-            new ListItem("User Experience: The demand for intuitive and visually appealing designs is at an all-time high."),
-            new ListItem("Cost-Effective Solutions: Businesses seek quality services without the overhead of traditional operations.")
+        Paragraph insightsIntro = new Paragraph("Analytics and surveys reveal that customers prioritise: "+
+            "User Experience: The demand for intuitive and visually appealing designs is at an all-time high. " +
+            "Cost-Effective Solutions: Businesses seek quality services without the overhead of traditional operations."
         );
         
         // Service Offerings Evaluation Section
-        H2 serviceOfferings = new H2("Service Offerings Evaluation");
+        H2 serviceOfferings = new H2("Service offerings evaluation");
         serviceOfferings.addClassName("section-heading");
         
         // Competitive Analysis subsection
-        H3 competitiveAnalysis = new H3("Competitive Analysis");
+        H3 competitiveAnalysis = new H3("Competitive analysis");
         competitiveAnalysis.addClassName("subsection-heading");
         
         Paragraph competitiveAnalysisParagraph = new Paragraph(
             "The market is filled with companies offering web development, UI/UX design, and architectural " +
-            "visualization. However, many of them rely on fixed teams, limiting flexibility and innovation. " +
+            "visualisation. However, many of them rely on fixed teams, limiting flexibility and innovation. " +
             "By analyzing competitors' pricing, delivery times, and customer feedback, we identified a gap " +
-            "for services that are highly customizable and executed by specialized global professionals."
+            "for services that are highly customisable and executed by specialised global professionals."
         );
         
         // USP subsection
-        H3 usp = new H3("Our Unique Selling Proposition (USP)");
+        H3 usp = new H3("Our unique selling proposition (USP)");
         usp.addClassName("subsection-heading");
         
         Paragraph uspIntro = new Paragraph(
             "Our operational model is unconventional yet highly effective. By collaborating with professionals " +
             "worldwide, we tap into a global talent pool that ensures every project is handled by the best in " +
-            "the industry. This approach:"
-        );
-        
-        UnorderedList uspList = new UnorderedList();
-        uspList.addClassNames("usp-list", "flow");
-        uspList.add(
-            new ListItem("Reduces overhead costs, passing savings to the client."),
-            new ListItem("Increases flexibility in service delivery."),
-            new ListItem("Enables access to a diverse range of expertise for any project.")
+            "the industry. We reduce overhead costs, passing savings to the client. " +
+            "We increase flexibility in service delivery. " +
+            "We enable access to a diverse range of expertise for any project."
         );
         
         // Regulatory Environment Section
-        H2 regulatoryEnvironment = new H2("Regulatory Framework and Compliance");
+        H2 regulatoryEnvironment = new H2("Regulatory framework and compliance");
         regulatoryEnvironment.addClassName("section-heading");
         
         Paragraph regulatoryContent = new Paragraph(
@@ -586,7 +270,7 @@ public class AboutView extends VerticalLayout {
         );
 
         // Technology Trends Section
-        H2 technologyTrends = new H2("Technological Innovation and Market Evolution");
+        H2 technologyTrends = new H2("Technological innovation and market evolution");
         technologyTrends.addClassName("section-heading");
         
         Paragraph technologyContent = new Paragraph(
@@ -605,7 +289,7 @@ public class AboutView extends VerticalLayout {
         );
 
         // Marketing Strategy Section
-        H2 marketingStrategy = new H2("Strategic Market Engagement and Brand Development");
+        H2 marketingStrategy = new H2("Strategic market engagement and brand development");
         marketingStrategy.addClassName("section-heading");
         
         Paragraph marketingContent = new Paragraph(
@@ -624,7 +308,7 @@ public class AboutView extends VerticalLayout {
         );
 
         // Sustainability Section
-        H2 sustainability = new H2("Environmental Sustainability and Digital Innovation");
+        H2 sustainability = new H2("Environmental sustainability and digital innovation");
         sustainability.addClassName("section-heading");
         
         Paragraph sustainabilityContent = new Paragraph(
@@ -644,7 +328,7 @@ public class AboutView extends VerticalLayout {
         );
 
         // Future-Ready Solutions Section
-        H2 futureReady = new H2("Future-Oriented Technology Solutions");
+        H2 futureReady = new H2("Future-oriented technology solutions");
         futureReady.addClassName("section-heading");
         
         Paragraph futureContent = new Paragraph(
@@ -661,28 +345,22 @@ public class AboutView extends VerticalLayout {
         );
 
         research.add(
-            introductionImage,
-            introduction,
             introductionParagraph,
             industryAnalysis,
             marketSize,
             marketSizeParagraph,
-            marketImplication,
             trends,
             trendsContent,
             customerSegmentation,
             targetAudience,
             targetIntro,
-            targetList,
             behavioralInsights,
             insightsIntro,
-            insightsList,
             serviceOfferings,
             competitiveAnalysis,
             competitiveAnalysisParagraph,
             usp,
             uspIntro,
-            uspList,
             regulatoryEnvironment,
             regulatoryContent,
             technologyTrends,

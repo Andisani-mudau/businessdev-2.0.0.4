@@ -671,3 +671,20 @@ ul {
   --lightness: 95%;
   background: hsla(var(--hsl), 0.1);
 }
+.logo-on-menu svg{
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  width: 150px !important;
+  fill: var(--lumo-primary-color);
+  margin-bottom: 6px;
+  padding: 0;
+}
+.paragraph_pricing{
+  font-size: var(--lumo-font-size-xs);
+  margin-top: 2em;
+  text-align: center;
+}
+.paragraph_pricing a{
+  text-decoration: underline;
+}

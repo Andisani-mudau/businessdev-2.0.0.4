@@ -1,8 +1,6 @@
 package com.businessdev.application.views.welcome;
 
 import com.businessdev.application.views.welcome.MainLayout;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -12,44 +10,51 @@ import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.component.AttachEvent;
-import com.vaadin.flow.component.AttachNotifier;
 import com.vaadin.flow.component.html.UnorderedList;
-import com.vaadin.flow.component.html.ListItem;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.ListItem;
 import com.vaadin.flow.component.html.Main;
-import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.html.UnorderedList;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.QueryParameters;
 import com.vaadin.flow.router.Location;
-import com.vaadin.flow.router.BeforeEnterEvent;
-import com.vaadin.flow.router.BeforeEnterObserver;
-import com.vaadin.flow.component.AttachNotifier;
 import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.HashMap;
+import java.util.Locale;
+import com.businessdev.application.config.ApiConfig;
+import com.vaadin.flow.component.Text;
+
 
 @PageTitle("Pricing")
 @Route(value = "pricing", layout = MainLayout.class)
 public class Pricing extends VerticalLayout {
+    private final ApiConfig apiConfig;
+    private final String API_KEY;
+    private final String API_URL = "https://api.freecurrencyapi.com/v1/latest";
+    private Map<String, Double> exchangeRates = new HashMap<>();
+    private String userCurrency = "USD";
     private H1 heading;
     
-    public Pricing() { 
+    public Pricing(ApiConfig apiConfig) {
+        this.apiConfig = apiConfig;
+        this.API_KEY = apiConfig.getCurrencyApiKey();
+        
         heading = new H1("Web Application Development");
+        
+        // Determine user's locale and currency
+        Locale locale = UI.getCurrent().getLocale();
+        java.util.Currency currency = java.util.Currency.getInstance(locale);
+        if (currency != null && !currency.getCurrencyCode().equals("USD")) {
+            userCurrency = currency.getCurrencyCode();
+            fetchExchangeRates();
+        }
         
         UI.getCurrent().access(() -> {
             Location location = UI.getCurrent().getInternals().getActiveViewLocation();
@@ -118,8 +123,14 @@ public class Pricing extends VerticalLayout {
         overlay.addClassName("overlay_pricing");
         overlay.addClassName("cards__inner_pricing");
 
+        Paragraph paragraph = new Paragraph();
+        paragraph.add(new Text("If you are only interested in a maintenance plan, "));
+        Anchor contactLink = new Anchor("contact", "please contact us");
+        paragraph.add(contactLink);
+        paragraph.add(new Text("."));
+        paragraph.addClassName("paragraph_pricing");
         cardsLayout.add(cardsInner, overlay);
-        mainLayout.add(heading, cardsLayout);
+        mainLayout.add(heading, cardsLayout, paragraph);
 
         // Add JavaScript
         UI.getCurrent().getPage().executeJs("""
@@ -214,7 +225,7 @@ public class Pricing extends VerticalLayout {
     }
 
     private String[][] getPlanDetailsForService(String service) {
-        return switch (service) {
+        String[][] plans = switch (service) {
             case "Web Application Development" -> new String[][] {
                 {"$999", "Basic web app development|Single page application|Basic database integration|Standard security features"},
                 {"$2,499", "Advanced web app development|Multi-page application|Advanced database integration|Enhanced security|API integration|Basic analytics"},
@@ -245,7 +256,7 @@ public class Pricing extends VerticalLayout {
                 {"$3,999", "Detailed plans|Full 3D modeling|Complete material specs|4 revisions"},
                 {"$7,999", "Complete architectural package|Advanced 3D visualization|Full documentation|Unlimited revisions"}
             };
-            case "3D Modeling & Visualization" -> new String[][] {
+            case "3D Modeling" -> new String[][] {
                 {"$799", "Basic 3D model|2 rendering views|Basic texturing|2 revisions"},
                 {"$1,599", "Detailed 3D model|5 rendering views|Advanced texturing|4 revisions"},
                 {"$2,999", "Complex 3D model|Unlimited views|Premium texturing|Animation|Unlimited revisions"}
@@ -266,6 +277,74 @@ public class Pricing extends VerticalLayout {
                 {"$0", "No features available"}
             };
         };
+        
+        // Convert prices if needed
+        if (!userCurrency.equals("USD")) {
+            for (String[] plan : plans) {
+                plan[0] = convertPrice(plan[0]);
+            }
+        }
+        
+        return plans;
+    }
+
+    private void fetchExchangeRates() {
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(API_URL + "?apikey=" + API_KEY))
+                .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(response.body());
+            JsonNode rates = root.get("data");
+            
+            rates.fields().forEachRemaining(entry -> 
+                exchangeRates.put(entry.getKey(), entry.getValue().asDouble()));
+                
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Fallback to USD if API call fails
+            userCurrency = "USD";
+        }
+    }
+
+    private String convertPrice(String usdPrice) {
+        try {
+            // Extract numeric value from price string
+            double amount = Double.parseDouble(usdPrice.replace("$", "").replace(",", ""));
+            
+            if (!userCurrency.equals("USD") && exchangeRates.containsKey(userCurrency)) {
+                double convertedAmount = amount * exchangeRates.get(userCurrency);
+                // Get currency instance and symbol
+                java.util.Currency currencyInstance = java.util.Currency.getInstance(userCurrency);
+                String symbol = currencyInstance.getSymbol();
+                
+                // Create NumberFormat for the current locale
+                Locale locale = UI.getCurrent().getLocale();
+                java.text.NumberFormat formatter = java.text.NumberFormat.getCurrencyInstance(locale);
+                formatter.setCurrency(currencyInstance);
+                
+                // Format the number
+                String formattedAmount = formatter.format(convertedAmount);
+                
+                // Some currencies might place the symbol at the end, so we'll use the formatted amount as is
+                return formattedAmount;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        // If still using USD or conversion failed, format the original price
+        try {
+            double amount = Double.parseDouble(usdPrice.replace("$", "").replace(",", ""));
+            return String.format("$%,.2f", amount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return usdPrice; // Return original price if all formatting fails
     }
 
     private VerticalLayout backToOffer(){
@@ -282,10 +361,11 @@ public class Pricing extends VerticalLayout {
         
         VerticalLayout imageContainer = new VerticalLayout();
         //imageContainer.setHeight("400px");
-        Image image = new Image("https://illustrations.popsy.co/amber/page-under-construction.svg", "Page under construcion");
+        Image image = new Image("https://illustrations.popsy.co/amber/working-vacation.svg", "Chilling at the beach.");
         image.setWidth("100%");
         Paragraph text = new Paragraph("Oops! You skipped your way here, ");
         Anchor goBackToOffers = new Anchor("offers", "go back to offers.");
+        goBackToOffers.getStyle().set("text-decoration", "underline");
         text.add(goBackToOffers);
 
         imageContainer.add(image);

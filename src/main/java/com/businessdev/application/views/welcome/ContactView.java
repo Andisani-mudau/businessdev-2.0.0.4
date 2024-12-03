@@ -2,24 +2,18 @@ package com.businessdev.application.views.welcome;
 
 import com.businessdev.application.views.welcome.MainLayout;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.ListItem;
 import com.vaadin.flow.component.html.Main;
 import com.vaadin.flow.component.html.Paragraph;
-import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.dom.Style;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -30,15 +24,43 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.QueryParameters;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.api.services.calendar.Calendar;
+import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
+import java.io.FileInputStream;
+import java.time.ZoneId;
+import com.google.auth.http.HttpCredentialsAdapter;
+import java.util.Arrays;
+import brevo.*;
+import brevo.auth.*;
+import brevoModel.*;
+import brevoApi.TransactionalEmailsApi;
+import java.time.ZonedDateTime;
+import com.businessdev.application.config.ApiConfig;
+import java.util.Locale;
 
 @PageTitle("contact")
 @Route(value = "contact", layout = MainLayout.class)
 public class ContactView extends VerticalLayout implements BeforeEnterObserver {
+    private final ApiConfig apiConfig;
+    private final String brevoApiKey;
+    private final String brevoSenderEmail;
+    private final String brevoSenderName;
+    private final String calendarId;
+    private final String serviceAccountCredentialsFile;
+    private final String calendarApplicationName;
+    private final int businessHoursStart;
+    private final int businessHoursEnd;
+    private ZoneId userTimeZone;
     private final VerticalLayout contactFormSection = new VerticalLayout();
     private final VerticalLayout schedulingSection = new VerticalLayout();
     
@@ -47,7 +69,7 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
     private final TextField email = new TextField("Email");
     private final TextField phone = new TextField("Phone");
     private final TextField message = new TextField("Message");
-    private final Button submitContact = new Button("Send Message");
+    private final Button submitContact = new Button("Send");
     
     // Scheduling components
     private final DatePicker datePicker = new DatePicker("Select Date");
@@ -67,11 +89,28 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
     private final TextField service = new TextField("Service");
     private final TextField serviceType = new TextField("Service Type");
     
-    public ContactView() {
-        add(sectionOne());
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("h:mm a", Locale.US);
+    
+    public ContactView(ApiConfig apiConfig) {
+        this.apiConfig = apiConfig;
+        this.brevoApiKey = apiConfig.getBrevoApiKey();
+        this.brevoSenderEmail = apiConfig.getBrevoSenderEmail();
+        this.brevoSenderName = apiConfig.getBrevoSenderName();
+        this.calendarId = apiConfig.getCalendarId();
+        this.serviceAccountCredentialsFile = apiConfig.getServiceAccountCredentialsFile();
+        this.calendarApplicationName = apiConfig.getCalendarApplicationName();
+        this.businessHoursStart = apiConfig.getBusinessHoursStart();
+        this.businessHoursEnd = apiConfig.getBusinessHoursEnd();
+        this.userTimeZone = ZoneId.of(apiConfig.getDefaultTimezone());
+        
+        
+        // Then add the section
+        add(contactSection());
+        // Initialize timezone first
+        initializeTimeZone();
     }
     
-    private HorizontalLayout sectionOne(){
+    private HorizontalLayout contactSection(){
         setClassName("sectionTwo");
         Main main = new Main();
         main.addClassName("main");
@@ -181,6 +220,7 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
         name.setRequired(true);
         name.getStyle().set("width", "100%");
         email.setRequired(true);
+        email.setErrorMessage("Enter a valid email address");
         email.getStyle().set("width", "100%");
         phone.setRequired(true);
         phone.getStyle().set("width", "100%");
@@ -249,18 +289,26 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
     }
     
     private void setupTimeSelection() {
-        // Generate time slots from 9 AM to 5 PM
+        timeSlot.setRequired(true);
+        timeSlot.addValueChangeListener(e -> handleTimeSelection(e.getValue()));
+        
+        // Initial time slots will be updated once we get the user's timezone
+        updateTimeSlots();
+    }
+    
+    private void updateTimeSlots() {
         List<String> times = new ArrayList<>();
-        LocalTime time = LocalTime.of(9, 0);
-        while (!time.isAfter(LocalTime.of(17, 0))) {
-            times.add(time.format(DateTimeFormatter.ofPattern("hh:mm a")));
-            time = time.plusMinutes(30);
+        LocalTime current = LocalTime.of(businessHoursStart, 0);
+        LocalTime end = LocalTime.of(businessHoursEnd, 0);
+        
+        while (!current.isAfter(end)) {
+            // Format time using the same formatter that will be used for parsing
+            String formattedTime = current.format(TIME_FORMATTER).toUpperCase();
+            times.add(formattedTime);
+            current = current.plusMinutes(30);
         }
         
         timeSlot.setItems(times);
-        timeSlot.setRequired(true);
-        timeSlot.setPlaceholder("Choose a time");
-        timeSlot.addValueChangeListener(e -> handleTimeSelection(e.getValue()));
     }
     
     private void setupDurationSelection() {
@@ -275,7 +323,6 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
         
         durationSelect.setItems(durations);
         durationSelect.setRequired(true);
-        durationSelect.setPlaceholder("Select meeting duration");
         durationSelect.addValueChangeListener(e -> handleDurationSelection(e.getValue()));
     }
     
@@ -292,17 +339,64 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
         
         platformSelect.setItems(platforms);
         platformSelect.setRequired(true);
-        platformSelect.setPlaceholder("Select meeting platform");
-        //platformSelect.addValueChangeListener(e -> handlePlatformSelection(e.getValue()));
     }
     
     private void handleContactSubmit() {
+        // Validate fields
         if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || message.isEmpty()) {
-            Notification.show("Please fill in all required fields", 3000, Notification.Position.TOP_CENTER);
+            Notification.show("Please fill in all required fields", 3000, Notification.Position.TOP_CENTER)
+                .addThemeVariants(NotificationVariant.LUMO_ERROR);
             return;
         }
-        // Add your contact form submission logic here
-        Notification.show("Message sent successfully!", 3000, Notification.Position.TOP_CENTER);
+
+        try {
+            ApiClient defaultClient = Configuration.getDefaultApiClient();
+            ApiKeyAuth apiKey = (ApiKeyAuth) defaultClient.getAuthentication("api-key");
+            apiKey.setApiKey(apiConfig.getBrevoApiKey());
+
+            TransactionalEmailsApi api = new TransactionalEmailsApi();
+            
+            // Create email to user
+            SendSmtpEmail userEmail = new SendSmtpEmail();
+            userEmail.setTo(Arrays.asList(new SendSmtpEmailTo().email(email.getValue())));
+            userEmail.setSubject("Thank you for contacting BusinessDev");
+            userEmail.setSender(new SendSmtpEmailSender().email("info@businessdev.co.za").name("businessdev."));
+            userEmail.setHtmlContent("<html><body><h2>Thank you for reaching out!</h2>" +
+                "<p>We have received your message and will get back to you shortly.</p>" +
+                "<p>Your message details:</p>" +
+                "<p>Name: " + name.getValue() + "</p>" +
+                "<p>Phone: " + phone.getValue() + "</p>" +
+                "<p>Message: " + message.getValue() + "</p></body></html>");
+
+            // Create email to company
+            SendSmtpEmail companyEmail = new SendSmtpEmail();
+            companyEmail.setTo(Arrays.asList(new SendSmtpEmailTo().email("andisanimudau101@gmail.com")));
+            companyEmail.setSubject("New Contact Form Submission");
+            companyEmail.setSender(new SendSmtpEmailSender().email("info@businessdev.co.za").name("BusinessDev Contact Form"));
+            companyEmail.setHtmlContent("<html><body><h2>New Contact Form Submission</h2>" +
+                "<p>Name: " + name.getValue() + "</p>" +
+                "<p>Email: " + email.getValue() + "</p>" +
+                "<p>Phone: " + phone.getValue() + "</p>" +
+                "<p>Message: " + message.getValue() + "</p></body></html>");
+
+            // Send emails
+            api.sendTransacEmail(userEmail);
+            api.sendTransacEmail(companyEmail);
+
+            // Show success and clear form
+            Notification.show("Message sent successfully! Please check your spam folder for confirmation.", 7000, Notification.Position.TOP_CENTER)
+                .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+            
+            name.clear();
+            email.clear();
+            phone.clear();
+            message.clear();
+
+        } catch (ApiException e) {
+            Notification.show("Failed to send message.", 
+                3000, Notification.Position.TOP_CENTER)
+                .addThemeVariants(NotificationVariant.LUMO_ERROR);
+        }
     }
     
     private void handleDateSelection(LocalDate date) {
@@ -313,10 +407,6 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
             durationSelect.setVisible(true);
             platformSelect.setVisible(true);
             meetingDetailsForm.setVisible(false);
-            //meetingDetailsForm.getStyle().set("width", "100%");
-            // .set("top", "0")
-            // .set("left", "0")
-            // .set("z-index", "4");
             timeSlot.clear();
             durationSelect.clear();
             platformSelect.clear();
@@ -326,10 +416,18 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
     
     private void handleTimeSelection(String time) {
         if (time != null) {
-            durationSelect.setVisible(true);
-            durationStepVisible = true;
-            durationSelect.clear();
-            platformSelect.clear();
+            try {
+                // Parse using 12-hour format
+                DateTimeFormatter parser = DateTimeFormatter.ofPattern("h:mm a", Locale.US);
+                LocalTime selectedTime = LocalTime.parse(time, parser);
+                durationSelect.setVisible(true);
+                durationStepVisible = true;
+                durationSelect.clear();
+                platformSelect.clear();
+            } catch (Exception e) {
+                java.lang.System.err.println("Error parsing time: " + time);
+                e.printStackTrace();
+            }
         }
     }
     
@@ -360,6 +458,7 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
         meetingName.setRequired(true);
         meetingName.getStyle().set("width", "100%");
         meetingEmail.setRequired(true);
+        meetingEmail.setErrorMessage("Enter a valid email address");
         meetingEmail.getStyle().set("width", "100%");
         meetingPhone.setRequired(true);
         meetingPhone.getStyle().set("width", "100%");
@@ -368,6 +467,7 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
 
         scheduleButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         scheduleButton.getStyle().set("font-weight", "200");
+        scheduleButton.addClickListener(e -> handleScheduleSubmit());
 
         HorizontalLayout buttonLayout = new HorizontalLayout(backButton, scheduleButton);
         buttonLayout.setSpacing(true);
@@ -402,7 +502,8 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
             durationSelect.isEmpty() || platformSelect.isEmpty()) {
             
             Notification.show("Please complete all fields", 
-                3000, Notification.Position.TOP_CENTER);
+                3000, Notification.Position.TOP_CENTER)
+                .addThemeVariants(NotificationVariant.LUMO_ERROR);
             return;
         }
         
@@ -417,54 +518,162 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
     }
     
     private void handleScheduleSubmit() {
-        // Validate all required fields
-        if (datePicker.isEmpty() || timeSlot.isEmpty() || 
-            durationSelect.isEmpty() || platformSelect.isEmpty() ||
-            meetingName.isEmpty() || meetingEmail.isEmpty() || 
-            meetingPhone.isEmpty()) {
+        try {
+            // Google Calendar Setup
+            GoogleCredentials credentials;
+            try (FileInputStream serviceAccountStream = new FileInputStream(apiConfig.getServiceAccountCredentialsFile())) {
+                credentials = GoogleCredentials.fromStream(serviceAccountStream)
+                    .createScoped(Arrays.asList(CalendarScopes.CALENDAR));
+                credentials.refreshIfExpired();
+            }
+
+            Calendar calendarService = new Calendar.Builder(
+                new NetHttpTransport(),
+                GsonFactory.getDefaultInstance(),
+                new HttpCredentialsAdapter(credentials))
+                .setApplicationName(apiConfig.getCalendarApplicationName())
+                .build();
+
+            // Create event description with conditional service info
+            StringBuilder descriptionBuilder = new StringBuilder();
+            if (!service.isEmpty() && !serviceType.isEmpty()) {
+                descriptionBuilder.append(String.format(
+                    "Service: %s\n" +
+                    "Service Type: %s\n",
+                    service.getValue(),
+                    serviceType.getValue()
+                ));
+            }
+            descriptionBuilder.append(String.format(
+                "Contact Details:\n" +
+                "- Email: %s\n" +
+                "- Phone: %s\n" +
+                "- Platform: %s\n\n" +
+                "Additional Notes: %s",
+                meetingEmail.getValue(),
+                meetingPhone.getValue(),
+                platformSelect.getValue(),
+                meetingNotes.getValue()
+            ));
+
+            // Convert selected time from user's timezone to SAST for calendar event
+            LocalTime selectedTime = LocalTime.parse(
+                timeSlot.getValue().replaceAll("\\s*(AM|PM)\\s*$", ""), // Remove AM/PM
+                DateTimeFormatter.ofPattern("HH:mm")
+            );
             
-            Notification.show("Please complete all required fields", 
-                3000, Notification.Position.TOP_CENTER);
-            return;
+            // Create ZonedDateTime in user's timezone
+            ZonedDateTime userZonedDateTime = ZonedDateTime.of(
+                datePicker.getValue(),
+                selectedTime,
+                userTimeZone
+            );
+            
+            // Convert to SAST for calendar
+            ZonedDateTime sastZonedDateTime = userZonedDateTime.withZoneSameInstant(ZoneId.of(apiConfig.getDefaultTimezone()));
+            
+            // Use converted time for calendar event
+            DateTime startDateTime = new DateTime(
+                sastZonedDateTime.toInstant().toEpochMilli()
+            );
+            
+            Event event = new Event()
+                .setSummary("Meeting with " + meetingName.getValue())
+                .setDescription(descriptionBuilder.toString());
+
+            event.setStart(new EventDateTime()
+                .setDateTime(startDateTime)
+                .setTimeZone(apiConfig.getDefaultTimezone()));
+
+            // Calculate end time
+            int durationMinutes = parseDuration(durationSelect.getValue());
+            DateTime endDateTime = new DateTime(
+                startDateTime.getValue() + (durationMinutes * 60000)
+            );
+            event.setEnd(new EventDateTime()
+                .setDateTime(endDateTime)
+                .setTimeZone(apiConfig.getDefaultTimezone()));
+
+            // Insert event
+            Event createdEvent = calendarService.events().insert(apiConfig.getCalendarId(), event).execute();
+
+            // Brevo Email Setup
+            ApiClient defaultClient = Configuration.getDefaultApiClient();
+            ApiKeyAuth apiKey = (ApiKeyAuth) defaultClient.getAuthentication("api-key");
+            apiKey.setApiKey(brevoApiKey);
+
+            TransactionalEmailsApi api = new TransactionalEmailsApi();
+            
+            // Create email content with both user's local time and SAST
+            String emailContent = "<html><body>" +
+                "<h2>Your meeting has been scheduled!</h2>" +
+                "<p>Thank you for scheduling a meeting with businessdev. Here are your meeting details:</p>" +
+                "<p><strong>Date:</strong> " + datePicker.getValue() + "</p>" +
+                "<p><strong>Your Local Time:</strong> " + timeSlot.getValue() + "</p>" +
+                "<p><strong>South African Time:</strong> " + sastZonedDateTime.format(TIME_FORMATTER) + " SAST</p>" +
+                "<p><strong>Duration:</strong> " + durationSelect.getValue() + "</p>" +
+                "<p><strong>Platform:</strong> " + platformSelect.getValue() + "</p>";
+            
+            if (!service.isEmpty() && !serviceType.isEmpty()) {
+                emailContent += "<p><strong>Service:</strong> " + service.getValue() + "</p>" +
+                              "<p><strong>Service Type:</strong> " + serviceType.getValue() + "</p>";
+            }
+            
+            emailContent += "<br><p>We look forward to meeting with you!</p>" +
+                "<p>Best regards,<br>BusinessDev Team</p></body></html>";
+
+            // Create email to user
+            SendSmtpEmail userEmail = new SendSmtpEmail()
+                .to(Arrays.asList(new SendSmtpEmailTo().email(meetingEmail.getValue())))
+                .subject("Meeting Scheduled Successfully - businessdev.")
+                .sender(new SendSmtpEmailSender()
+                    .email(brevoSenderEmail)
+                    .name(brevoSenderName))
+                .htmlContent(emailContent);
+
+            // Create email to company
+            SendSmtpEmail companyEmail = new SendSmtpEmail()
+                .to(Arrays.asList(new SendSmtpEmailTo().email("andisanimudau101@gmail.com")))
+                .subject("New Meeting Scheduled")
+                .sender(new SendSmtpEmailSender()
+                    .email(brevoSenderEmail)
+                    .name(brevoSenderName))
+                .htmlContent("<html><body><h2>New Meeting Scheduled</h2>" +
+                    "<p>Name: " + meetingName.getValue() + "</p>" +
+                    "<p>Email: " + meetingEmail.getValue() + "</p>" +
+                    "<p>Phone: " + meetingPhone.getValue() + "</p>" +
+                    "<p>Date: " + datePicker.getValue() + "</p>" +
+                    "<p>Time: " + sastZonedDateTime.format(TIME_FORMATTER) + " SAST</p>" +
+                    "<p>Duration: " + durationSelect.getValue() + "</p>" +
+                    "<p>Platform: " + platformSelect.getValue() + "</p>" +
+                    "<p>Notes: " + meetingNotes.getValue() + "</p></body></html>");
+
+            // Send both emails
+            CreateSmtpEmail userResponse = api.sendTransacEmail(userEmail);
+            CreateSmtpEmail companyResponse = api.sendTransacEmail(companyEmail);
+
+            if (userResponse != null && companyResponse != null) {
+                Notification.show("Meeting scheduled successfully! Please check spam folder for confirmation.", 
+                    7000, Notification.Position.TOP_CENTER)
+                    .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+                resetAllFields();
+            } else {
+                throw new ApiException("Failed to send confirmation email.");
+            }
+                
+        } catch (Exception e) {
+            Notification.show("Failed to schedule meeting.",
+                3000, Notification.Position.TOP_CENTER)
+                .addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
-        
-        // Format meeting details
-        String meetingDetails = String.format(
-            """
-            Meeting Scheduled Successfully!
-            
-            Date: %s
-            Time: %s
-            Duration: %s
-            Platform: %s
-            
-            Contact Information:
-            Name: %s
-            Email: %s
-            Phone: %s
-            %s
-            """,
-            datePicker.getValue(),
-            timeSlot.getValue(),
-            durationSelect.getValue(),
-            platformSelect.getValue(),
-            meetingName.getValue(),
-            meetingEmail.getValue(),
-            meetingPhone.getValue(),
-            meetingNotes.isEmpty() ? "" : "\nNotes: " + meetingNotes.getValue()
-        );
-        
-        // Show success notification
-        Notification notification = new Notification(
-            meetingDetails, 
-            8000, 
-            Notification.Position.MIDDLE
-        );
-        notification.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
-        notification.open();
-        
-        // Reset all fields
-        resetAllFields();
+    }
+    
+    private int parseDuration(String duration) {
+        if (duration.contains("hour")) {
+            int hours = Integer.parseInt(duration.split(" ")[0].replace(".5", ""));
+            return duration.contains(".5") ? hours * 60 + 30 : hours * 60;
+        }
+        return Integer.parseInt(duration.split(" ")[0]);
     }
     
     private void resetAllFields() {
@@ -566,47 +775,50 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
         Paragraph threadsText = new Paragraph("Threads");
 
         //links
-        Anchor instagram = new Anchor();
+        Anchor instagram = new Anchor("https://www.instagram.com/busincssdcv");
         HorizontalLayout instagramSeparator = new HorizontalLayout(instagramIcon, instagramText);
         instagram.add(instagramSeparator, createLinkIcon());
         instagram.setClassName("socialLink");
         
-        Anchor facebook = new Anchor();
+        Anchor facebook = new Anchor("https://web.facebook.com/profile.php?id=61560878322498");
         HorizontalLayout facebookSeparator = new HorizontalLayout(facebookIcon, facebookText);
         facebook.add(facebookSeparator, createLinkIcon());
         facebook.setClassName("socialLink");
         
-        Anchor x = new Anchor();
+        Anchor x = new Anchor("https://x.com/busincssdcv");
         HorizontalLayout xSeparator = new HorizontalLayout(xIcon, xText);
         x.add(xSeparator, createLinkIcon());
         x.setClassName("socialLink");
         
-        Anchor github = new Anchor();
+        Anchor github = new Anchor("https://github.com/andisani-mudau");
         HorizontalLayout githubSeparator = new HorizontalLayout(githubIcon, githubText);
         github.add(githubSeparator, createLinkIcon());
         github.setClassName("socialLink");
         
-        Anchor linkedin = new Anchor();
+        Anchor linkedin = new Anchor("https://www.linkedin.com/in/andisani-m-1718aa222/");
         HorizontalLayout linkedinSeparator = new HorizontalLayout(linkedinIcon, linkedinText);
         linkedin.add(linkedinSeparator, createLinkIcon());
         linkedin.setClassName("socialLink");
         
-        Anchor signal = new Anchor();
+        Anchor signal = new Anchor("javascript:void(0)");
+        signal.getElement().addEventListener("click", e -> Notification.show("No connected link", 
+            3000, Notification.Position.TOP_CENTER)
+            .addThemeVariants(NotificationVariant.LUMO_ERROR));
         HorizontalLayout signalSeparator = new HorizontalLayout(signalIcon, signalText);
         signal.add(signalSeparator, createLinkIcon());
         signal.setClassName("socialLink");
         
-        Anchor email = new Anchor();
+        Anchor email = new Anchor("mailto:customer@businessdev.co.za");
         HorizontalLayout emailSeparator = new HorizontalLayout(emailIcon, emailText);
         email.add(emailSeparator, createLinkIcon());
         email.setClassName("socialLink");
         
-        Anchor call = new Anchor();
+        Anchor call = new Anchor("tel:+27682139840");
         HorizontalLayout callSeparator = new HorizontalLayout(callIcon, callText);
         call.add(callSeparator, createLinkIcon());
         call.setClassName("socialLink");
         
-        Anchor threads = new Anchor();
+        Anchor threads = new Anchor("https://www.threads.net/busincssdcv");
         HorizontalLayout threadsSeparator = new HorizontalLayout(threadsIcon, threadsText);
         threads.add(threadsSeparator, createLinkIcon());
         threads.setClassName("socialLink");
@@ -648,5 +860,21 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
             service.setVisible(false);
             serviceType.setVisible(false);
         }
+    }
+
+    private void initializeTimeZone() {
+        // Set default timezone first
+        userTimeZone = ZoneId.of(apiConfig.getDefaultTimezone());
+        updateTimeSlots();
+        
+        // Then try to get user's timezone
+        UI.getCurrent().getPage().executeJs(
+            "return Intl.DateTimeFormat().resolvedOptions().timeZone")
+            .then(String.class, timezone -> {
+                if (timezone != null && !timezone.isEmpty()) {
+                    userTimeZone = ZoneId.of(timezone);
+                    updateTimeSlots();
+                }
+            });
     }
 }
