@@ -3,7 +3,7 @@ FROM maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
-RUN ./mvnw clean package -Pproduction -DskipTests -X
+RUN mvn clean package -Pproduction -DskipTests -X
 
 # Run stage
 FROM eclipse-temurin:17-jre-alpine
