@@ -7,6 +7,6 @@ public class EnvLoader implements ApplicationContextInitializer<ConfigurableAppl
 
     @Override
     public void initialize(ConfigurableApplicationContext applicationContext) {
-        // Your initialization logic here
+        // Initialization logic (if any) goes here
     }
 }
