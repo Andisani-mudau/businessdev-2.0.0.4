@@ -13,7 +13,7 @@ ENV SPRING_PROFILES_ACTIVE=prod
 WORKDIR /app
 
 # Copy the jar file
-COPY target/*.jar app.jar
+COPY target/businessdev-1.0-SNAPSHOT.jar app.jar
 
 # Run the jar file
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar"] 
