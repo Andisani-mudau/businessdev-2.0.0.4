@@ -1,3 +1,11 @@
+# Build stage
+FROM maven:3.8.4-openjdk-17-slim AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Run stage
 FROM eclipse-temurin:17-jre-alpine
 
 # Add a volume pointing to /tmp
@@ -13,7 +21,7 @@ ENV SPRING_PROFILES_ACTIVE=prod
 WORKDIR /app
 
 # Copy the jar file
-COPY target/businessdev-1.0-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/businessdev-1.0-SNAPSHOT.jar app.jar
 
 # Run the jar file
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app/app.jar"] 
