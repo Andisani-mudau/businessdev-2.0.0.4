@@ -26,4 +26,5 @@ public class SecurityConfig {
                     .policy("camera=(), microphone=(), geolocation=()")))
             .build();
     }
+    
 } 
