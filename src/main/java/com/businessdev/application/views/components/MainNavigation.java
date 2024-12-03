@@ -21,15 +21,15 @@ public class MainNavigation extends VerticalLayout{
         addClassName("main-nav");
         getElement().getStyle().set("background-color", "#000");
         // Initialize the menu dots with a new Div for each dot
-        for (int i = 0; i < 3; i++) {
-            Div dot = new Div();  // Create a new Div for each dot
-            dot.getStyle().set("width", "5px")
-                    .set("height", "5px")
-                    .set("background-color", "var(--lumo-primary-color)")
-                    .set("border-radius", "50%");
-            menuDotsLayout.getStyle().set("gap", "3px");
-            menuDotsLayout.add(dot);  // Add each new dot to the layout
-        }
+        Div dotsContainer = new Div();
+        dotsContainer.getElement().setProperty("innerHTML", 
+            "<svg width='21' height='5' viewBox='0 0 21 5'>" +
+            "<circle cx='2.5' cy='2.5' r='2.5' fill='var(--lumo-primary-color)'/>" +
+            "<circle cx='10.5' cy='2.5' r='2.5' fill='var(--lumo-primary-color)'/>" + 
+            "<circle cx='18.5' cy='2.5' r='2.5' fill='var(--lumo-primary-color)'/>" +
+            "</svg>");
+        menuDotsLayout.getStyle().set("gap", "3px");
+        menuDotsLayout.add(dotsContainer);
 
         menuDots = new Button(menuDotsLayout);
         menuDots.getStyle().set("margin", "0")
@@ -121,7 +121,7 @@ public class MainNavigation extends VerticalLayout{
                 .set("left", "10px")
                 .set("right", "10px")
                 .set("padding","10px")
-                .set("z-index", "3000");
+                .set("z-index", "5");
         //navBar.setWidthFull(); // Ensure navBar takes full width
 
         Div logo3 = new Div();
