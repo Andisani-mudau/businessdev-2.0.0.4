@@ -4,7 +4,7 @@ WORKDIR /app
 COPY pom.xml . 
 COPY src ./src
 VOLUME /root/.m2  # Cache Maven dependencies
-RUN mvn clean install
+# RUN mvn clean install
 RUN mvn clean package -Pproduction
 
 # Run stage
