@@ -2,29 +2,20 @@ package com.businessdev.application.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
-import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.web.server.header.ReferrerPolicyServerHttpHeadersWriter;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebFluxSecurity
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-        return http
-            .authorizeExchange(exchanges -> exchanges
-                .anyExchange().permitAll())
-            .headers(headers -> headers
-                .contentSecurityPolicy(csp -> csp
-                    .policyDirectives("default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'"))
-                .frameOptions(frame -> frame.disable())
-                .referrerPolicy(referrer -> referrer
-                    .policy(ReferrerPolicyServerHttpHeadersWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
-                .permissionsPolicy(permissions -> permissions
-                    .policy("camera=(), microphone=(), geolocation=()")))
-            .build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable()) // Disable CSRF (if not needed)
+            .authorizeHttpRequests(auth -> auth
+                .anyRequest().permitAll()); // Allow all endpoints
+        return http.build();
     }
-    
 } 
