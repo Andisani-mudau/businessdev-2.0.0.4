@@ -22,7 +22,7 @@ webpack.generated.js
 
 # Application properties
 src/main/resources/application.properties
-src/main/resources/businessdev-calender-api-5ddd33a1bed7.json
+src/main/resources/businessdev-calender-api-ac093d1e7c6c.json
 
 # Environment variables
 .env
