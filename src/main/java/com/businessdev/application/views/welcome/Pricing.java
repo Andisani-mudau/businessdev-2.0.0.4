@@ -42,6 +42,10 @@ public class Pricing extends VerticalLayout {
     private String userCurrency = "USD";
     private H1 heading;
     
+    private static Map<String, Double> cachedRates = new HashMap<>();
+    private static long lastFetchTime = 0;
+    private static final long CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    
     public Pricing(ApiConfig apiConfig) {
         this.apiConfig = apiConfig;
         this.API_KEY = apiConfig.getCurrencyApiKey();
@@ -289,23 +293,63 @@ public class Pricing extends VerticalLayout {
     }
 
     private void fetchExchangeRates() {
+        // Check cache first
+        long currentTime = System.currentTimeMillis();
+        if (!cachedRates.isEmpty() && (currentTime - lastFetchTime) < CACHE_DURATION) {
+            exchangeRates = new HashMap<>(cachedRates);
+            return;
+        }
+
         try {
+            // Check if API key is available
+            if (API_KEY == null || API_KEY.trim().isEmpty()) {
+                System.err.println("Currency API key is not configured");
+                userCurrency = "USD";
+                return;
+            }
+
             HttpClient client = HttpClient.newHttpClient();
+            String apiUrl = API_URL + "?apikey=" + API_KEY;
+            System.out.println("Attempting to fetch exchange rates from: " + API_URL); // Log API call
+
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(API_URL + "?apikey=" + API_KEY))
+                .uri(URI.create(apiUrl))
+                .header("Accept", "application/json")
                 .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            
+            // Log response status and body for debugging
+            System.out.println("API Response Status: " + response.statusCode());
+            System.out.println("API Response Body: " + response.body());
+
+            if (response.statusCode() != 200) {
+                System.err.println("Currency API returned non-200 status: " + response.statusCode());
+                userCurrency = "USD";
+                return;
+            }
+
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(response.body());
             JsonNode rates = root.get("data");
             
+            if (rates == null || rates.isEmpty()) {
+                System.err.println("No exchange rates data in response");
+                userCurrency = "USD";
+                return;
+            }
+
             rates.fields().forEachRemaining(entry -> 
                 exchangeRates.put(entry.getKey(), entry.getValue().asDouble()));
                 
+            System.out.println("Successfully loaded exchange rates for " + exchangeRates.size() + " currencies");
+                
+            // Update cache if successful
+            cachedRates = new HashMap<>(exchangeRates);
+            lastFetchTime = currentTime;
         } catch (Exception e) {
+            System.err.println("Error fetching exchange rates: " + e.getMessage());
             e.printStackTrace();
-            // Fallback to USD if API call fails
             userCurrency = "USD";
         }
     }

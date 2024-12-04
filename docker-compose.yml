@@ -12,5 +12,6 @@ services:
       - BREVO_SENDER_NAME=${BREVO_SENDER_NAME}
       - GOOGLE_CALENDAR_ID=${GOOGLE_CALENDAR_ID}
       - GOOGLE_CALENDAR_CREDENTIALS_FILE=${GOOGLE_CALENDAR_CREDENTIALS_FILE}
+    # Mount the local directory ./src/main/resources to the container directory /app/resources
     volumes:
       - ./src/main/resources:/app/resources 

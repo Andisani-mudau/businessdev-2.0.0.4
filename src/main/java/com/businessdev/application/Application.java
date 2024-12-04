@@ -5,6 +5,7 @@ import com.vaadin.flow.theme.Theme;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.IOException;
+import com.businessdev.application.config.ApiConfig;
 
 
 /**
@@ -18,11 +19,15 @@ import java.io.IOException;
 @Theme(value = "businessdev")
 public class Application implements AppShellConfigurator {
 
-    public Application() {
+    private static ApiConfig apiConfig;
+
+    public Application(ApiConfig apiConfig) {
         super();
+        Application.apiConfig = apiConfig;
     }
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+        System.out.println("Currency API Key present: " + (apiConfig.getCurrencyApiKey() != null && !apiConfig.getCurrencyApiKey().isEmpty()));
     }
 }
