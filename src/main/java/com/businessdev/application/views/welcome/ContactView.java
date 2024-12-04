@@ -662,7 +662,7 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
             }
                 
         } catch (Exception e) {
-            Notification.show("Failed to schedule meeting.",
+            Notification.show("Failed to schedule meeting. Error: " + e.getMessage(),
                 3000, Notification.Position.TOP_CENTER)
                 .addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
