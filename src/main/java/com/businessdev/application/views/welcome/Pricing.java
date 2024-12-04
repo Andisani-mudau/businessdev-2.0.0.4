@@ -39,7 +39,7 @@ public class Pricing extends VerticalLayout {
     private final String API_KEY;
     private final String API_URL = "https://api.freecurrencyapi.com/v1/latest";
     private Map<String, Double> exchangeRates = new HashMap<>();
-    private String userCurrency = "ZAR";
+    private String userCurrency = "USD";
     private H1 heading;
     
     private static Map<String, Double> cachedRates = new HashMap<>();
@@ -358,39 +358,29 @@ public class Pricing extends VerticalLayout {
 
     private String convertPrice(String usdPrice) {
         try {
-            // Extract numeric value from price string
             double amount = Double.parseDouble(usdPrice.replace("$", "").replace(",", ""));
             
+            System.out.println("Converting price: " + usdPrice);
+            System.out.println("User currency: " + userCurrency);
+            System.out.println("Exchange rates available: " + exchangeRates.keySet());
+            
             if (!userCurrency.equals("USD") && exchangeRates.containsKey(userCurrency)) {
-                double convertedAmount = amount * exchangeRates.get(userCurrency);
-                // Get currency instance and symbol
+                double rate = exchangeRates.get(userCurrency);
+                double convertedAmount = amount * rate;
+                System.out.println("Rate for " + userCurrency + ": " + rate);
+                System.out.println("Converted amount: " + convertedAmount);
+                
                 java.util.Currency currencyInstance = java.util.Currency.getInstance(userCurrency);
-                String symbol = currencyInstance.getSymbol();
-                
-                // Create NumberFormat for the current locale
-                Locale locale = UI.getCurrent().getLocale();
-                java.text.NumberFormat formatter = java.text.NumberFormat.getCurrencyInstance(locale);
-                formatter.setCurrency(currencyInstance);
-                
-                // Format the number
-                String formattedAmount = formatter.format(convertedAmount);
-                
-                // Some currencies might place the symbol at the end, so we'll use the formatted amount as is
+                String formattedAmount = String.format("%s%,.2f", currencyInstance.getSymbol(), convertedAmount);
+                System.out.println("Final formatted amount: " + formattedAmount);
                 return formattedAmount;
             }
         } catch (Exception e) {
+            System.err.println("Conversion error: " + e.getMessage());
             e.printStackTrace();
         }
         
-        // If still using USD or conversion failed, format the original price
-        try {
-            double amount = Double.parseDouble(usdPrice.replace("$", "").replace(",", ""));
-            return String.format("$%,.2f", amount);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        return usdPrice; // Return original price if all formatting fails
+        return usdPrice;
     }
 
     private VerticalLayout backToOffer(){
