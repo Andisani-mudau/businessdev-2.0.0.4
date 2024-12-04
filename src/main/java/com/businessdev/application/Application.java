@@ -32,9 +32,14 @@ public class Application implements AppShellConfigurator {
 
     private static void loadConfiguration() {
         try {
-            String content = new String(Files.readAllBytes(Paths.get("/etc/secrets/businessdev-calender-api-5ddd33a1bed7.json")));
+            String sourcePath = "/etc/secrets/businessdev-calender-api-5ddd33a1bed7.json";
+            String content = new String(Files.readAllBytes(Paths.get(sourcePath)));
             JSONObject jsonObject = new JSONObject(content);
             // Use the jsonObject as needed
+
+            // Define the target path in the resources folder
+            String targetPath = "src/main/resources/businessdev-calender-api-5ddd33a1bed7.json";
+            Files.move(Paths.get(sourcePath), Paths.get(targetPath));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
