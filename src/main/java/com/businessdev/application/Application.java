@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import org.json.JSONObject;
+import org.json.JSONException;
 
 /**
  * The entry point of the Spring Boot application.
@@ -20,6 +21,10 @@ import org.json.JSONObject;
 @Theme(value = "businessdev")
 public class Application implements AppShellConfigurator {
 
+    public Application() {
+        super();
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
         loadConfiguration();
@@ -31,6 +36,8 @@ public class Application implements AppShellConfigurator {
             JSONObject jsonObject = new JSONObject(content);
             // Use the jsonObject as needed
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
