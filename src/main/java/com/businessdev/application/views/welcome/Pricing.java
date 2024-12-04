@@ -39,7 +39,7 @@ public class Pricing extends VerticalLayout {
     private final String API_KEY;
     private final String API_URL = "https://api.freecurrencyapi.com/v1/latest";
     private Map<String, Double> exchangeRates = new HashMap<>();
-    private String userCurrency = "ZAR";
+    private String userCurrency;
     private H1 heading;
     
     private static Map<String, Double> cachedRates = new HashMap<>();
@@ -293,18 +293,20 @@ public class Pricing extends VerticalLayout {
     }
 
     private void fetchExchangeRates() {
-        // Check cache first
-        long currentTime = System.currentTimeMillis();
-        if (!cachedRates.isEmpty() && (currentTime - lastFetchTime) < CACHE_DURATION) {
-            exchangeRates = new HashMap<>(cachedRates);
-            return;
-        }
-
         try {
+            // Check cache first
+            long currentTime = System.currentTimeMillis();
+            if (!cachedRates.isEmpty() && (currentTime - lastFetchTime) < CACHE_DURATION) {
+                exchangeRates = new HashMap<>(cachedRates);
+                return;
+            }
+
             // Check if API key is available
-            if (API_KEY == null || API_KEY.trim().isEmpty()) {
-                System.err.println("Currency API key is not configured");
+            if (API_KEY == null || API_KEY.trim().isEmpty() || exchangeRates.isEmpty()) {
+                System.err.println("Currency API unavailable or no rates returned");
                 userCurrency = "USD";
+                // Add a default rate for USD to prevent conversion errors
+                exchangeRates.put("USD", 1.0);
                 return;
             }
 
@@ -349,8 +351,8 @@ public class Pricing extends VerticalLayout {
             lastFetchTime = currentTime;
         } catch (Exception e) {
             System.err.println("Error fetching exchange rates: " + e.getMessage());
-            e.printStackTrace();
             userCurrency = "USD";
+            exchangeRates.put("USD", 1.0);
         }
     }
 
