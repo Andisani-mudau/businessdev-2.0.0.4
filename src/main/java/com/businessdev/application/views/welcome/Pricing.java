@@ -39,7 +39,7 @@ public class Pricing extends VerticalLayout {
     private final String API_KEY;
     private final String API_URL = "https://api.freecurrencyapi.com/v1/latest";
     private Map<String, Double> exchangeRates = new HashMap<>();
-    private String userCurrency = "USD";
+    private String userCurrency = "ZAR";
     private H1 heading;
     
     private static Map<String, Double> cachedRates = new HashMap<>();
