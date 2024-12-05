@@ -71,26 +71,27 @@ public class Pricing extends VerticalLayout {
                         if (currency != null) {
                             userCurrency = currency.getCurrencyCode();
                             System.out.println("Set currency from browser: " + userCurrency);
-                            
+                            UI.getCurrent().access(() -> {
+                                Location location = UI.getCurrent().getInternals().getActiveViewLocation();
+                                QueryParameters queryParameters = location.getQueryParameters();
+                                
+                                if (queryParameters.getParameters().containsKey("service")) {
+                                    String service = queryParameters.getParameters().get("service").get(0);
+                                    heading.setText(service);
+                                    add(pricing());
+                                }else{
+                                    add(backToOffer());
+                                }
+                            });
                         }
                     } catch (Exception e) {
                         System.out.println("Error setting currency: " + e.getMessage());
+                        add(backToOffer());
                     }
                 }
             });
         
-        UI.getCurrent().access(() -> {
-            Location location = UI.getCurrent().getInternals().getActiveViewLocation();
-            QueryParameters queryParameters = location.getQueryParameters();
-            
-            if (queryParameters.getParameters().containsKey("service")) {
-                String service = queryParameters.getParameters().get("service").get(0);
-                heading.setText(service);
-                add(pricing());
-            }else{
-                add(backToOffer());
-            }
-        });
+        
         
     }
     
