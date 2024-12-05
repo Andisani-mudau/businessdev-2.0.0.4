@@ -55,7 +55,6 @@ public class Pricing extends VerticalLayout {
         java.util.Currency currency = java.util.Currency.getInstance(locale);
         if (currency != null && !currency.getCurrencyCode().equals("USD")) {
             userCurrency = currency.getCurrencyCode();
-            fetchExchangeRates();
         }
         
         UI.getCurrent().access(() -> {
@@ -227,6 +226,50 @@ public class Pricing extends VerticalLayout {
     }
 
     private String[][] getPlanDetailsForService(String service) {
+        // Fetch exchange rates if needed
+        if (!userCurrency.equals("USD")) {
+            try {
+                // Check if cache is still valid
+                long currentTime = System.currentTimeMillis();
+                if (cachedRates.isEmpty() || (currentTime - lastFetchTime) >= CACHE_DURATION) {
+                    String currencyLower = userCurrency.toLowerCase();
+                    HttpClient client = HttpClient.newHttpClient();
+                    HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(API_URL + "?ids=usd&vs_currencies=" + currencyLower))
+                        .header("User-Agent", "BusinessDev Application")
+                        .timeout(Duration.ofSeconds(10))
+                        .build();
+
+                    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                    
+                    if (response.statusCode() == 200) {
+                        ObjectMapper mapper = new ObjectMapper();
+                        JsonNode root = mapper.readTree(response.body());
+                        double rate = root.get("usd").get(currencyLower).asDouble();
+                        exchangeRates.put(userCurrency, rate);
+                        cachedRates = new HashMap<>(exchangeRates);
+                        lastFetchTime = currentTime;
+                    } else {
+                        // Use cached rates if available, otherwise fallback to USD
+                        if (cachedRates.isEmpty()) {
+                            userCurrency = "USD";
+                        } else {
+                            exchangeRates = new HashMap<>(cachedRates);
+                        }
+                    }
+                } else {
+                    exchangeRates = new HashMap<>(cachedRates);
+                }
+            } catch (Exception e) {
+                // Use cached rates if available, otherwise fallback to USD
+                if (cachedRates.isEmpty()) {
+                    userCurrency = "USD";
+                } else {
+                    exchangeRates = new HashMap<>(cachedRates);
+                }
+            }
+        }
+
         String[][] plans = switch (service) {
             case "Web Application Development" -> new String[][] {
                 {"$999", "Basic web app development|Single page application|Basic database integration|Standard security features"},
@@ -281,104 +324,25 @@ public class Pricing extends VerticalLayout {
         };
         
         // Convert prices if needed
-        if (!userCurrency.equals("USD")) {
+        if (!userCurrency.equals("USD") && !exchangeRates.isEmpty()) {
+            java.util.Currency currencyInstance = java.util.Currency.getInstance(userCurrency);
+            Locale locale = UI.getCurrent().getLocale();
+            java.text.NumberFormat formatter = java.text.NumberFormat.getCurrencyInstance(locale);
+            formatter.setCurrency(currencyInstance);
+            
             for (String[] plan : plans) {
-                plan[0] = convertPrice(plan[0]);
+                try {
+                    double amount = Double.parseDouble(plan[0].replace("$", "").replace(",", ""));
+                    double convertedAmount = amount * exchangeRates.get(userCurrency);
+                    plan[0] = formatter.format(convertedAmount);
+                } catch (Exception e) {
+                    // Keep original price if conversion fails
+                    System.err.println("Error converting price: " + e.getMessage());
+                }
             }
         }
         
         return plans;
-    }
-
-    private void fetchExchangeRates() {
-        try {
-            // Check if cache is still valid
-            long currentTime = System.currentTimeMillis();
-            if (!cachedRates.isEmpty() && (currentTime - lastFetchTime) < CACHE_DURATION) {
-                exchangeRates = new HashMap<>(cachedRates);
-                return;
-            }
-
-            String currencyLower = userCurrency.toLowerCase();
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(API_URL + "?ids=usd&vs_currencies=" + currencyLower))
-                .header("User-Agent", "BusinessDev Application") // Add User-Agent header
-                .timeout(Duration.ofSeconds(10)) // Add timeout
-                .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            
-            if (response.statusCode() != 200) {
-                System.err.println("API returned status code: " + response.statusCode());
-                throw new RuntimeException("API request failed");
-            }
-
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode root = mapper.readTree(response.body());
-            System.out.println("API Response Body: " + response.body());
-            
-            double rate = root.get("usd").get(currencyLower).asDouble();
-            exchangeRates.put(userCurrency, rate);
-            
-            // Update cache
-            cachedRates = new HashMap<>(exchangeRates);
-            lastFetchTime = currentTime;
-                
-            System.out.println("User Currency: " + userCurrency);
-            System.out.println("Exchange Rates: " + exchangeRates);
-            System.out.println("Cached Rates: " + cachedRates);
-        } catch (Exception e) {
-            System.err.println("Error fetching exchange rates: " + e.getMessage());
-            // Use cached rates if available
-            if (!cachedRates.isEmpty()) {
-                exchangeRates = new HashMap<>(cachedRates);
-                System.out.println("Using cached rates: " + cachedRates);
-            } else {
-                // Fallback to USD if no cached rates
-                userCurrency = "USD";
-                System.out.println("Fallback to USD: " + userCurrency);
-            }
-        }
-    }
-
-    private String convertPrice(String usdPrice) {
-        try {
-            // Extract numeric value from price string
-            double amount = Double.parseDouble(usdPrice.replace("$", "").replace(",", ""));
-            
-            if (!userCurrency.equals("USD") && exchangeRates.containsKey(userCurrency)) {
-                double convertedAmount = amount * exchangeRates.get(userCurrency);
-                // Get currency instance and symbol
-                java.util.Currency currencyInstance = java.util.Currency.getInstance(userCurrency);
-                String symbol = currencyInstance.getSymbol();
-                
-                // Create NumberFormat for the current locale
-                Locale locale = UI.getCurrent().getLocale();
-                java.text.NumberFormat formatter = java.text.NumberFormat.getCurrencyInstance(locale);
-                formatter.setCurrency(currencyInstance);
-                
-                // Format the number
-                String formattedAmount = formatter.format(convertedAmount);
-                
-                // Some currencies might place the symbol at the end, so we'll use the formatted amount as is
-                return formattedAmount;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Error converting price: " + e.getMessage());
-        }
-        
-        // If still using USD or conversion failed, format the original price
-        try {
-            double amount = Double.parseDouble(usdPrice.replace("$", "").replace(",", ""));
-            return String.format("$%,.2f", amount);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Error formatting price: " + e.getMessage());
-        }
-        
-        return usdPrice; // Return original price if all formatting fails
     }
 
     private VerticalLayout backToOffer(){
