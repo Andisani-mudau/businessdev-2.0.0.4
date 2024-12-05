@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import com.businessdev.application.config.ApiConfig;
 import com.vaadin.flow.component.Text;
+import java.time.Duration;
 
 
 @PageTitle("Pricing")
@@ -40,6 +41,9 @@ public class Pricing extends VerticalLayout {
     private Map<String, Double> exchangeRates = new HashMap<>();
     private String userCurrency = "USD";
     private H1 heading;
+    private Map<String, Double> cachedRates = new HashMap<>();
+    private long lastFetchTime = 0;
+    private static final long CACHE_DURATION = 3600000; // 1 hour in milliseconds
     
     public Pricing(ApiConfig apiConfig) {
         this.apiConfig = apiConfig;
@@ -288,24 +292,47 @@ public class Pricing extends VerticalLayout {
 
     private void fetchExchangeRates() {
         try {
+            // Check if cache is still valid
+            long currentTime = System.currentTimeMillis();
+            if (!cachedRates.isEmpty() && (currentTime - lastFetchTime) < CACHE_DURATION) {
+                exchangeRates = new HashMap<>(cachedRates);
+                return;
+            }
+
             String currencyLower = userCurrency.toLowerCase();
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_URL + "?ids=usd&vs_currencies=" + currencyLower))
+                .header("User-Agent", "BusinessDev Application") // Add User-Agent header
+                .timeout(Duration.ofSeconds(10)) // Add timeout
                 .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            
+            if (response.statusCode() != 200) {
+                System.err.println("API returned status code: " + response.statusCode());
+                throw new RuntimeException("API request failed");
+            }
+
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(response.body());
             
-            // Extract rate from new API response format
             double rate = root.get("usd").get(currencyLower).asDouble();
             exchangeRates.put(userCurrency, rate);
+            
+            // Update cache
+            cachedRates = new HashMap<>(exchangeRates);
+            lastFetchTime = currentTime;
                 
         } catch (Exception e) {
-            e.printStackTrace();
-            // Fallback to USD if API call fails
-            userCurrency = "USD";
+            System.err.println("Error fetching exchange rates: " + e.getMessage());
+            // Use cached rates if available
+            if (!cachedRates.isEmpty()) {
+                exchangeRates = new HashMap<>(cachedRates);
+            } else {
+                // Fallback to USD if no cached rates
+                userCurrency = "USD";
+            }
         }
     }
 
