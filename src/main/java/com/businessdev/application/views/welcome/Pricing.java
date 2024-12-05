@@ -362,7 +362,7 @@ public class Pricing extends VerticalLayout {
         //imageContainer.setHeight("400px");
         Image image = new Image("https://illustrations.popsy.co/amber/working-vacation.svg", "Chilling at the beach.");
         image.setWidth("100%");
-        Paragraph text = new Paragraph("Oops! You skipped your way here, ");
+        Paragraph text = new Paragraph("Oops!, ");
         Anchor goBackToOffers = new Anchor("offers", "go back to offers.");
         goBackToOffers.getStyle().set("text-decoration", "underline");
         text.add(goBackToOffers);
