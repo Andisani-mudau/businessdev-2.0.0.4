@@ -790,7 +790,10 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
         x.add(xSeparator, createLinkIcon());
         x.setClassName("socialLink");
         
-        Anchor github = new Anchor("https://github.com/andisani-mudau");
+        Anchor github = new Anchor("javascript:void(0)");
+        github.getElement().addEventListener("click", e -> Notification.show("No connected link", 
+            3000, Notification.Position.TOP_CENTER)
+            .addThemeVariants(NotificationVariant.LUMO_ERROR));
         HorizontalLayout githubSeparator = new HorizontalLayout(githubIcon, githubText);
         github.add(githubSeparator, createLinkIcon());
         github.setClassName("socialLink");

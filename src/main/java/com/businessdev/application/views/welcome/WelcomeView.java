@@ -35,7 +35,7 @@ public class WelcomeView extends VerticalLayout {
         Paragraph paragraph = new Paragraph("Our mission is to become a leading company in connecting businesses and driving innovation by providing best solutions to everyday business problems.");
         paragraph.getStyle().set("max-width", "500px");
         Button moreInfo = new Button("Learn more...", e -> getUI().ifPresent(ui -> ui.navigate("about")));
-        moreInfo.addThemeVariants(ButtonVariant.LUMO_CONTRAST, ButtonVariant.LUMO_PRIMARY);
+        moreInfo.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         moreInfo.getStyle()
             .set("cursor", "pointer")
             .set("font-weight", "500");
@@ -78,7 +78,7 @@ public class WelcomeView extends VerticalLayout {
 	Paragraph paragraph = new Paragraph("Businesses are seeking innovative ways to remain competitive and adapt to technological advancements. We collaborate with professional individuals from all over the world to make this possible.");
         paragraph.getStyle().set("max-width", "500px");
         Button moreInfo = new Button("Learn more...", e -> getUI().ifPresent(ui -> ui.navigate("about")));
-        moreInfo.addThemeVariants(ButtonVariant.LUMO_CONTRAST, ButtonVariant.LUMO_PRIMARY);
+        moreInfo.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         moreInfo.getStyle()
             .set("cursor", "pointer")
             .set("font-weight", "500");
@@ -121,7 +121,7 @@ public class WelcomeView extends VerticalLayout {
 	Paragraph paragraph = new Paragraph("We aim to improve the way businesses innovate and solve problems. Identifying and analysing business problems and specialising in modern business practices.");
 	paragraph.getStyle().set("max-width", "500px");
         Button moreInfo = new Button("Learn more...", e -> getUI().ifPresent(ui -> ui.navigate("about")));
-        moreInfo.addThemeVariants(ButtonVariant.LUMO_CONTRAST, ButtonVariant.LUMO_PRIMARY);
+        moreInfo.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         moreInfo.getStyle()
             .set("cursor", "pointer")
             .set("font-weight", "500");
@@ -164,7 +164,7 @@ public class WelcomeView extends VerticalLayout {
 	Paragraph paragraph = new Paragraph("We also focus on job placement and entrepreneurship support for recent graduates. We support recent graduates in securing employment or starting their own businesses.");
 	paragraph.getStyle().set("max-width", "500px");
         Button moreInfo = new Button("Learn more...", e -> getUI().ifPresent(ui -> ui.navigate("services")));
-        moreInfo.addThemeVariants(ButtonVariant.LUMO_CONTRAST, ButtonVariant.LUMO_PRIMARY);
+        moreInfo.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         moreInfo.getStyle()
             .set("cursor", "pointer")
             .set("font-weight", "500");
