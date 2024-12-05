@@ -52,12 +52,42 @@ public class Pricing extends VerticalLayout {
         
         // Determine user's locale and currency
         Locale locale = UI.getCurrent().getLocale();
-        java.util.Currency currency = java.util.Currency.getInstance(locale);
-        if (currency != null && !currency.getCurrencyCode().equals("USD")) {
-            userCurrency = currency.getCurrencyCode();
-        }else{
+        System.out.println("Detected locale: " + locale); // Debug log
+        
+        // If locale is null, try to get it from the browser
+        if (locale == null) {
+            final Locale[] localeHolder = {locale};
+            
+            UI.getCurrent().getPage().executeJs(
+                "return navigator.language || navigator.userLanguage;")
+                .then(String.class, language -> {
+                    if (language != null) {
+                        localeHolder[0] = Locale.forLanguageTag(language);
+                        System.out.println("Browser locale: " + localeHolder[0]);
+                    }
+                });
+
+            locale = localeHolder[0];
+        }
+        
+        // If we still don't have a locale, default to US
+        if (locale == null) {
+            locale = Locale.US;
+            System.out.println("Using default locale: " + locale);
+        }
+        
+        try {
+            java.util.Currency currency = java.util.Currency.getInstance(locale);
+            if (currency != null) {
+                userCurrency = currency.getCurrencyCode();
+                System.out.println("Set currency to: " + userCurrency);
+            } else {
+                userCurrency = "USD";
+                System.out.println("Defaulting to USD (no currency found for locale)");
+            }
+        } catch (Exception e) {
             userCurrency = "USD";
-            System.out.println("User currency: " + userCurrency);
+            System.out.println("Defaulting to USD due to error: " + e.getMessage());
         }
         
         UI.getCurrent().access(() -> {
