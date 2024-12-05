@@ -297,14 +297,17 @@ public class Pricing extends VerticalLayout {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(response.body());
+            System.out.println("API Response Body: " + response.body());
             
             // Extract rate from new API response format
             double rate = root.get("usd").get(currencyLower).asDouble();
             exchangeRates.put(userCurrency, rate);
+            System.out.println("Successfully loaded exchange rates for " + exchangeRates.size() + " currencies");
                 
         } catch (Exception e) {
             e.printStackTrace();
             // Fallback to USD if API call fails
+            System.err.println("Failed to fetch exchange rates from Coingecko API");
             userCurrency = "USD";
         }
     }
