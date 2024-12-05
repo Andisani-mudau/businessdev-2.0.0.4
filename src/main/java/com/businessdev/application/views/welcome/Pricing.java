@@ -39,7 +39,7 @@ public class Pricing extends VerticalLayout {
     private final ApiConfig apiConfig;
     private final String API_URL = "https://api.coingecko.com/api/v3/simple/price";
     private Map<String, Double> exchangeRates = new HashMap<>();
-    private String userCurrency = "USD";
+    private String userCurrency = "ZAR";
     private H1 heading;
     private Map<String, Double> cachedRates = new HashMap<>();
     private long lastFetchTime = 0;
@@ -55,6 +55,9 @@ public class Pricing extends VerticalLayout {
         java.util.Currency currency = java.util.Currency.getInstance(locale);
         if (currency != null && !currency.getCurrencyCode().equals("USD")) {
             userCurrency = currency.getCurrencyCode();
+        }else{
+            userCurrency = "USD";
+            System.out.println("User currency: " + userCurrency);
         }
         
         UI.getCurrent().access(() -> {
@@ -335,11 +338,14 @@ public class Pricing extends VerticalLayout {
                     double amount = Double.parseDouble(plan[0].replace("$", "").replace(",", ""));
                     double convertedAmount = amount * exchangeRates.get(userCurrency);
                     plan[0] = formatter.format(convertedAmount);
+                    System.out.println("Converted price: " + plan[0]);
                 } catch (Exception e) {
                     // Keep original price if conversion fails
                     System.err.println("Error converting price: " + e.getMessage());
                 }
             }
+        }else{
+            System.out.println("User currency2: " + userCurrency);
         }
         
         return plans;
