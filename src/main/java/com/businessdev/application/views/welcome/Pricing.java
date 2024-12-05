@@ -71,12 +71,7 @@ public class Pricing extends VerticalLayout {
                         if (currency != null) {
                             userCurrency = currency.getCurrencyCode();
                             System.out.println("Set currency from browser: " + userCurrency);
-                            // Refresh the view to show prices in local currency
-                            UI.getCurrent().access(() -> {
-                                if (heading.getText() != null) {
-                                    add(pricing());
-                                }
-                            });
+                            
                         }
                     } catch (Exception e) {
                         System.out.println("Error setting currency: " + e.getMessage());
