@@ -31,6 +31,8 @@ import java.util.Locale;
 import com.businessdev.application.config.ApiConfig;
 import com.vaadin.flow.component.Text;
 import java.time.Duration;
+import elemental.json.JsonValue;
+import elemental.json.JsonObject;
 
 
 @PageTitle("Pricing")
@@ -50,45 +52,37 @@ public class Pricing extends VerticalLayout {
         
         heading = new H1("Web Application Development");
         
-        // Determine user's locale and currency
-        Locale locale = UI.getCurrent().getLocale();
-        System.out.println("Detected locale: " + locale); // Debug log
+        // First set a default
+        userCurrency = "USD";
         
-        // If locale is null, try to get it from the browser
-        if (locale == null) {
-            final Locale[] localeHolder = {locale};
-            
-            UI.getCurrent().getPage().executeJs(
-                "return navigator.language || navigator.userLanguage;")
-                .then(String.class, language -> {
-                    if (language != null) {
-                        localeHolder[0] = Locale.forLanguageTag(language);
-                        System.out.println("Browser locale: " + localeHolder[0]);
+        // Get client locale from browser
+        UI.getCurrent().getPage().executeJs(
+            "return { language: navigator.language, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone }")
+            .then(JsonObject.class, result -> {
+                String language = result.getString("language");
+                String timezone = result.getString("timezone");
+                System.out.println("Browser language: " + language);
+                System.out.println("Browser timezone: " + timezone);
+                
+                if (language != null) {
+                    Locale clientLocale = Locale.forLanguageTag(language);
+                    try {
+                        java.util.Currency currency = java.util.Currency.getInstance(clientLocale);
+                        if (currency != null) {
+                            userCurrency = currency.getCurrencyCode();
+                            System.out.println("Set currency from browser: " + userCurrency);
+                            // Refresh the view to show prices in local currency
+                            UI.getCurrent().access(() -> {
+                                if (heading.getText() != null) {
+                                    add(pricing());
+                                }
+                            });
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error setting currency: " + e.getMessage());
                     }
-                });
-
-            locale = localeHolder[0];
-        }
-        
-        // If we still don't have a locale, default to US
-        if (locale == null) {
-            locale = Locale.US;
-            System.out.println("Using default locale: " + locale);
-        }
-        
-        try {
-            java.util.Currency currency = java.util.Currency.getInstance(locale);
-            if (currency != null) {
-                userCurrency = currency.getCurrencyCode();
-                System.out.println("Set currency to: " + userCurrency);
-            } else {
-                userCurrency = "USD";
-                System.out.println("Defaulting to USD (no currency found for locale)");
-            }
-        } catch (Exception e) {
-            userCurrency = "USD";
-            System.out.println("Defaulting to USD due to error: " + e.getMessage());
-        }
+                }
+            });
         
         UI.getCurrent().access(() -> {
             Location location = UI.getCurrent().getInternals().getActiveViewLocation();
