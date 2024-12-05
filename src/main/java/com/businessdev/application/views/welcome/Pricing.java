@@ -36,15 +36,13 @@ import com.vaadin.flow.component.Text;
 @Route(value = "pricing", layout = MainLayout.class)
 public class Pricing extends VerticalLayout {
     private final ApiConfig apiConfig;
-    private final String API_KEY;
-    private final String API_URL = "https://api.freecurrencyapi.com/v1/latest";
+    private final String API_URL = "https://api.coingecko.com/api/v3/simple/price";
     private Map<String, Double> exchangeRates = new HashMap<>();
     private String userCurrency = "USD";
     private H1 heading;
     
     public Pricing(ApiConfig apiConfig) {
         this.apiConfig = apiConfig;
-        this.API_KEY = apiConfig.getCurrencyApiKey();
         
         heading = new H1("Web Application Development");
         
@@ -290,18 +288,19 @@ public class Pricing extends VerticalLayout {
 
     private void fetchExchangeRates() {
         try {
+            String currencyLower = userCurrency.toLowerCase();
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(API_URL + "?apikey=" + API_KEY))
+                .uri(URI.create(API_URL + "?ids=usd&vs_currencies=" + currencyLower))
                 .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(response.body());
-            JsonNode rates = root.get("data");
             
-            rates.fields().forEachRemaining(entry -> 
-                exchangeRates.put(entry.getKey(), entry.getValue().asDouble()));
+            // Extract rate from new API response format
+            double rate = root.get("usd").get(currencyLower).asDouble();
+            exchangeRates.put(userCurrency, rate);
                 
         } catch (Exception e) {
             e.printStackTrace();
