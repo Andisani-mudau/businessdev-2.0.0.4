@@ -333,9 +333,11 @@ public class Pricing extends VerticalLayout {
             // Use cached rates if available
             if (!cachedRates.isEmpty()) {
                 exchangeRates = new HashMap<>(cachedRates);
+                System.out.println("Using cached rates: " + cachedRates);
             } else {
                 // Fallback to USD if no cached rates
                 userCurrency = "USD";
+                System.out.println("Fallback to USD: " + userCurrency);
             }
         }
     }
@@ -364,6 +366,7 @@ public class Pricing extends VerticalLayout {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.err.println("Error converting price: " + e.getMessage());
         }
         
         // If still using USD or conversion failed, format the original price
@@ -372,6 +375,7 @@ public class Pricing extends VerticalLayout {
             return String.format("$%,.2f", amount);
         } catch (Exception e) {
             e.printStackTrace();
+            System.err.println("Error formatting price: " + e.getMessage());
         }
         
         return usdPrice; // Return original price if all formatting fails
