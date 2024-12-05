@@ -350,6 +350,7 @@ public class Pricing extends VerticalLayout {
             try {
                 double amount = Double.parseDouble(plan[0].replace(",", ""));
                 double convertedAmount = amount * exchangeRates.getOrDefault(userCurrency, 1.0);
+                // Format the converted amount to the user's currency and update the plan's price
                 plan[0] = formatter.format(convertedAmount);
                 System.out.println("Converted price: " + plan[0]);
             } catch (Exception e) {
