@@ -28,22 +28,22 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Locale;
+import com.businessdev.application.config.ApiConfig;
 import com.vaadin.flow.component.Text;
 
 
 @PageTitle("Pricing")
 @Route(value = "pricing", layout = MainLayout.class)
 public class Pricing extends VerticalLayout {
+    private final ApiConfig apiConfig;
     private final String API_URL = "https://api.coingecko.com/api/v3/simple/price";
     private Map<String, Double> exchangeRates = new HashMap<>();
     private String userCurrency = "USD";
     private H1 heading;
     
-    private static Map<String, Double> cachedRates = new HashMap<>();
-    private static long lastFetchTime = 0;
-    private static final long CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-    
-    public Pricing() {     
+    public Pricing(ApiConfig apiConfig) {
+        this.apiConfig = apiConfig;
+        
         heading = new H1("Web Application Development");
         
         // Determine user's locale and currency
@@ -290,24 +290,11 @@ public class Pricing extends VerticalLayout {
         try {
             String currencyLower = userCurrency.toLowerCase();
             HttpClient client = HttpClient.newHttpClient();
-            
-
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_URL + "?ids=usd&vs_currencies=" + currencyLower))
                 .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            
-            // Log response status and body for debugging
-            System.out.println("API Response Status: " + response.statusCode());
-            System.out.println("API Response Body: " + response.body());
-
-            if (response.statusCode() != 200) {
-                System.err.println("Currency API returned non-200 status: " + response.statusCode());
-                userCurrency = "USD";
-                return;
-            }
-
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(response.body());
             
@@ -315,43 +302,48 @@ public class Pricing extends VerticalLayout {
             double rate = root.get("usd").get(currencyLower).asDouble();
             exchangeRates.put(userCurrency, rate);
                 
-            System.out.println("Successfully loaded exchange rates for " + exchangeRates.size() + " currencies");
-                
-            // Update cache if successful
-            cachedRates = new HashMap<>(exchangeRates);
-            lastFetchTime = System.currentTimeMillis();
         } catch (Exception e) {
-            System.err.println("Error fetching exchange rates: " + e.getMessage());
+            e.printStackTrace();
+            // Fallback to USD if API call fails
             userCurrency = "USD";
-            exchangeRates.put("USD", 1.0);
         }
     }
 
     private String convertPrice(String usdPrice) {
         try {
+            // Extract numeric value from price string
             double amount = Double.parseDouble(usdPrice.replace("$", "").replace(",", ""));
             
-            System.out.println("Converting price: " + usdPrice);
-            System.out.println("User currency: " + userCurrency);
-            System.out.println("Exchange rates available: " + exchangeRates.keySet());
-            
             if (!userCurrency.equals("USD") && exchangeRates.containsKey(userCurrency)) {
-                double rate = exchangeRates.get(userCurrency);
-                double convertedAmount = amount * rate;
-                System.out.println("Rate for " + userCurrency + ": " + rate);
-                System.out.println("Converted amount: " + convertedAmount);
-                
+                double convertedAmount = amount * exchangeRates.get(userCurrency);
+                // Get currency instance and symbol
                 java.util.Currency currencyInstance = java.util.Currency.getInstance(userCurrency);
-                String formattedAmount = String.format("%s%,.2f", currencyInstance.getSymbol(), convertedAmount);
-                System.out.println("Final formatted amount: " + formattedAmount);
+                String symbol = currencyInstance.getSymbol();
+                
+                // Create NumberFormat for the current locale
+                Locale locale = UI.getCurrent().getLocale();
+                java.text.NumberFormat formatter = java.text.NumberFormat.getCurrencyInstance(locale);
+                formatter.setCurrency(currencyInstance);
+                
+                // Format the number
+                String formattedAmount = formatter.format(convertedAmount);
+                
+                // Some currencies might place the symbol at the end, so we'll use the formatted amount as is
                 return formattedAmount;
             }
         } catch (Exception e) {
-            System.err.println("Conversion error: " + e.getMessage());
             e.printStackTrace();
         }
         
-        return usdPrice;
+        // If still using USD or conversion failed, format the original price
+        try {
+            double amount = Double.parseDouble(usdPrice.replace("$", "").replace(",", ""));
+            return String.format("$%,.2f", amount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return usdPrice; // Return original price if all formatting fails
     }
 
     private VerticalLayout backToOffer(){
