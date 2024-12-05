@@ -324,6 +324,9 @@ public class Pricing extends VerticalLayout {
             cachedRates = new HashMap<>(exchangeRates);
             lastFetchTime = currentTime;
                 
+            System.out.println("User Currency: " + userCurrency);
+            System.out.println("Exchange Rates: " + exchangeRates);
+            System.out.println("Cached Rates: " + cachedRates);
         } catch (Exception e) {
             System.err.println("Error fetching exchange rates: " + e.getMessage());
             // Use cached rates if available
