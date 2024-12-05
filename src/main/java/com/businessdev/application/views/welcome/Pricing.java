@@ -275,54 +275,54 @@ public class Pricing extends VerticalLayout {
 
         String[][] plans = switch (service) {
             case "Web Application Development" -> new String[][] {
-                {"$999", "Basic web app development|Single page application|Basic database integration|Standard security features"},
-                {"$2,499", "Advanced web app development|Multi-page application|Advanced database integration|Enhanced security|API integration|Basic analytics"},
-                {"$4,999", "Enterprise web solutions|Microservices architecture|Full-scale database solutions|Advanced security features|Complete API suite|Advanced analytics|24/7 support"}
+                {"999", "Basic web app development|Single page application|Basic database integration|Standard security features"},
+                {"2499", "Advanced web app development|Multi-page application|Advanced database integration|Enhanced security|API integration|Basic analytics"},
+                {"4999", "Enterprise web solutions|Microservices architecture|Full-scale database solutions|Advanced security features|Complete API suite|Advanced analytics|24/7 support"}
             };
             case "Mobile Application Development" -> new String[][] {
-                {"$1,499", "Single platform (iOS or Android)|Basic features|Standard UI|Local data storage"},
-                {"$2,999", "Dual platform development|Advanced features|Custom UI/UX|Cloud storage integration"},
-                {"$5,999", "Cross-platform enterprise solution|Premium features|Advanced UI/UX|Full backend integration|Analytics"}
+                {"1499", "Single platform (iOS or Android)|Basic features|Standard UI|Local data storage"},
+                {"2999", "Dual platform development|Advanced features|Custom UI/UX|Cloud storage integration"},
+                {"5999", "Cross-platform enterprise solution|Premium features|Advanced UI/UX|Full backend integration|Analytics"}
             };
             case "UI/UX Design" -> new String[][] {
-                {"$799", "Basic UI design|2 design iterations|Essential user flows|Basic prototype"},
-                {"$1,499", "Advanced UI/UX design|4 design iterations|Detailed user flows|Interactive prototype"},
-                {"$2,999", "Complete design system|Unlimited iterations|Complex user flows|Advanced prototypes|User testing"}
+                {"799", "Basic UI design|2 design iterations|Essential user flows|Basic prototype"},
+                {"1499", "Advanced UI/UX design|4 design iterations|Detailed user flows|Interactive prototype"},
+                {"2999", "Complete design system|Unlimited iterations|Complex user flows|Advanced prototypes|User testing"}
             };
             case "Brand Identity Design" -> new String[][] {
-                {"$599", "Logo design|Basic brand guidelines|2 revisions|Basic color palette"},
-                {"$1,299", "Logo design suite|Comprehensive guidelines|5 revisions|Extended color palette"},
-                {"$2,499", "Full brand identity|Complete style guide|Unlimited revisions|Marketing materials"}
+                {"599", "Logo design|Basic brand guidelines|2 revisions|Basic color palette"},
+                {"1299", "Logo design suite|Comprehensive guidelines|5 revisions|Extended color palette"},
+                {"2499", "Full brand identity|Complete style guide|Unlimited revisions|Marketing materials"}
             };
             case "Graphic Design" -> new String[][] {
-                {"$399", "Basic design elements|2 concepts|2 revisions|Single format"},
-                {"$799", "Advanced design package|4 concepts|4 revisions|Multiple formats"},
-                {"$1,499", "Premium design suite|Unlimited concepts|Unlimited revisions|All formats"}
+                {"399", "Basic design elements|2 concepts|2 revisions|Single format"},
+                {"799", "Advanced design package|4 concepts|4 revisions|Multiple formats"},
+                {"1499", "Premium design suite|Unlimited concepts|Unlimited revisions|All formats"}
             };
             case "Construction Architecture" -> new String[][] {
-                {"$1,999", "Basic floor plans|3D exterior views|Basic material list|2 revisions"},
-                {"$3,999", "Detailed plans|Full 3D modeling|Complete material specs|4 revisions"},
-                {"$7,999", "Complete architectural package|Advanced 3D visualization|Full documentation|Unlimited revisions"}
+                {"1999", "Basic floor plans|3D exterior views|Basic material list|2 revisions"},
+                {"3999", "Detailed plans|Full 3D modeling|Complete material specs|4 revisions"},
+                {"7999", "Complete architectural package|Advanced 3D visualization|Full documentation|Unlimited revisions"}
             };
             case "3D Modeling" -> new String[][] {
-                {"$799", "Basic 3D model|2 rendering views|Basic texturing|2 revisions"},
-                {"$1,599", "Detailed 3D model|5 rendering views|Advanced texturing|4 revisions"},
-                {"$2,999", "Complex 3D model|Unlimited views|Premium texturing|Animation|Unlimited revisions"}
+                {"799", "Basic 3D model|2 rendering views|Basic texturing|2 revisions"},
+                {"1599", "Detailed 3D model|5 rendering views|Advanced texturing|4 revisions"},
+                {"2999", "Complex 3D model|Unlimited views|Premium texturing|Animation|Unlimited revisions"}
             };
             case "Business Analysis" -> new String[][] {
-                {"$1,499", "Basic requirements analysis|Process mapping|Basic documentation|Weekly reports"},
-                {"$2,999", "Detailed business analysis|Process optimization|Full documentation|Bi-weekly reports"},
-                {"$5,999", "Enterprise analysis|Complete optimization|Strategic planning|Daily reports|Implementation support"}
+                {"1499", "Basic requirements analysis|Process mapping|Basic documentation|Weekly reports"},
+                {"2999", "Detailed business analysis|Process optimization|Full documentation|Bi-weekly reports"},
+                {"5999", "Enterprise analysis|Complete optimization|Strategic planning|Daily reports|Implementation support"}
             };
             case "Solutions Architecture" -> new String[][] {
-                {"$2,499", "Basic architecture design|System documentation|Basic scalability plan|Standard security"},
-                {"$4,999", "Advanced architecture design|Detailed documentation|Scalability strategy|Enhanced security"},
-                {"$9,999", "Enterprise architecture|Complete documentation|Full scaling strategy|Premium security|24/7 support"}
+                {"2499", "Basic architecture design|System documentation|Basic scalability plan|Standard security"},
+                {"4999", "Advanced architecture design|Detailed documentation|Scalability strategy|Enhanced security"},
+                {"9999", "Enterprise architecture|Complete documentation|Full scaling strategy|Premium security|24/7 support"}
             };
             default -> new String[][] {
-                {"$0", "No features available"},
-                {"$0", "No features available"},
-                {"$0", "No features available"}
+                {"0", "No features available"},
+                {"0", "No features available"},
+                {"0", "No features available"}
             };
         };
         
@@ -334,7 +334,7 @@ public class Pricing extends VerticalLayout {
         
         for (String[] plan : plans) {
             try {
-                double amount = Double.parseDouble(plan[0].replace("$", "").replace(",", ""));
+                double amount = Double.parseDouble(plan[0].replace(",", ""));
                 double convertedAmount = amount * exchangeRates.getOrDefault(userCurrency, 1.0);
                 plan[0] = formatter.format(convertedAmount);
                 System.out.println("Converted price: " + plan[0]);
