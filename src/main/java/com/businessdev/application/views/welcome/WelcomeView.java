@@ -39,7 +39,7 @@ public class WelcomeView extends VerticalLayout {
         moreInfo.getStyle()
             .set("cursor", "pointer")
             .set("font-weight", "500");
-        Image image = new Image("https://illustrations.popsy.co/gray/home-office.svg", "Man in home office");
+        Image image = new Image("https://illustrations.popsy.co/gray/work-party.svg", "Two men at work party");
         image.getStyle().set("width", "100%")
                 .set("max-width", "520px")
                 .set("height", "auto")
