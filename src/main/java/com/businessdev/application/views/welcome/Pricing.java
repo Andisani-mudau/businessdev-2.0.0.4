@@ -57,38 +57,32 @@ public class Pricing extends VerticalLayout {
         
         // Get client locale from browser
         UI.getCurrent().getPage().executeJs(
-            "return { language: navigator.language, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone }")
+            "return fetch('https://ipapi.co/json/')" +
+            ".then(response => response.json())" +
+            ".then(data => ({ language: navigator.language, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, country: data.currency }))" +
+            ".catch(() => ({ language: navigator.language, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, country: 'USD' }))")
             .then(JsonObject.class, result -> {
                 String language = result.getString("language");
                 String timezone = result.getString("timezone");
+                String currency = result.getString("country");
                 System.out.println("Browser language: " + language);
                 System.out.println("Browser timezone: " + timezone);
                 
-                if (language != null) {
-                    Locale clientLocale = Locale.forLanguageTag(language);
-                    try {
-                        java.util.Currency currency = java.util.Currency.getInstance(clientLocale);
-                        if (currency != null) {
-                            userCurrency = currency.getCurrencyCode();
-                            System.out.println("Set currency from browser: " + userCurrency);
-                            UI.getCurrent().access(() -> {
-                                Location location = UI.getCurrent().getInternals().getActiveViewLocation();
-                                QueryParameters queryParameters = location.getQueryParameters();
-                                
-                                if (queryParameters.getParameters().containsKey("service")) {
-                                    String service = queryParameters.getParameters().get("service").get(0);
-                                    heading.setText(service);
-                                    add(pricing());
-                                }else{
-                                    add(backToOffer());
-                                }
-                            });
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Error setting currency: " + e.getMessage());
+                userCurrency = currency != null ? currency : "USD";
+                System.out.println("Set currency from location: " + userCurrency);
+                
+                UI.getCurrent().access(() -> {
+                    Location location = UI.getCurrent().getInternals().getActiveViewLocation();
+                    QueryParameters queryParameters = location.getQueryParameters();
+                    
+                    if (queryParameters.getParameters().containsKey("service")) {
+                        String service = queryParameters.getParameters().get("service").get(0);
+                        heading.setText(service);
+                        add(pricing());
+                    }else{
                         add(backToOffer());
                     }
-                }
+                });
             });
         
         
