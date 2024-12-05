@@ -39,7 +39,7 @@ public class Pricing extends VerticalLayout {
     private final ApiConfig apiConfig;
     private final String API_URL = "https://api.coingecko.com/api/v3/simple/price";
     private Map<String, Double> exchangeRates = new HashMap<>();
-    private String userCurrency = "USD";
+    private String userCurrency = "";
     private H1 heading;
     private Map<String, Double> cachedRates = new HashMap<>();
     private long lastFetchTime = 0;
