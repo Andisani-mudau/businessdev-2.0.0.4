@@ -39,7 +39,7 @@ public class Pricing extends VerticalLayout {
     private final ApiConfig apiConfig;
     private final String API_URL = "https://api.coingecko.com/api/v3/simple/price";
     private Map<String, Double> exchangeRates = new HashMap<>();
-    private String userCurrency = "ZAR";
+    private String userCurrency = "USD";
     private H1 heading;
     private Map<String, Double> cachedRates = new HashMap<>();
     private long lastFetchTime = 0;
@@ -326,26 +326,22 @@ public class Pricing extends VerticalLayout {
             };
         };
         
-        // Convert prices if needed
-        if (!userCurrency.equals("USD") && !exchangeRates.isEmpty()) {
-            java.util.Currency currencyInstance = java.util.Currency.getInstance(userCurrency);
-            Locale locale = UI.getCurrent().getLocale();
-            java.text.NumberFormat formatter = java.text.NumberFormat.getCurrencyInstance(locale);
-            formatter.setCurrency(currencyInstance);
-            
-            for (String[] plan : plans) {
-                try {
-                    double amount = Double.parseDouble(plan[0].replace("$", "").replace(",", ""));
-                    double convertedAmount = amount * exchangeRates.get(userCurrency);
-                    plan[0] = formatter.format(convertedAmount);
-                    System.out.println("Converted price: " + plan[0]);
-                } catch (Exception e) {
-                    // Keep original price if conversion fails
-                    System.err.println("Error converting price: " + e.getMessage());
-                }
+        // Convert prices for all plans
+        java.util.Currency currencyInstance = java.util.Currency.getInstance(userCurrency);
+        Locale locale = UI.getCurrent().getLocale();
+        java.text.NumberFormat formatter = java.text.NumberFormat.getCurrencyInstance(locale);
+        formatter.setCurrency(currencyInstance);
+        
+        for (String[] plan : plans) {
+            try {
+                double amount = Double.parseDouble(plan[0].replace("$", "").replace(",", ""));
+                double convertedAmount = amount * exchangeRates.getOrDefault(userCurrency, 1.0);
+                plan[0] = formatter.format(convertedAmount);
+                System.out.println("Converted price: " + plan[0]);
+            } catch (Exception e) {
+                // Keep original price if conversion fails
+                System.err.println("Error converting price: " + e.getMessage());
             }
-        }else{
-            System.out.println("User currency2: " + userCurrency);
         }
         
         return plans;
