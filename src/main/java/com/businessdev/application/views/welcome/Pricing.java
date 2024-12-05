@@ -28,16 +28,13 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Locale;
-import com.businessdev.application.config.ApiConfig;
 import com.vaadin.flow.component.Text;
 
 
 @PageTitle("Pricing")
 @Route(value = "pricing", layout = MainLayout.class)
 public class Pricing extends VerticalLayout {
-    private final ApiConfig apiConfig;
-    private final String API_KEY;
-    private final String API_URL = "https://api.freecurrencyapi.com/v1/latest";
+    private final String API_URL = "https://api.coingecko.com/api/v3/simple/price";
     private Map<String, Double> exchangeRates = new HashMap<>();
     private String userCurrency = "USD";
     private H1 heading;
@@ -46,10 +43,7 @@ public class Pricing extends VerticalLayout {
     private static long lastFetchTime = 0;
     private static final long CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
     
-    public Pricing(ApiConfig apiConfig) {
-        this.apiConfig = apiConfig;
-        this.API_KEY = apiConfig.getCurrencyApiKey();
-        
+    public Pricing() {     
         heading = new H1("Web Application Development");
         
         // Determine user's locale and currency
@@ -294,29 +288,12 @@ public class Pricing extends VerticalLayout {
 
     private void fetchExchangeRates() {
         try {
-            // Check cache first
-            long currentTime = System.currentTimeMillis();
-            if (!cachedRates.isEmpty() && (currentTime - lastFetchTime) < CACHE_DURATION) {
-                exchangeRates = new HashMap<>(cachedRates);
-                return;
-            }
-
-            // Check if API key is available
-            if (API_KEY == null || API_KEY.trim().isEmpty() || exchangeRates.isEmpty()) {
-                System.err.println("Currency API unavailable or no rates returned");
-                userCurrency = "USD";
-                // Add a default rate for USD to prevent conversion errors
-                exchangeRates.put("USD", 1.0);
-                return;
-            }
-
+            String currencyLower = userCurrency.toLowerCase();
             HttpClient client = HttpClient.newHttpClient();
-            String apiUrl = API_URL + "?apikey=" + API_KEY;
-            System.out.println("Attempting to fetch exchange rates from: " + API_URL); // Log API call
+            
 
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
-                .header("Accept", "application/json")
+                .uri(URI.create(API_URL + "?ids=usd&vs_currencies=" + currencyLower))
                 .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -333,22 +310,16 @@ public class Pricing extends VerticalLayout {
 
             ObjectMapper mapper = new ObjectMapper();
             JsonNode root = mapper.readTree(response.body());
-            JsonNode rates = root.get("data");
             
-            if (rates == null || rates.isEmpty()) {
-                System.err.println("No exchange rates data in response");
-                userCurrency = "USD";
-                return;
-            }
-
-            rates.fields().forEachRemaining(entry -> 
-                exchangeRates.put(entry.getKey(), entry.getValue().asDouble()));
+            // Extract rate from new API response format
+            double rate = root.get("usd").get(currencyLower).asDouble();
+            exchangeRates.put(userCurrency, rate);
                 
             System.out.println("Successfully loaded exchange rates for " + exchangeRates.size() + " currencies");
                 
             // Update cache if successful
             cachedRates = new HashMap<>(exchangeRates);
-            lastFetchTime = currentTime;
+            lastFetchTime = System.currentTimeMillis();
         } catch (Exception e) {
             System.err.println("Error fetching exchange rates: " + e.getMessage());
             userCurrency = "USD";
@@ -399,7 +370,7 @@ public class Pricing extends VerticalLayout {
         //imageContainer.setHeight("400px");
         Image image = new Image("https://illustrations.popsy.co/amber/working-vacation.svg", "Chilling at the beach.");
         image.setWidth("100%");
-        Paragraph text = new Paragraph("Oops! You skipped your way here, ");
+        Paragraph text = new Paragraph("Oops!, ");
         Anchor goBackToOffers = new Anchor("offers", "go back to offers.");
         goBackToOffers.getStyle().set("text-decoration", "underline");
         text.add(goBackToOffers);
