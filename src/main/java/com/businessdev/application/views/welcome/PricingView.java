@@ -31,6 +31,8 @@ import java.util.Locale;
 import com.businessdev.application.config.ApiConfig;
 import com.vaadin.flow.component.Text;
 import java.time.Duration;
+import elemental.json.JsonValue;
+import elemental.json.JsonObject;
 
 
 @PageTitle("Pricing")
@@ -39,7 +41,7 @@ public class Pricing extends VerticalLayout {
     private final ApiConfig apiConfig;
     private final String API_URL = "https://api.coingecko.com/api/v3/simple/price";
     private Map<String, Double> exchangeRates = new HashMap<>();
-    private String userCurrency = "USD";
+    private String userCurrency = "";
     private H1 heading;
     private Map<String, Double> cachedRates = new HashMap<>();
     private long lastFetchTime = 0;
@@ -50,26 +52,40 @@ public class Pricing extends VerticalLayout {
         
         heading = new H1("Web Application Development");
         
-        // Determine user's locale and currency
-        Locale locale = UI.getCurrent().getLocale();
-        java.util.Currency currency = java.util.Currency.getInstance(locale);
-        if (currency != null && !currency.getCurrencyCode().equals("USD")) {
-            userCurrency = currency.getCurrencyCode();
-            fetchExchangeRates();
-        }
+        // First set a default
+        userCurrency = "USD";
         
-        UI.getCurrent().access(() -> {
-            Location location = UI.getCurrent().getInternals().getActiveViewLocation();
-            QueryParameters queryParameters = location.getQueryParameters();
-            
-            if (queryParameters.getParameters().containsKey("service")) {
-                String service = queryParameters.getParameters().get("service").get(0);
-                heading.setText(service);
-                add(pricing());
-            }else{
-                add(backToOffer());
-            }
-        });
+        // Get client locale from browser
+        UI.getCurrent().getPage().executeJs(
+            "return fetch('https://ipapi.co/json/')" +
+            ".then(response => response.json())" +
+            ".then(data => ({ language: navigator.language, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, country: data.currency }))" +
+            ".catch(() => ({ language: navigator.language, timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, country: 'USD' }))")
+            .then(JsonObject.class, result -> {
+                String language = result.getString("language");
+                String timezone = result.getString("timezone");
+                String currency = result.getString("country");
+                System.out.println("Browser language: " + language);
+                System.out.println("Browser timezone: " + timezone);
+                
+                userCurrency = currency != null ? currency : "USD";
+                System.out.println("Set currency from location: " + userCurrency);
+                
+                UI.getCurrent().access(() -> {
+                    Location location = UI.getCurrent().getInternals().getActiveViewLocation();
+                    QueryParameters queryParameters = location.getQueryParameters();
+                    
+                    if (queryParameters.getParameters().containsKey("service")) {
+                        String service = queryParameters.getParameters().get("service").get(0);
+                        heading.setText(service);
+                        add(pricing());
+                    }else{
+                        add(backToOffer());
+                    }
+                });
+            });
+        
+        
         
     }
     
@@ -227,153 +243,123 @@ public class Pricing extends VerticalLayout {
     }
 
     private String[][] getPlanDetailsForService(String service) {
+        // Fetch exchange rates if needed
+        if (!userCurrency.equals("USD")) {
+            try {
+                // Check if cache is still valid
+                long currentTime = System.currentTimeMillis();
+                if (cachedRates.isEmpty() || (currentTime - lastFetchTime) >= CACHE_DURATION) {
+                    String currencyLower = userCurrency.toLowerCase();
+                    HttpClient client = HttpClient.newHttpClient();
+                    HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(API_URL + "?ids=usd&vs_currencies=" + currencyLower))
+                        .header("User-Agent", "BusinessDev Application")
+                        .timeout(Duration.ofSeconds(10))
+                        .build();
+
+                    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                    
+                    if (response.statusCode() == 200) {
+                        ObjectMapper mapper = new ObjectMapper();
+                        JsonNode root = mapper.readTree(response.body());
+                        double rate = root.get("usd").get(currencyLower).asDouble();
+                        exchangeRates.put(userCurrency, rate);
+                        cachedRates = new HashMap<>(exchangeRates);
+                        lastFetchTime = currentTime;
+                    } else {
+                        // Use cached rates if available, otherwise fallback to USD
+                        if (cachedRates.isEmpty()) {
+                            userCurrency = "USD";
+                        } else {
+                            exchangeRates = new HashMap<>(cachedRates);
+                        }
+                    }
+                } else {
+                    exchangeRates = new HashMap<>(cachedRates);
+                }
+            } catch (Exception e) {
+                // Use cached rates if available, otherwise fallback to USD
+                if (cachedRates.isEmpty()) {
+                    userCurrency = "USD";
+                } else {
+                    exchangeRates = new HashMap<>(cachedRates);
+                }
+            }
+        }
+
         String[][] plans = switch (service) {
             case "Web Application Development" -> new String[][] {
-                {"$999", "Basic web app development|Single page application|Basic database integration|Standard security features"},
-                {"$2,499", "Advanced web app development|Multi-page application|Advanced database integration|Enhanced security|API integration|Basic analytics"},
-                {"$4,999", "Enterprise web solutions|Microservices architecture|Full-scale database solutions|Advanced security features|Complete API suite|Advanced analytics|24/7 support"}
+                {"999", "Basic web app development|Single page application|Basic database integration|Standard security features"},
+                {"2499", "Advanced web app development|Multi-page application|Advanced database integration|Enhanced security|API integration|Basic analytics"},
+                {"4999", "Enterprise web solutions|Microservices architecture|Full-scale database solutions|Advanced security features|Complete API suite|Advanced analytics|24/7 support"}
             };
             case "Mobile Application Development" -> new String[][] {
-                {"$1,499", "Single platform (iOS or Android)|Basic features|Standard UI|Local data storage"},
-                {"$2,999", "Dual platform development|Advanced features|Custom UI/UX|Cloud storage integration"},
-                {"$5,999", "Cross-platform enterprise solution|Premium features|Advanced UI/UX|Full backend integration|Analytics"}
+                {"1499", "Single platform (iOS or Android)|Basic features|Standard UI|Local data storage"},
+                {"2999", "Dual platform development|Advanced features|Custom UI/UX|Cloud storage integration"},
+                {"5999", "Cross-platform enterprise solution|Premium features|Advanced UI/UX|Full backend integration|Analytics"}
             };
             case "UI/UX Design" -> new String[][] {
-                {"$799", "Basic UI design|2 design iterations|Essential user flows|Basic prototype"},
-                {"$1,499", "Advanced UI/UX design|4 design iterations|Detailed user flows|Interactive prototype"},
-                {"$2,999", "Complete design system|Unlimited iterations|Complex user flows|Advanced prototypes|User testing"}
+                {"799", "Basic UI design|2 design iterations|Essential user flows|Basic prototype"},
+                {"1499", "Advanced UI/UX design|4 design iterations|Detailed user flows|Interactive prototype"},
+                {"2999", "Complete design system|Unlimited iterations|Complex user flows|Advanced prototypes|User testing"}
             };
             case "Brand Identity Design" -> new String[][] {
-                {"$599", "Logo design|Basic brand guidelines|2 revisions|Basic color palette"},
-                {"$1,299", "Logo design suite|Comprehensive guidelines|5 revisions|Extended color palette"},
-                {"$2,499", "Full brand identity|Complete style guide|Unlimited revisions|Marketing materials"}
+                {"599", "Logo design|Basic brand guidelines|2 revisions|Basic color palette"},
+                {"1299", "Logo design suite|Comprehensive guidelines|5 revisions|Extended color palette"},
+                {"2499", "Full brand identity|Complete style guide|Unlimited revisions|Marketing materials"}
             };
             case "Graphic Design" -> new String[][] {
-                {"$399", "Basic design elements|2 concepts|2 revisions|Single format"},
-                {"$799", "Advanced design package|4 concepts|4 revisions|Multiple formats"},
-                {"$1,499", "Premium design suite|Unlimited concepts|Unlimited revisions|All formats"}
+                {"399", "Basic design elements|2 concepts|2 revisions|Single format"},
+                {"799", "Advanced design package|4 concepts|4 revisions|Multiple formats"},
+                {"1499", "Premium design suite|Unlimited concepts|Unlimited revisions|All formats"}
             };
             case "Construction Architecture" -> new String[][] {
-                {"$1,999", "Basic floor plans|3D exterior views|Basic material list|2 revisions"},
-                {"$3,999", "Detailed plans|Full 3D modeling|Complete material specs|4 revisions"},
-                {"$7,999", "Complete architectural package|Advanced 3D visualization|Full documentation|Unlimited revisions"}
+                {"1999", "Basic floor plans|3D exterior views|Basic material list|2 revisions"},
+                {"3999", "Detailed plans|Full 3D modeling|Complete material specs|4 revisions"},
+                {"7999", "Complete architectural package|Advanced 3D visualization|Full documentation|Unlimited revisions"}
             };
             case "3D Modeling" -> new String[][] {
-                {"$799", "Basic 3D model|2 rendering views|Basic texturing|2 revisions"},
-                {"$1,599", "Detailed 3D model|5 rendering views|Advanced texturing|4 revisions"},
-                {"$2,999", "Complex 3D model|Unlimited views|Premium texturing|Animation|Unlimited revisions"}
+                {"799", "Basic 3D model|2 rendering views|Basic texturing|2 revisions"},
+                {"1599", "Detailed 3D model|5 rendering views|Advanced texturing|4 revisions"},
+                {"2999", "Complex 3D model|Unlimited views|Premium texturing|Animation|Unlimited revisions"}
             };
             case "Business Analysis" -> new String[][] {
-                {"$1,499", "Basic requirements analysis|Process mapping|Basic documentation|Weekly reports"},
-                {"$2,999", "Detailed business analysis|Process optimization|Full documentation|Bi-weekly reports"},
-                {"$5,999", "Enterprise analysis|Complete optimization|Strategic planning|Daily reports|Implementation support"}
+                {"1499", "Basic requirements analysis|Process mapping|Basic documentation|Weekly reports"},
+                {"2999", "Detailed business analysis|Process optimization|Full documentation|Bi-weekly reports"},
+                {"5999", "Enterprise analysis|Complete optimization|Strategic planning|Daily reports|Implementation support"}
             };
             case "Solutions Architecture" -> new String[][] {
-                {"$2,499", "Basic architecture design|System documentation|Basic scalability plan|Standard security"},
-                {"$4,999", "Advanced architecture design|Detailed documentation|Scalability strategy|Enhanced security"},
-                {"$9,999", "Enterprise architecture|Complete documentation|Full scaling strategy|Premium security|24/7 support"}
+                {"2499", "Basic architecture design|System documentation|Basic scalability plan|Standard security"},
+                {"4999", "Advanced architecture design|Detailed documentation|Scalability strategy|Enhanced security"},
+                {"9999", "Enterprise architecture|Complete documentation|Full scaling strategy|Premium security|24/7 support"}
             };
             default -> new String[][] {
-                {"$0", "No features available"},
-                {"$0", "No features available"},
-                {"$0", "No features available"}
+                {"0", "No features available"},
+                {"0", "No features available"},
+                {"0", "No features available"}
             };
         };
         
-        // Convert prices if needed
-        if (!userCurrency.equals("USD")) {
-            for (String[] plan : plans) {
-                plan[0] = convertPrice(plan[0]);
+        // Convert prices for all plans
+        java.util.Currency currencyInstance = java.util.Currency.getInstance(userCurrency);
+        Locale locale = UI.getCurrent().getLocale();
+        java.text.NumberFormat formatter = java.text.NumberFormat.getCurrencyInstance(locale);
+        formatter.setCurrency(currencyInstance);
+        
+        for (String[] plan : plans) {
+            try {
+                double amount = Double.parseDouble(plan[0].replace(",", ""));
+                double convertedAmount = amount * exchangeRates.getOrDefault(userCurrency, 1.0);
+                // Format the converted amount to the user's currency and update the plan's price
+                plan[0] = formatter.format(convertedAmount);
+                System.out.println("Converted price: " + plan[0]);
+            } catch (Exception e) {
+                // Keep original price if conversion fails
+                System.err.println("Error converting price: " + e.getMessage());
             }
         }
         
         return plans;
-    }
-
-    private void fetchExchangeRates() {
-        try {
-            // Check if cache is still valid
-            long currentTime = System.currentTimeMillis();
-            if (!cachedRates.isEmpty() && (currentTime - lastFetchTime) < CACHE_DURATION) {
-                exchangeRates = new HashMap<>(cachedRates);
-                return;
-            }
-
-            String currencyLower = userCurrency.toLowerCase();
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(API_URL + "?ids=usd&vs_currencies=" + currencyLower))
-                .header("User-Agent", "BusinessDev Application") // Add User-Agent header
-                .timeout(Duration.ofSeconds(10)) // Add timeout
-                .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            
-            if (response.statusCode() != 200) {
-                System.err.println("API returned status code: " + response.statusCode());
-                throw new RuntimeException("API request failed");
-            }
-
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode root = mapper.readTree(response.body());
-            
-            double rate = root.get("usd").get(currencyLower).asDouble();
-            exchangeRates.put(userCurrency, rate);
-            
-            // Update cache
-            cachedRates = new HashMap<>(exchangeRates);
-            lastFetchTime = currentTime;
-                
-            System.out.println("User Currency: " + userCurrency);
-            System.out.println("Exchange Rates: " + exchangeRates);
-            System.out.println("Cached Rates: " + cachedRates);
-        } catch (Exception e) {
-            System.err.println("Error fetching exchange rates: " + e.getMessage());
-            // Use cached rates if available
-            if (!cachedRates.isEmpty()) {
-                exchangeRates = new HashMap<>(cachedRates);
-            } else {
-                // Fallback to USD if no cached rates
-                userCurrency = "USD";
-            }
-        }
-    }
-
-    private String convertPrice(String usdPrice) {
-        try {
-            // Extract numeric value from price string
-            double amount = Double.parseDouble(usdPrice.replace("$", "").replace(",", ""));
-            
-            if (!userCurrency.equals("USD") && exchangeRates.containsKey(userCurrency)) {
-                double convertedAmount = amount * exchangeRates.get(userCurrency);
-                // Get currency instance and symbol
-                java.util.Currency currencyInstance = java.util.Currency.getInstance(userCurrency);
-                String symbol = currencyInstance.getSymbol();
-                
-                // Create NumberFormat for the current locale
-                Locale locale = UI.getCurrent().getLocale();
-                java.text.NumberFormat formatter = java.text.NumberFormat.getCurrencyInstance(locale);
-                formatter.setCurrency(currencyInstance);
-                
-                // Format the number
-                String formattedAmount = formatter.format(convertedAmount);
-                
-                // Some currencies might place the symbol at the end, so we'll use the formatted amount as is
-                return formattedAmount;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        // If still using USD or conversion failed, format the original price
-        try {
-            double amount = Double.parseDouble(usdPrice.replace("$", "").replace(",", ""));
-            return String.format("$%,.2f", amount);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        return usdPrice; // Return original price if all formatting fails
     }
 
     private VerticalLayout backToOffer(){
