@@ -36,7 +36,7 @@ public class Application implements AppShellConfigurator {
     public void configurePage(AppShellSettings settings) {
         // Basic meta tags
         settings.addMetaTag("http-equiv", "X-UA-Compatible");
-        settings.addMetaTag("theme-color", "#000");
+        settings.addMetaTag("theme-color", "#000000");
         settings.addLink("manifest", "/etc/secrets/manifest.json");
         
         // Apple specific
@@ -136,8 +136,8 @@ public class Application implements AppShellConfigurator {
         settings.addMetaTag("apple-touch-startup-image", "icons/secondary.png");
         
         // Analytics and Tracking
-        settings.addMetaTag("analytics-track", "true");
-        settings.addMetaTag("google-analytics", "UA-XXXXX-Y");
+        //settings.addMetaTag("analytics-track", "true");
+        //settings.addMetaTag("google-analytics", "UA-XXXXX-Y");
 
         // Language and Region
         settings.addMetaTag("language", "English");

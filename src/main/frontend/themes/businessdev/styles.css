@@ -688,3 +688,6 @@ ul {
 .paragraph_pricing a{
   text-decoration: underline;
 }
+.backdrop-blur-none {
+  -webkit-backdrop-filter: blur(0);
+}
