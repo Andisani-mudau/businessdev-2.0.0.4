@@ -51,7 +51,7 @@ public class OffersView extends VerticalLayout {
         VerticalLayout content_container = new VerticalLayout(webDevImage, webDevHeading);
         
         VerticalLayout wrapper = new VerticalLayout();
-        Button pricing = new Button("View Pricing");
+        Button pricing = new Button("View PricingView");
         pricing.addClassName("pricing");
         pricing.setWidth("100%");
         pricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -88,7 +88,7 @@ public class OffersView extends VerticalLayout {
         VerticalLayout appDevContent = new VerticalLayout(appDevImage, appDevHeading);
         
         VerticalLayout appDevWrapper = new VerticalLayout();
-        Button appDevPricing = new Button("View Pricing");
+        Button appDevPricing = new Button("View PricingView");
         appDevPricing.addClassName("pricing");
         appDevPricing.setWidth("100%");
         appDevPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -118,7 +118,7 @@ public class OffersView extends VerticalLayout {
         VerticalLayout uiDesignContent = new VerticalLayout(uiDesignImage, uiDesignHeading);
         
         VerticalLayout uiDesignWrapper = new VerticalLayout();
-        Button uiDesignPricing = new Button("View Pricing");
+        Button uiDesignPricing = new Button("View PricingView");
         uiDesignPricing.addClassName("pricing");
         uiDesignPricing.setWidth("100%");
         uiDesignPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -150,7 +150,7 @@ public class OffersView extends VerticalLayout {
         VerticalLayout logoDesignContent = new VerticalLayout(logoDesignImage, logoDesignHeading);
         
         VerticalLayout logoDesignWrapper = new VerticalLayout();
-        Button logoDesignPricing = new Button("View Pricing");
+        Button logoDesignPricing = new Button("View PricingView");
         logoDesignPricing.addClassName("pricing");
         logoDesignPricing.setWidth("100%");
         logoDesignPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -181,7 +181,7 @@ public class OffersView extends VerticalLayout {
         VerticalLayout graphicDesignContent = new VerticalLayout(graphicDesignImage, graphicDesignHeading);
         
         VerticalLayout graphicDesignWrapper = new VerticalLayout();
-        Button graphicDesignPricing = new Button("View Pricing");
+        Button graphicDesignPricing = new Button("View PricingView");
         graphicDesignPricing.addClassName("pricing");
         graphicDesignPricing.setWidth("100%");
         graphicDesignPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -217,7 +217,7 @@ public class OffersView extends VerticalLayout {
         VerticalLayout architectureContent = new VerticalLayout(architectureImage, architectureHeading);
         
         VerticalLayout architectureWrapper = new VerticalLayout();
-        Button architecturePricing = new Button("View Pricing");
+        Button architecturePricing = new Button("View PricingView");
         architecturePricing.addClassName("pricing");
         architecturePricing.setWidth("100%");
         architecturePricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -249,7 +249,7 @@ public class OffersView extends VerticalLayout {
         VerticalLayout modellingContent = new VerticalLayout(modellingImage, modellingHeading);
         
         VerticalLayout modellingWrapper = new VerticalLayout();
-        Button modellingPricing = new Button("View Pricing");
+        Button modellingPricing = new Button("View PricingView");
         modellingPricing.addClassName("pricing");
         modellingPricing.setWidth("100%");
         modellingPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -277,7 +277,7 @@ public class OffersView extends VerticalLayout {
         VerticalLayout businessAnalysisContent = new VerticalLayout(businessAnalysisImage, businessAnalysisHeading);
         
         VerticalLayout businessAnalysisWrapper = new VerticalLayout();
-        Button businessAnalysisPricing = new Button("View Pricing");
+        Button businessAnalysisPricing = new Button("View PricingView");
         businessAnalysisPricing.addClassName("pricing");
         businessAnalysisPricing.setWidth("100%");
         businessAnalysisPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -311,7 +311,7 @@ public class OffersView extends VerticalLayout {
         VerticalLayout solutionsArchContent = new VerticalLayout(solutionsArchImage, solutionsArchHeading);
         
         VerticalLayout solutionsArchWrapper = new VerticalLayout();
-        Button solutionsArchPricing = new Button("View Pricing");
+        Button solutionsArchPricing = new Button("View PricingView");
         solutionsArchPricing.addClassName("pricing");
         solutionsArchPricing.setWidth("100%");
         solutionsArchPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);

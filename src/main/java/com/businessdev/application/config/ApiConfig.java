@@ -36,6 +36,21 @@ public class ApiConfig {
     @Value("${business.hours.end}")
     private int businessHoursEnd;
 
+    @Value("${groq.api.key}")
+    private String groqApiKey;
+
+    @Value("${groq.model}")
+    private String groqModel;
+
+    @Value("${groq.url}")
+    private String groqUrl;
+
+    @Value("${mongo.uri}")
+    private String mongoUri;
+
+    @Value("${mapbox.access.token}")
+    private String mapboxAccessToken;
+
     // Getters
     public String getCurrencyApiKey() {
         return currencyApiKey;
@@ -75,5 +90,25 @@ public class ApiConfig {
 
     public int getBusinessHoursEnd() {
         return businessHoursEnd;
+    }
+
+    public String getGroqApiKey() {
+        return groqApiKey;
+    }
+
+    public String getGroqModel() {
+        return groqModel;
+    }
+
+    public String getGroqUrl() {
+        return groqUrl;
+    }
+
+    public String getMongoUri() {
+        return mongoUri;
+    }
+
+    public String getMapboxAccessToken() {
+        return mapboxAccessToken;
     }
 } 

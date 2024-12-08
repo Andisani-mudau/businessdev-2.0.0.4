@@ -1,6 +1,5 @@
 package com.businessdev.application.views.welcome;
 
-import com.businessdev.application.views.welcome.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -31,13 +30,13 @@ import java.util.Locale;
 import com.businessdev.application.config.ApiConfig;
 import com.vaadin.flow.component.Text;
 import java.time.Duration;
-import elemental.json.JsonValue;
+
 import elemental.json.JsonObject;
 
 
-@PageTitle("Pricing")
+@PageTitle("PricingView")
 @Route(value = "pricing", layout = MainLayout.class)
-public class Pricing extends VerticalLayout {
+public class PricingView extends VerticalLayout {
     private final ApiConfig apiConfig;
     private final String API_URL = "https://api.coingecko.com/api/v3/simple/price";
     private Map<String, Double> exchangeRates = new HashMap<>();
@@ -47,7 +46,7 @@ public class Pricing extends VerticalLayout {
     private long lastFetchTime = 0;
     private static final long CACHE_DURATION = 3600000; // 1 hour in milliseconds
     
-    public Pricing(ApiConfig apiConfig) {
+    public PricingView(ApiConfig apiConfig) {
         this.apiConfig = apiConfig;
         
         heading = new H1("Web Application Development");

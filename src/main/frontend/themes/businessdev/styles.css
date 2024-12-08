@@ -616,13 +616,13 @@ ul {
   align-self: end;
   margin: 1em 0 0.5em 0;
   text-align: center;
-  /* text-decoration: none; */
-  /* padding: 0.7em; */
   color: var(--lumo-base-color);
-  padding: 0.3em 0;
+  padding: 5px 0 !important;
   border-radius: 5px;
-  /* font-size: 1rem; */
   font-weight: 500; 
+}
+.card__cta_pricing{
+  padding: 10px 0 !important;
 }
 
 .cta_pricing:hover{
