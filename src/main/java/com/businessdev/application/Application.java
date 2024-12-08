@@ -173,5 +173,8 @@ public class Application implements AppShellConfigurator {
         
         // Content Security
         settings.addMetaTag("content-security-policy", "default-src 'self'");
+
+        // Facebook domain verification
+        settings.addMetaTag("facebook-domain-verification", "1pantpqd1nxp9nbt2xtjh5wpc1t0ne");
     }
 }
