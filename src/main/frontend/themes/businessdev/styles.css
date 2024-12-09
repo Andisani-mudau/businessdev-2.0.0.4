@@ -612,17 +612,15 @@ ul {
 }
 
 .cta_pricing {
-  display: block;
+  display: grid;
   align-self: end;
   margin: 1em 0 0.5em 0;
   text-align: center;
   color: var(--lumo-base-color);
-  padding: 5px 0 !important;
   border-radius: 5px;
-  font-weight: 500; 
-}
-.card__cta_pricing{
-  padding: 10px 0 !important;
+  font-weight: 500;
+  padding: 5px 0;
+  height: unset;
 }
 
 .cta_pricing:hover{
@@ -660,6 +658,7 @@ ul {
   width: 100%;
   background-color: hsl(var(--hsl));
   box-shadow: 0 0 0 1px hsl(var(--hsl));
+  padding: 8px 0 !important;
 }
 
 :not(.overlay_pricing) > .card_pricing {
@@ -688,3 +687,5 @@ ul {
 .paragraph_pricing a{
   text-decoration: underline;
 }
+
+/* new era */
