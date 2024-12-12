@@ -95,10 +95,7 @@ public class Application implements AppShellConfigurator {
         
         // Additional SEO Tags
         settings.addMetaTag("format-detection", "telephone=yes");
-        settings.addMetaTag("apple-touch-fullscreen", "yes");
         settings.addMetaTag("application-name", "businessdev.");
-        settings.addMetaTag("mobile-web-app-capable", "yes");              // Android fullscreen
-        settings.addMetaTag("theme-color", "#000000");                     // Android status bar color
         settings.addMetaTag("android-mobile-web-app-capable", "yes");      // Alternative Android fullscreen
         settings.addMetaTag("android-theme", "#000000");                   // Alternative theme declaration
         
@@ -123,7 +120,6 @@ public class Application implements AppShellConfigurator {
         settings.addMetaTag("category", "technology, business, IT development, digital solutions, innovation, entrepreneurship");
         settings.addMetaTag("coverage", "Worldwide");
         settings.addMetaTag("target", "all");
-        settings.addMetaTag("HandheldFriendly", "True");
         
         // Additional Social
         settings.addMetaTag("linkedin:owner", "https://www.linkedin.com/in/andisani-m-1718aa222/");
@@ -165,14 +161,8 @@ public class Application implements AppShellConfigurator {
         settings.addMetaTag("format-detection", "date=no");
         settings.addMetaTag("wap-font-scale", "no");
         
-        // Additional Browser Support
-        settings.addMetaTag("MobileOptimized", "width");
-        settings.addMetaTag("screen-orientation", "portrait");
-        settings.addMetaTag("full-screen", "yes");
-        settings.addMetaTag("browsermode", "application");
-        
         // Content Security
-        settings.addMetaTag("content-security-policy", "default-src 'self'");
+        settings.addMetaTag("content-security-policy", "default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' data: https:; connect-src 'self' https:;");
 
         // Facebook domain verification
         settings.addMetaTag("facebook-domain-verification", "1pantpqd1nxp9nbt2xtjh5wpc1t0ne");
