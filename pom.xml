@@ -316,16 +316,17 @@
                         <executions>
                             <execution>
                                 <id>verify-frontend-build</id>
-                                <phase>package</phase>
+                                <phase>pre-package</phase>
                                 <goals>
                                     <goal>run</goal>
                                 </goals>
                                 <configuration>
                                     <target>
-                                        <echo message="Verifying Vaadin production bundle..."/>
+                                        <echo message="Verifying Vaadin production bundle after build-frontend..."/>
+                                        <echo message="Checking: ${project.build.outputDirectory}/META-INF/VAADIN/config/flow-build-info.json"/>
                                         <available file="${project.build.outputDirectory}/META-INF/VAADIN/config/flow-build-info.json" property="flow.build.info.exists"/>
-                                        <fail unless="flow.build.info.exists" message="ERROR: flow-build-info.json is missing! The build-frontend goal may have failed. Check build logs."/>
-                                        <echo message="✓ flow-build-info.json found"/>
+                                        <fail unless="flow.build.info.exists" message="ERROR: flow-build-info.json is missing! The build-frontend goal may have failed. Check build logs for frontend build errors."/>
+                                        <echo message="✓ flow-build-info.json found at: ${project.build.outputDirectory}/META-INF/VAADIN/config/flow-build-info.json"/>
                                     </target>
                                 </configuration>
                             </execution>

@@ -3,7 +3,7 @@ services:
     name: businessdev
     env: java
     buildCommand: ./mvnw clean package -Pproduction
-    startCommand: java -jar target/businessdev-1.0-SNAPSHOT.jar --spring.profiles.active=prod
+    startCommand: java -Dvaadin.productionMode=true -jar target/businessdev-1.0-SNAPSHOT.jar --spring.profiles.active=prod
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
