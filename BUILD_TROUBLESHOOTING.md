@@ -8,8 +8,10 @@ If you're seeing `VaadinServletContextInitializer` errors on Render, it usually 
 
 Ensure your Render build command is:
 ```bash
-./mvnw clean package -Pproduction -DskipTests
+./mvnw clean package -Pproduction
 ```
+
+**Note:** Tests will run by default. Only use `-DskipTests` if you have a specific reason (e.g., tests require external services not available during build).
 
 ### Solution 2: Check Build Logs
 
@@ -24,7 +26,7 @@ If `build-frontend` is missing or fails, that's the problem.
 
 Before deploying, test the build locally:
 ```bash
-./mvnw clean package -Pproduction -DskipTests
+./mvnw clean package -Pproduction
 ```
 
 Then verify the JAR contains frontend resources:

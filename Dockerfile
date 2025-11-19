@@ -10,8 +10,11 @@ RUN mvn dependency:go-offline -B
 # Copy source code
 COPY src ./src
 
+# Cache Maven dependencies
+VOLUME /root/.m2
+
 # Build the application with production profile
-RUN mvn clean package -Pproduction -DskipTests
+RUN mvn clean package -Pproduction
 
 # Run stage
 FROM eclipse-temurin:17-jre-alpine

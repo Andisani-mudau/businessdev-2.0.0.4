@@ -2,7 +2,7 @@ services:
   - type: web
     name: businessdev
     env: java
-    buildCommand: ./mvnw clean package -Pproduction -DskipTests -X
+    buildCommand: ./mvnw clean package -Pproduction
     startCommand: java -jar target/businessdev-1.0-SNAPSHOT.jar --spring.profiles.active=prod
     envVars:
       - key: SPRING_PROFILES_ACTIVE

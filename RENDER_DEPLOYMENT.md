@@ -23,8 +23,10 @@ This guide helps you deploy the BusinessDev application to Render.
 1. **Create a Web Service** in Render
 2. **Build Command:**
    ```
-   ./mvnw clean package -Pproduction -DskipTests
+   ./mvnw clean package -Pproduction
    ```
+   
+   **Note:** This will run tests. To skip tests (not recommended), add `-DskipTests`.
 3. **Start Command:**
    ```
    java -jar target/businessdev-1.0-SNAPSHOT.jar --spring.profiles.active=prod
