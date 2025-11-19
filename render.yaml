@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: businessdev
+    env: java
+    buildCommand: ./mvnw clean package -Pproduction -DskipTests
+    startCommand: java -jar target/businessdev-1.0-SNAPSHOT.jar --spring.profiles.active=prod
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SERVER_PORT
+        value: 8080
+      - key: JAVA_OPTS
+        value: -Xmx512m -Xms256m -XX:+UseG1GC
+      # Add your environment variables here:
+      # - key: MONGODB_URI
+      #   value: mongodb://your-connection-string
+      # - key: CURRENCY_API_KEY
+      #   value: your-api-key
+      # - key: BREVO_API_KEY
+      #   value: your-brevo-key
+      # etc.
+

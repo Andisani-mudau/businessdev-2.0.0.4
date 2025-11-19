@@ -30,8 +30,11 @@ public class EnvLoader implements ApplicationContextInitializer<ConfigurableAppl
                 MapPropertySource propertySource = new MapPropertySource("dotenv", map);
                 environment.getPropertySources().addFirst(propertySource);
             } catch (IOException e) {
-                throw new RuntimeException("Failed to load .env file", e);
+                // Log but don't fail startup if .env file can't be loaded
+                // Environment variables should be set via system properties or environment
+                System.err.println("Warning: Could not load .env file: " + e.getMessage());
             }
         }
+        // If .env doesn't exist, that's fine - use environment variables instead
     }
 }
