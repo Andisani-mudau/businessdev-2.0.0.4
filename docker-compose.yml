@@ -1,17 +1,50 @@
 version: '3.8'
 services:
+  mongodb:
+    image: mongo:7.0
+    container_name: businessdev-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=businessdev
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   app:
     build: .
+    container_name: businessdev-app
+    restart: unless-stopped
     ports:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+      - MONGODB_URI=mongodb://mongodb:27017/businessdev
       - CURRENCY_API_KEY=${CURRENCY_API_KEY}
       - BREVO_API_KEY=${BREVO_API_KEY}
       - BREVO_SENDER_EMAIL=${BREVO_SENDER_EMAIL}
       - BREVO_SENDER_NAME=${BREVO_SENDER_NAME}
       - GOOGLE_CALENDAR_ID=${GOOGLE_CALENDAR_ID}
       - GOOGLE_CALENDAR_CREDENTIALS_FILE=${GOOGLE_CALENDAR_CREDENTIALS_FILE}
-    # Mount the local directory ./src/main/resources to the container directory /app/resources
+      - APP_TIMEZONE=${APP_TIMEZONE:-Africa/Johannesburg}
+      - BUSINESS_HOURS_START=${BUSINESS_HOURS_START:-9}
+      - BUSINESS_HOURS_END=${BUSINESS_HOURS_END:-17}
+    depends_on:
+      mongodb:
+        condition: service_healthy
     volumes:
-      - ./src/main/resources:/app/resources 
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  mongodb_data: 

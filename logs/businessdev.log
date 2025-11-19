@@ -1,0 +1,17 @@
+2025-11-19 20:46:30.269 [main] INFO  c.b.application.Application - Starting Application v1.0-SNAPSHOT using Java 17.0.12 with PID 26908 (C:\Users\andis\IdeaProjects\businessdev-2.0.0.4\target\businessdev-1.0-SNAPSHOT.jar started by black in C:\Users\andis\IdeaProjects\businessdev-2.0.0.4)
+2025-11-19 20:46:30.280 [main] INFO  c.b.application.Application - The following 1 profile is active: "prod"
+2025-11-19 20:46:41.314 [main] WARN  c.v.f.s.VaadinServletContextInitializer - vaadin.whitelisted-packages is deprecated and may not be supported in the future. Use vaadin.allowed-packages instead.
+2025-11-19 20:46:57.094 [main] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: e9410716-5d0c-4653-b887-4486c30ff32a
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-11-19 20:47:02.144 [main] INFO  c.b.application.Application - Started Application in 34.965 seconds (process running for 37.305)
+2025-11-19 20:47:19.637 [http-nio-0.0.0.0-8080-exec-1] WARN  o.a.c.util.SessionIdGeneratorBase - Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [159] milliseconds.
+2025-11-19 20:52:02.494 [main] INFO  c.b.application.Application - Starting Application v1.0-SNAPSHOT using Java 17.0.12 with PID 41576 (C:\Users\andis\IdeaProjects\businessdev-2.0.0.4\target\businessdev-1.0-SNAPSHOT.jar started by black in C:\Users\andis\IdeaProjects\businessdev-2.0.0.4)
+2025-11-19 20:52:02.504 [main] INFO  c.b.application.Application - The following 1 profile is active: "prod"
+2025-11-19 20:52:14.028 [main] WARN  c.v.f.s.VaadinServletContextInitializer - vaadin.whitelisted-packages is deprecated and may not be supported in the future. Use vaadin.allowed-packages instead.
+2025-11-19 20:52:41.903 [main] INFO  c.b.application.Application - Started Application in 42.778 seconds (process running for 44.173)
+2025-11-19 20:53:07.243 [http-nio-0.0.0.0-8080-exec-1] WARN  o.a.c.util.SessionIdGeneratorBase - Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [174] milliseconds.
+2025-11-19 20:53:07.244 [http-nio-0.0.0.0-8080-exec-2] WARN  o.a.c.util.SessionIdGeneratorBase - Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [174] milliseconds.

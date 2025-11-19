@@ -5,7 +5,7 @@ import com.vaadin.flow.server.AppShellSettings;
 import com.vaadin.flow.theme.Theme;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import com.businessdev.application.config.ApiConfig;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 
 import java.util.Date;
 
@@ -16,20 +16,12 @@ import java.util.Date;
  * and some desktop browsers.
  *
  */
-@SpringBootApplication
+@SpringBootApplication(exclude = {UserDetailsServiceAutoConfiguration.class})
 @Theme(value = "businessdev")
 public class Application implements AppShellConfigurator {
 
-    private static ApiConfig apiConfig;
-
-    public Application(ApiConfig apiConfig) {
-        super();
-        Application.apiConfig = apiConfig;
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-        System.out.println("Currency API Key present: " + (apiConfig.getCurrencyApiKey() != null && !apiConfig.getCurrencyApiKey().isEmpty()));
     }
 
     @Override
