@@ -27,8 +27,21 @@ a {
 *::-webkit-scrollbar{
     display: none;
 }
+.logo{
+  height: 50px;
+  width: 50px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--lumo-primary-color);
+}
 .logo svg{
-    fill: var(--lumo-primary-color);
+    height: unset;
+    padding: 10px 5px 10px 10px;
+}
+.cls-3{
+  fill: var(--lumo-base-color);
 }
 svg{
     margin: 0;
@@ -39,9 +52,13 @@ svg{
 }
 #Layer_2{
     height: 45px;
+    padding: 4px;
 }
 #Layer_1-2{
-    padding: 0 5px;
+    padding: 0px;
+}
+.main-logo{
+  margin: 5px 0px 5px 5px;
 }
 .cls-1{
     fill: var(--lumo-body-text-color);
@@ -52,19 +69,20 @@ svg{
     transition: all 0.3s ease-in-out;
     overflow: hidden !important;
     outline: none;
+    background-color: transparent;
 }
 .link:hover{
-    background-color: var(--lumo-shade-5pct);
+    background-color: var(--lumo-shade-5pct)!important;
     text-decoration: none;
     font-weight: 500;
     padding: 10px 0px 10px 20px !important;
 }
 .link:focus{
-    background-color: var(--lumo-shade-10pct);
+    background-color: var(--lumo-shade-10pct)!important;
     outline: none !important;
 }
 .link:active{
-    background-color: var(--lumo-shade-15pct);
+    background-color: var(--lumo-shade-15pct)!important;
 }
 .linkText{
     margin: 0;
@@ -81,9 +99,15 @@ vaadin-horizontal-layout {
     border: none !important;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 800px) {
     #Layer_2 {
         height: 40px !important;
+    }
+    .welcome-heading-text{
+      font-size: 3rem !important;
+    }
+    .scroll-animate-image-1{
+      max-width: 350px !important;
     }
 }
 @media only screen and (min-width: 470px) {
@@ -249,7 +273,7 @@ ul {
   }
   
   .card__heading {
-    margin-bottom: 1em;
+    margin-bottom: 0em;
   }
   
   .card__price {
@@ -399,7 +423,7 @@ ul {
 .cards__inner-Offer {
   display: flex;
   flex-wrap: wrap;
-  gap: 2.5em;
+  gap: 0.5em;
 }
 
 .card-Offer {
@@ -513,8 +537,12 @@ ul {
 /* ... */
 
 .tools-container{
+
   flex-wrap: wrap;
   font-size: var(--lumo-font-size-xs);
+  margin: 0 0 10px 0;
+  padding: 0;
+  line-height: 0.5;
 }
 .pricing{
   padding: 0.3em 0px;
@@ -690,4 +718,34 @@ ul {
 }
 .backdrop-blur-none {
   -webkit-backdrop-filter: blur(0);
+}
+
+/* Simple Animation Styles */
+.scroll-animate,
+.scroll-animate-text,
+.scroll-animate-image {
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.button-link:hover{
+  background-color: hsl(0, 0%, 15%) !important;
+  cursor: pointer;
+}
+.tools-container span{
+  padding: 10px;
+  background-color: var(--lumo-shade-5pct);
+  border-radius: 5px;
+  font-size: var(--lumo-font-size-xs);
+  font-weight: 500;
+  color: var(--lumo-body-text-color);
+}
+h1, h2, h3, h4, h5, h6{
+  margin: 0;
+  padding: 0;
+  color: var(--lumo-body-text-color);
+}
+p{
+  margin-top: 0;
+  padding-top: 0;
 }

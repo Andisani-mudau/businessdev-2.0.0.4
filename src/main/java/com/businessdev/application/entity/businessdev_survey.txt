@@ -1,0 +1,929 @@
+When a user selects, either consumables, non consumables or service, the choice becomes part of the url and the field is disabled since it is already in the url. Same for the type of either consumables, non consumables or service field. the rest are okay. This is useful if a user wants to share the same survey to friends. also, the questions on the survey are in one single form and they pop in and out depending on what kind of a survey it is to save time for user interaction.
+
+All Questions and every other things should be stored in the database to be used later, and to save space, questions cannot duplicate even if they are for different type of consumable products, non consumable products or service. a user or a consumer cannot duplicate too, and will also be identified by an email address. so include a field for an email address in the form too.
+
+
+[Survey type 1 for consumable products]
+
+
+## 🌍 Global Food Demand & Consumption Survey
+
+**Objective:**
+To understand consumer preferences, purchasing behavior, and influencing factors for key food categories — including staple crops, fruits, vegetables, dairy, and meat — and to compare this demand-side data with supply-side (production) data for market gap analysis and forecasting.
+
+---
+
+### 🥗 SECTION 1: General Consumption Preferences
+
+**1. Which of the following food types do you or your household regularly consume?**
+(Check all that apply)
+
+* Grains & staples (e.g., maize, rice, wheat, potatoes)
+* Vegetables
+* Fruits
+* Dairy products (milk, cheese, yogurt)
+* Meat & poultry
+* Fish & seafood
+* Plant-based alternatives (tofu, plant milks, etc.)
+* Other (please specify)
+
+**2. For each food type you selected, how much do you like or value it in your diet?**
+(Scale: Love it / Like it / Neutral / Rarely consume / Never consume)
+
+**3. In what form do you usually prefer these products?**
+
+* Fresh/raw (to prepare at home)
+* Frozen
+* Processed/packaged (ready-to-eat or cook)
+* Restaurant/prepared meals
+* I don’t consume this type
+
+---
+
+### 🛒 SECTION 2: Buying & Consumption Behavior
+
+**4. How often do you purchase each of these food types?**
+
+* Daily
+* Weekly
+* Monthly
+* Rarely/Never
+
+**5. On average, how much do you purchase per month (household or business total)?**
+
+* Less than 5 kg
+* 5–20 kg
+* 20–50 kg
+* 50–100 kg
+* More than 100 kg
+
+**6. Where do you usually buy your food?**
+
+* Local markets
+* Supermarkets
+* Wholesalers
+* Direct from farmers
+* Online delivery platforms
+* Restaurants/catering suppliers (for businesses)
+
+**7. Do you grow or produce any of these foods yourself?**
+
+* Yes (for home use)
+* Yes (for commercial sale)
+* No
+
+---
+
+### 💡 SECTION 3: Purchase Influences & Market Drivers
+
+**8. What most influences your decision to buy each food type?**
+
+* Price
+* Availability
+* Quality/freshness
+* Brand or source
+* Convenience (ready-made)
+* Nutritional value/health
+* Family or cultural preference
+* Environmental or ethical reasons
+
+**9. What would make you buy more often?**
+
+* Lower prices
+* Better quality
+* Greater availability
+* More variety
+* More local/organic options
+* More processed/ready-to-cook options
+* Nothing — I already buy enough
+
+**10. If prices rise significantly, how would your consumption change?**
+
+* I would reduce consumption
+* I would switch to cheaper alternatives
+* I would continue buying the same amount
+* I would grow/produce more myself
+
+---
+
+### 📈 SECTION 4: Future Demand & Trends
+
+**11. Are you interested in alternative options (organic, plant-based, locally grown, etc.)?**
+
+* Yes, very interested
+* Somewhat interested
+* Not interested
+
+**12. Would you pay more for higher-quality or ethically sourced food?**
+
+* Yes, significantly more
+* Yes, slightly more
+* No
+
+**13. Do you expect your household/business food consumption to increase, decrease, or stay the same in the next 5 years?**
+
+* Increase
+* Decrease
+* Stay the same
+* Unsure
+
+---
+
+### 🧑‍🤝‍🧑 SECTION 5: Demographics & Segmentation
+
+**14. Age group:**
+
+* Under 18
+* 18–25
+* 26–40
+* 41–60
+* Over 60
+
+**15. Household size / Business size:**
+
+* 1–2 people
+* 3–5 people
+* 6+ people
+* Small business (1–10 employees)
+* Medium business (11–100)
+* Large business (100+)
+
+**16. Income or budget range (optional):**
+
+* Low
+* Middle
+* High
+
+**17. Location:**
+
+* Continent
+* Country
+* Province / State
+* City / Town
+* Rural / Urban
+* (Exact coordinates if possible, for GIS mapping)
+
+---
+
+### 📊 Data Insights You Can Extract
+
+From this survey, you can build **powerful analytics dashboards** like:
+
+* 📈 **Consumption trends:** How demand for different foods changes across regions and income levels.
+* 🛍️ **Purchase frequency & volume:** Identifying high-demand products vs. under-purchased ones.
+* 🔄 **Preference–purchase gap:** Showing untapped potential in specific food categories.
+* 💸 **Market drivers:** Ranking of price, quality, and convenience as purchase influencers.
+* 🌍 **Geographic demand maps:** Compare demand vs. production regionally and globally.
+* 🔮 **Future demand forecasts:** Based on self-reported intentions and demographic changes.
+
+---
+
+💡 **Why this is powerful:**
+With a dataset structured like this, you could build a **real-time agricultural intelligence platform** that shows, for example:
+
+* "South African urban millennials buy 60% more frozen potatoes than raw ones."
+* "West African households want more fresh tomatoes but supply is lagging by 35%."
+* "Global dairy demand is shifting toward plant-based options in high-income urban markets."
+
+This is the exact kind of data that governments, agri-tech startups, food companies, and investment firms pay **millions** for — and you could build it yourself.
+
+---
+
+[Survey type 2 for non-consumable products]
+
+
+## 🧰 Non-Consumable Product Preference & Purchase Survey
+
+**Objective:**
+To understand consumer preferences, buying behavior, replacement cycles, influencing factors, and future demand trends for durable and semi-durable products such as electronics, furniture, clothing, tools, vehicles, and home appliances. Data collected can be used for demand forecasting, supply gap analysis, product development, and market strategy planning.
+
+---
+
+### 🧡 SECTION 1: General Product Preferences
+
+**1. Which of the following product categories do you regularly purchase or use?**
+(Check all that apply)
+
+* Clothing & footwear
+* Mobile phones & gadgets
+* Home appliances (e.g., fridge, washing machine)
+* Furniture (e.g., sofa, table, bed)
+* Vehicles (e.g., car, motorcycle, bicycle)
+* Tools & equipment (e.g., power tools, lawn mower)
+* Kitchenware (e.g., pots, plates)
+* Toys & games
+* Books & stationery
+* Personal care devices (e.g., hair dryer, shaver)
+* Other (please specify)
+
+**2. How important are these product types in your life or business?**
+
+* Very important
+* Somewhat important
+* Neutral
+* Not very important
+* Not important at all
+
+**3. Which type of products do you **prefer to invest more money in**?**
+
+* Quality and durability
+* Brand and reputation
+* Latest technology or design
+* Budget-friendly options
+* Sustainable or eco-friendly products
+
+---
+
+### 🛍️ SECTION 2: Purchase Behavior & Replacement Cycle
+
+**4. How often do you buy new products in each category?**
+
+* Every 6 months
+* Every 1–2 years
+* Every 3–5 years
+* Rarely (only when old one breaks)
+* Never bought
+
+**5. What is your typical spending range for each purchase?**
+
+* Less than R1,000
+* R1,000 – R5,000
+* R5,000 – R20,000
+* R20,000 – R50,000
+* More than R50,000
+
+**6. What do you usually do with old or replaced products?**
+
+* Keep as backup
+* Sell or trade-in
+* Recycle or donate
+* Throw away
+* Other (please specify)
+
+**7. Where do you usually buy these products?**
+
+* Physical retail stores
+* Online stores / e-commerce platforms
+* Direct from manufacturer or brand store
+* Second-hand or refurbished markets
+* Local small businesses or markets
+
+---
+
+### 💡 SECTION 3: Purchase Influences & Decision Drivers
+
+**8. What most influences your decision to buy a new product?**
+
+* Price
+* Brand reputation
+* Quality/durability
+* Features or design
+* Availability and convenience
+* Warranty or after-sales service
+* Environmental impact
+* Peer or family recommendations
+
+**9. What would make you buy more frequently or upgrade sooner?**
+
+* Lower prices or discounts
+* New and innovative features
+* Trade-in or upgrade programs
+* Better after-sales support
+* Sustainable or recyclable options
+* Nothing — I’m satisfied with my current purchase rate
+
+**10. If a product becomes significantly more expensive, what would you do?**
+
+* Delay the purchase
+* Choose a cheaper alternative
+* Switch to second-hand
+* Still buy the same product
+* Stop buying that category
+
+---
+
+### 🔮 SECTION 4: Future Purchase Intentions & Technology Trends
+
+**11. Are you planning to purchase or upgrade any major products in the next 12 months?**
+
+* Yes, definitely
+* Maybe
+* Not sure
+* No
+
+**12. Would you pay more for products that are:**
+
+* Higher quality and longer lasting
+* Eco-friendly or sustainably made
+* Locally produced
+* Smart/AI-enabled
+* Backed by excellent service and warranty
+* I prefer the cheapest option
+
+**13. Are you interested in renting or subscribing to products instead of owning them (e.g., renting appliances or vehicles)?**
+
+* Yes, very interested
+* Somewhat interested
+* No
+
+---
+
+### 🧑‍🤝‍🧑 SECTION 5: Demographics & Segmentation
+
+**14. Age group:**
+
+* Under 18
+* 18–25
+* 26–40
+* 41–60
+* Over 60
+
+**15. Household or business size:**
+
+* 1–2 people
+* 3–5 people
+* 6+ people
+* Small business (1–10 employees)
+* Medium business (11–100)
+* Large business (100+)
+
+**16. Income or budget range (optional):**
+
+* Low
+* Middle
+* High
+
+**17. Location:**
+
+* Continent
+* Country
+* Province / State
+* City / Town
+* Rural / Urban
+* (Optional: precise coordinates for regional market mapping)
+
+---
+
+### 📊 Insights You Can Extract From This Survey
+
+With this dataset, you can build deep market intelligence reports such as:
+
+* 🛠️ **Product demand forecasting:** Which categories are most in demand, and how often people replace them.
+* 🏷️ **Price sensitivity & spending patterns:** How much consumers are willing to pay for different types of goods.
+* 🔁 **Upgrade cycles & product lifespan:** Crucial for manufacturers and retailers planning product release timelines.
+* 📍 **Regional and demographic demand:** Where and among whom demand is highest (e.g., urban youth prefer smart gadgets; rural households invest more in durable tools).
+* 🌱 **Sustainability opportunities:** Interest in recycled, refurbished, or eco-friendly products.
+* 🤖 **Tech adoption trends:** Interest in AI-enabled or smart versions of existing products.
+
+---
+
+✅ **Why this is powerful:**
+This survey turns consumer decisions — like *when to upgrade a phone* or *why they choose one appliance over another* — into **actionable market data**. Companies, retailers, and even governments can use it to design better products, target marketing, plan import/export strategies, and even shape environmental policy.
+
+---
+
+[Survey type 3 for services]
+
+
+## 📡 Service Usage & Satisfaction Survey
+
+**Objective:**
+To collect detailed information on consumer and business service usage, satisfaction levels, decision drivers, barriers, and future intentions. This data helps identify demand trends, quality gaps, pricing opportunities, and market expansion potential in both B2C and B2B service sectors.
+
+---
+
+### 📍 SECTION 1: General Service Usage
+
+**1. Which of the following services do you or your household/business currently use?**
+(Check all that apply)
+
+* Internet / mobile network
+* Banking & financial services
+* Healthcare & medical services
+* Education / tutoring
+* Transportation & logistics
+* Insurance (health, vehicle, property)
+* Home maintenance (cleaning, plumbing, etc.)
+* IT / cloud computing services
+* Tourism & hospitality
+* Legal / consulting
+* Government or municipal services
+* Other (please specify)
+
+**2. How important are these services to your daily life or operations?**
+
+* Extremely important
+* Very important
+* Somewhat important
+* Not very important
+* Not important at all
+
+**3. How often do you use these services?**
+
+* Daily
+* Weekly
+* Monthly
+* Occasionally
+* Rarely
+
+---
+
+### 💡 SECTION 2: Service Acquisition & Decision Factors
+
+**4. How do you usually find or choose a new service provider?**
+
+* Personal recommendation
+* Online search or ads
+* Social media
+* Walk-in or physical branch
+* Company sales team / representative
+* Government or institutional assignment
+
+**5. What are the top 3 factors you consider before using a service?**
+
+* Price or fees
+* Quality and reliability
+* Customer support and responsiveness
+* Brand reputation
+* Ease of access or convenience
+* Extra features / added value
+* Trust / security / privacy
+* Flexibility or customization
+
+**6. How long have you been using your current service providers?**
+
+* Less than 6 months
+* 6 months – 1 year
+* 1–3 years
+* 3–5 years
+* More than 5 years
+
+---
+
+### 🧰 SECTION 3: Satisfaction & Experience
+
+**8. Have you ever switched service providers?**
+
+* Yes
+* No
+
+If **Yes**, why did you switch?
+
+* Better price elsewhere
+* Poor quality or reliability
+* Poor customer service
+* Better features or benefits
+* Contract ended
+* Relocation or other reason
+
+**9. How likely are you to recommend your current service provider to others?**
+
+* Very likely
+* Likely
+* Neutral
+* Unlikely
+* Very unlikely
+
+---
+
+### 🔄 SECTION 4: Renewal, Loyalty & Future Intentions
+
+**11. What would make you switch to a different provider?**
+
+* Lower prices
+* Better quality or reliability
+* Faster service
+* More features / benefits
+* Better customer support
+* Stronger privacy / security policies
+* I am unlikely to switch
+
+**12. Would you pay more for services that are:**
+
+* Significantly higher quality
+* Eco-friendly or sustainable
+* Local or community-owned
+* Highly customizable or personalized
+* I prefer the cheapest available option
+
+---
+
+### 🌱 SECTION 5: Future Service Trends & Innovations
+
+
+**14. Do you expect your service usage to increase, decrease, or stay the same in the next 5 years?**
+
+* Increase
+* Decrease
+* Stay the same
+* Not sure
+
+---
+
+### 🧑‍🤝‍🧑 SECTION 6: Demographics & Segmentation
+
+**15. Age group:**
+
+* Under 18
+* 18–25
+* 26–40
+* 41–60
+* Over 60
+
+**16. Household or business size:**
+
+* 1–2 people
+* 3–5 people
+* 6+ people
+* Small business (1–10 employees)
+* Medium business (11–100)
+* Large business (100+)
+
+**17. Industry (if business):**
+
+* Finance
+* Healthcare
+* Education
+* Retail
+* Manufacturing
+* Technology
+* Agriculture
+* Other
+
+**18. Location:**
+
+* Continent
+* Country
+* Province / State
+* City / Town
+* Rural / Urban
+* (Optional: precise coordinates for regional mapping)
+
+---
+
+### 📊 Insights You Can Generate
+
+With this survey data, you can build powerful insights like:
+
+* 📈 **Market penetration:** Which services are most widely used and by whom.
+* 💸 **Price sensitivity & switching triggers:** What causes customers to stay or leave.
+* 🏆 **Satisfaction benchmarks:** Which industries or companies lead in quality and trust.
+* 🔮 **Future trends:** Interest in new technologies like AI or subscription models.
+* 📍 **Segmented insights:** Compare satisfaction and loyalty across age, income, region, or business size.
+
+---
+
+✅ **Why this is powerful:**
+This turns intangible experiences like *trust*, *loyalty*, and *satisfaction* into measurable data. Businesses can use it to improve services, governments can regulate based on consumer needs, and investors can identify emerging opportunities in under-served markets.
+
+---
+
+
+#create a survey for hobby/ Interest
+
+[Survey type 4 for hobby/interest]
+
+
+## 🎯 Hobby & Interest Engagement Survey
+
+**Objective:**
+To understand personal interests, hobby engagement levels, time investment, spending patterns, and community participation across various recreational and creative activities. This data helps identify trends in leisure activities, market opportunities for hobby-related products/services, and community building potential.
+
+---
+
+### 🎨 SECTION 1: General Interest & Hobby Categories
+
+**1. Which of the following hobby or interest categories do you actively engage in?**
+(Check all that apply)
+
+* Sports & fitness (team sports, individual sports, gym, outdoor activities)
+* Music (playing instruments, singing, listening, composing)
+* Art & crafts (painting, drawing, sculpture, DIY projects)
+* Reading & writing (books, blogs, poetry, novels)
+* Technology & gaming (video games, programming, electronics)
+* Cooking & baking (home cooking, recipe development, food photography)
+* Gardening & nature (plant care, landscaping, hiking, birdwatching)
+* Photography & videography (digital photography, video editing, social media content)
+* Collecting (stamps, coins, memorabilia, antiques)
+* Travel & exploration (local tourism, international travel, cultural experiences)
+* Other (please specify)
+
+**2. How important are these hobbies/interests in your life?**
+
+* Extremely important (central to my identity)
+* Very important (major part of my life)
+* Somewhat important (enjoyable pastime)
+* Not very important (occasional activity)
+* Not important at all
+
+**3. What do you enjoy most about your hobbies/interests?**
+
+* Creative expression and personal fulfillment
+* Social connection and community building
+* Learning new skills and knowledge
+* Physical health and fitness benefits
+* Stress relief and relaxation
+* Achievement and competition
+* Financial opportunities (selling, teaching, etc.)
+
+---
+
+### ⏰ SECTION 2: Time Investment & Engagement
+
+**4. How much time do you typically spend on your hobbies/interests per week?**
+
+* Less than 2 hours
+* 2–5 hours
+* 5–10 hours
+* 10–20 hours
+* More than 20 hours
+
+**5. How often do you engage in your main hobby/interest?**
+
+* Daily
+* Several times a week
+* Weekly
+* Monthly
+* Occasionally/seasonally
+
+**6. Do you prefer to engage in hobbies/interests:**
+
+* Alone (solo activities)
+* With friends or family
+* In organized groups or clubs
+* Online communities
+* Mix of all the above
+
+---
+
+### 💰 SECTION 3: Spending & Investment Patterns
+
+**7. How much do you typically spend on your hobbies/interests per month?**
+
+* Less than R500
+* R500 – R1,500
+* R1,500 – R5,000
+* R5,000 – R15,000
+* More than R15,000
+
+**8. What do you spend most money on for your hobbies/interests?**
+
+* Equipment and tools
+* Materials and supplies
+* Classes, courses, or lessons
+* Events, competitions, or exhibitions
+* Travel related to the hobby
+* Online subscriptions or apps
+* Books, magazines, or educational content
+
+---
+
+### 🏆 SECTION 4: Skill Development & Goals
+
+**10. How would you describe your skill level in your main hobby/interest?**
+
+* Beginner (just starting out)
+* Novice (learning basics)
+* Intermediate (comfortable with fundamentals)
+* Advanced (skilled and experienced)
+* Expert (highly proficient, possibly teaching others)
+
+**11. What are your main goals with your hobbies/interests?**
+
+* Personal enjoyment and relaxation
+* Skill improvement and mastery
+* Social connection and networking
+* Creative expression and artistic development
+* Physical fitness and health
+* Potential career or business opportunities
+* Community contribution and teaching others
+
+**12. How do you typically learn new skills or improve in your hobbies?**
+
+* Self-taught through online resources
+* YouTube tutorials and videos
+* Online courses or webinars
+* In-person classes or workshops
+* Books, magazines, or written guides
+* Learning from friends or mentors
+* Trial and error experimentation
+
+---
+
+### 🌐 SECTION 5: Community & Social Engagement
+
+**13. Do you participate in any hobby-related communities or groups?**
+
+* Yes, local in-person groups
+* Yes, online communities/forums
+* Yes, social media groups
+* Yes, professional associations
+* No, I prefer to engage alone
+* No, but I'm interested in joining
+
+**14. How do you share your hobby/interest with others?**
+
+* Social media posts and photos
+* Personal blogs or websites
+* Participating in exhibitions or shows
+* Teaching or mentoring others
+* Selling products or services
+* I don't share publicly
+
+**15. What would encourage you to be more involved in hobby communities?**
+
+* More local events and meetups
+* Better online platforms and tools
+* Mentorship or teaching opportunities
+* Recognition or awards programs
+* Networking and collaboration opportunities
+* Nothing, I'm satisfied with current involvement
+
+---
+
+### 🔮 SECTION 6: Future Plans & Trends
+
+**16. Do you plan to increase your involvement in your hobbies/interests in the next 2 years?**
+
+* Yes, significantly more time and investment
+* Yes, moderately more involvement
+* Stay the same level
+* Decrease involvement
+* Not sure
+
+**17. Are you interested in turning any of your hobbies into a business or side income?**
+
+* Yes, actively pursuing this
+* Yes, considering it for the future
+* Maybe, if the right opportunity comes
+* No, I prefer to keep hobbies separate from work
+* No, not interested in monetizing
+
+**18. What new hobbies or interests are you curious about trying?**
+
+* Technology-related activities
+* Creative arts and crafts
+* Physical fitness and sports
+* Learning new languages or skills
+* Environmental or sustainability activities
+* Cultural and travel experiences
+* Nothing new at the moment
+
+---
+
+### 🧑‍🤝‍🧑 SECTION 7: Demographics & Lifestyle
+
+**19. Age group:**
+
+* Under 18
+* 18–25
+* 26–40
+* 41–60
+* Over 60
+
+**20. Household size:**
+
+* 1–2 people
+* 3–5 people
+* 6+ people
+
+**21. Income range (optional):**
+
+* Low
+* Middle
+* High
+
+**22. Location:**
+
+* Continent
+* Country
+* Province / State
+* City / Town
+* Rural / Urban
+
+**23. Do you have any physical limitations that affect your hobby choices?**
+
+* Yes, some limitations
+* No limitations
+* Prefer not to answer
+
+---
+
+### 📊 Insights You Can Generate
+
+With this hobby and interest survey data, you can build valuable insights such as:
+
+* 🎯 **Interest trend analysis:** Which hobbies are growing in popularity and which are declining
+* 💰 **Market opportunity mapping:** Spending patterns and unmet needs in hobby-related markets
+* 👥 **Community building insights:** How people prefer to connect and engage with others
+* 🏆 **Skill development pathways:** Most effective learning methods and progression patterns
+* 🌍 **Regional hobby preferences:** Geographic variations in interest and engagement levels
+* 💼 **Business opportunity identification:** Hobbies with potential for monetization or career development
+
+---
+
+✅ **Why this is powerful:**
+This survey transforms personal passions into actionable market intelligence. It helps hobby-related businesses understand their customers better, enables community platforms to improve user engagement, and provides valuable data for educational institutions, event organizers, and product developers in the leisure and recreation sectors.
+
+### 🩺 Clinical Diagnosis Survey
+
+**1. What is your primary clinical diagnosis?**  
+* (Open text field)
+
+**2. When were you first diagnosed?**  
+* Less than 1 year ago  
+* 1–5 years ago  
+* 6–10 years ago  
+* Over 10 years ago  
+* Prefer not to say
+
+**3. Who provided your diagnosis?**  
+* Medical doctor (e.g., psychiatrist, neurologist, general practitioner)  
+* Psychologist or therapist  
+* Self-diagnosed  
+* Other healthcare professional  
+* Prefer not to say
+
+**4. What symptoms or challenges do you experience most frequently?**  
+* (Select all that apply, or open text)  
+* Physical symptoms  
+* Emotional symptoms  
+* Cognitive symptoms  
+* Social/relationship challenges  
+* Occupational/academic challenges  
+* Other
+
+**5. How would you rate the impact of your diagnosis on your daily life?**  
+* Severe impact  
+* Moderate impact  
+* Mild impact  
+* No significant impact
+
+**6. What treatments or interventions are you currently using?**  
+* (Select all that apply)  
+* Prescription medication  
+* Therapy/counseling  
+* Lifestyle changes (diet, exercise, sleep)  
+* Support groups  
+* Alternative/holistic therapies  
+* None  
+* Prefer not to say
+
+**7. How satisfied are you with your current treatment or support?**  
+* Very satisfied  
+* Somewhat satisfied  
+* Neutral  
+* Somewhat dissatisfied  
+* Very dissatisfied
+
+**8. What are your biggest unmet needs related to your diagnosis?**  
+* (Open text field)
+
+**9. How often do you seek medical or professional support for your condition?**  
+* Regularly (monthly or more)  
+* Occasionally (a few times a year)  
+* Rarely  
+* Never
+
+**10. Do you feel comfortable discussing your diagnosis with others?**  
+* Yes, with anyone  
+* Only with close friends/family  
+* Only with healthcare professionals  
+* No, I prefer to keep it private
+
+**11. What is your age group?**  
+* Under 18  
+* 18–25  
+* 26–40  
+* 41–60  
+* Over 60
+
+**12. What is your gender?**  
+* Female  
+* Male  
+* Non-binary/Other  
+* Prefer not to say
+
+**13. Where do you live?**  
+* Continent  
+* Country  
+* Province/State  
+* City/Town  
+* Rural/Urban
+
+---
+
+### 📊 Insights You Can Generate
+
+With this clinical diagnosis survey data, you can uncover:
+
+* **Treatment effectiveness:** Which interventions are most helpful for different diagnoses
+* **Unmet needs:** Gaps in care, support, or resources for specific conditions
+* **Quality of life impact:** How diagnoses affect daily living and well-being
+* **Access to care:** Barriers to diagnosis, treatment, or ongoing support
+* **Demographic patterns:** How experiences differ by age, gender, or location
+
+---
+
+✅ **Why this is powerful:**  
+This survey provides actionable insights for healthcare providers, patient advocacy groups, researchers, and policymakers to improve care, support, and outcomes for people with clinical diagnoses.

@@ -65,7 +65,7 @@ public class AboutView extends VerticalLayout {
         Paragraph proPrice = new Paragraph("Mission");
         proPrice.addClassName("card__price");
         Paragraph missionText = new Paragraph(
-            "Our mission is to become a leading company in connecting businesses and driving innovation by providing best solutions to everyday business problems."+
+            "Our mission is to become a leading company in connecting businesses and driving innovation by providing best solutions to everyday business problems. "+
             "And to provide innovative solutions that enhance operational efficiency and facilitate growth. " +
             "We build strong partnerships with our clients, understanding their challenges and working together to achieve their goals. " +
             "We stay at the forefront of technology trends, ensuring our clients benefit from the latest advancements and best practices. "

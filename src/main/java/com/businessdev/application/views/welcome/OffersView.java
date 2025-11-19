@@ -48,11 +48,12 @@ public class OffersView extends VerticalLayout {
         webDevImage.setWidth("100%");
         H2 webDevHeading = new H2("Web Application Development");
         webDevHeading.addClassNames("card__heading", "offer-heading");
-        VerticalLayout content_container = new VerticalLayout(webDevImage, webDevHeading);
+        VerticalLayout content_container = new VerticalLayout(webDevImage);
         
         VerticalLayout wrapper = new VerticalLayout();
         Button pricing = new Button("View Pricing");
         pricing.addClassName("pricing");
+        pricing.addClassName("button-link");
         pricing.setWidth("100%");
         pricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addPricingButtonListener(pricing, "Web Application Development");
@@ -73,9 +74,9 @@ public class OffersView extends VerticalLayout {
         Span node = new Span("Node.js");
         Span mongodb = new Span("MongoDB");
         
-        tools.add(html, css, js, ts, java, spring, springBoot, vaadin, react, vue, angular, node, mongodb);
+        tools.add(ts, java, spring, springBoot, vaadin, react, angular, node);
         tools.setSpacing(true);
-        wrapper.add(tools, pricing);
+        wrapper.add(webDevHeading, tools, pricing);
         webDevCard.add(content_container, wrapper);
 
         // App Development Card
@@ -85,17 +86,17 @@ public class OffersView extends VerticalLayout {
         appDevImage.setWidth("100%");
         H2 appDevHeading = new H2("Mobile Application Development");
         appDevHeading.addClassNames("card__heading", "offer-heading");
-        VerticalLayout appDevContent = new VerticalLayout(appDevImage, appDevHeading);
+        VerticalLayout appDevContent = new VerticalLayout(appDevImage);
         
         VerticalLayout appDevWrapper = new VerticalLayout();
         Button appDevPricing = new Button("View Pricing");
         appDevPricing.addClassName("pricing");
+        appDevPricing.addClassName("button-link");
         appDevPricing.setWidth("100%");
         appDevPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addPricingButtonListener(appDevPricing, "Mobile Application Development");
         HorizontalLayout appDevTools = new HorizontalLayout();
         appDevTools.addClassName("tools-container");
-        
         Span swift = new Span("Swift");
         Span kotlin = new Span("Kotlin");
         Span flutter = new Span("Flutter");
@@ -105,7 +106,7 @@ public class OffersView extends VerticalLayout {
         
         appDevTools.add(swift, kotlin, flutter, reactNative, xamarin, androidStudio);
         appDevTools.setSpacing(true);
-        appDevWrapper.add(appDevTools, appDevPricing);
+        appDevWrapper.add(appDevHeading, appDevTools, appDevPricing);
         appDevCard.add(appDevContent, appDevWrapper);
 
         // UI Design Card
@@ -115,11 +116,12 @@ public class OffersView extends VerticalLayout {
         uiDesignImage.setWidth("100%");
         H2 uiDesignHeading = new H2("UI/UX Design");
         uiDesignHeading.addClassNames("card__heading", "offer-heading");
-        VerticalLayout uiDesignContent = new VerticalLayout(uiDesignImage, uiDesignHeading);
+        VerticalLayout uiDesignContent = new VerticalLayout(uiDesignImage);
         
         VerticalLayout uiDesignWrapper = new VerticalLayout();
         Button uiDesignPricing = new Button("View Pricing");
         uiDesignPricing.addClassName("pricing");
+        uiDesignPricing.addClassName("button-link");
         uiDesignPricing.setWidth("100%");
         uiDesignPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addPricingButtonListener(uiDesignPricing, "UI/UX Design");
@@ -137,7 +139,7 @@ public class OffersView extends VerticalLayout {
         
         uiDesignTools.add(figma, sketch, xd, ai, ps, principle, invision, zeplin);
         uiDesignTools.setSpacing(true);
-        uiDesignWrapper.add(uiDesignTools, uiDesignPricing);
+        uiDesignWrapper.add(uiDesignHeading, uiDesignTools, uiDesignPricing);
         uiDesignCard.add(uiDesignContent, uiDesignWrapper);
 
         // Logo Design Card
@@ -147,11 +149,12 @@ public class OffersView extends VerticalLayout {
         logoDesignImage.setWidth("100%");
         H2 logoDesignHeading = new H2("Brand Identity Design");
         logoDesignHeading.addClassNames("card__heading", "offer-heading");
-        VerticalLayout logoDesignContent = new VerticalLayout(logoDesignImage, logoDesignHeading);
+        VerticalLayout logoDesignContent = new VerticalLayout(logoDesignImage);
         
         VerticalLayout logoDesignWrapper = new VerticalLayout();
         Button logoDesignPricing = new Button("View Pricing");
         logoDesignPricing.addClassName("pricing");
+        logoDesignPricing.addClassName("button-link");
         logoDesignPricing.setWidth("100%");
         logoDesignPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addPricingButtonListener(logoDesignPricing, "Brand Identity Design");
@@ -164,11 +167,11 @@ public class OffersView extends VerticalLayout {
         Span afterEffects = new Span("After Effects");
         Span premiere = new Span("Premiere Pro");
         Span lightroom = new Span("Lightroom");
-        Span dimension = new Span("Dimension");
+        Span dimension = new Span("DaVinci Resolve");
         
         logoDesignTools.add(illustrator, photoshop, indesign, afterEffects, premiere, lightroom, dimension);
         logoDesignTools.setSpacing(true);
-        logoDesignWrapper.add(logoDesignTools, logoDesignPricing);
+        logoDesignWrapper.add(logoDesignHeading, logoDesignTools, logoDesignPricing);
         logoDesignCard.add(logoDesignContent, logoDesignWrapper);
 
         // Graphic Design Card
@@ -178,11 +181,12 @@ public class OffersView extends VerticalLayout {
         graphicDesignImage.setWidth("100%");
         H2 graphicDesignHeading = new H2("Graphic Design");
         graphicDesignHeading.addClassNames("card__heading", "offer-heading");
-        VerticalLayout graphicDesignContent = new VerticalLayout(graphicDesignImage, graphicDesignHeading);
+        VerticalLayout graphicDesignContent = new VerticalLayout(graphicDesignImage);
         
         VerticalLayout graphicDesignWrapper = new VerticalLayout();
         Button graphicDesignPricing = new Button("View Pricing");
         graphicDesignPricing.addClassName("pricing");
+        graphicDesignPricing.addClassName("button-link");
         graphicDesignPricing.setWidth("100%");
         graphicDesignPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addPricingButtonListener(graphicDesignPricing, "Graphic Design");
@@ -200,11 +204,10 @@ public class OffersView extends VerticalLayout {
             new Span("Sketch"),
             new Span("InDesign"),
             new Span("Affinity Designer"),
-            new Span("XD"),
-            new Span("GIMP")
+            new Span("XD")
         );
         graphicDesignTools.setSpacing(true);
-        graphicDesignWrapper.add(graphicDesignTools, graphicDesignPricing);
+        graphicDesignWrapper.add(graphicDesignHeading, graphicDesignTools, graphicDesignPricing);
         graphicDesignCard.add(graphicDesignContent, graphicDesignWrapper);
 
         // Architecture Design Card
@@ -214,11 +217,12 @@ public class OffersView extends VerticalLayout {
         architectureImage.setWidth("100%");
         H2 architectureHeading = new H2("Construction Architecture");
         architectureHeading.addClassNames("card__heading", "offer-heading");
-        VerticalLayout architectureContent = new VerticalLayout(architectureImage, architectureHeading);
+        VerticalLayout architectureContent = new VerticalLayout(architectureImage);
         
         VerticalLayout architectureWrapper = new VerticalLayout();
         Button architecturePricing = new Button("View Pricing");
         architecturePricing.addClassName("pricing");
+        architecturePricing.addClassName("button-link");
         architecturePricing.setWidth("100%");
         architecturePricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addPricingButtonListener(architecturePricing, "Construction Architecture");
@@ -236,7 +240,7 @@ public class OffersView extends VerticalLayout {
         
         architectureTools.add(autocad, revit, sketchup, archicad, vectorworks, rhino, microstation, chiefarchitect);
         architectureTools.setSpacing(true);
-        architectureWrapper.add(architectureTools, architecturePricing);
+        architectureWrapper.add(architectureHeading, architectureTools, architecturePricing);
         architectureCard.add(architectureContent, architectureWrapper);
 
         // 3D Modelling Card
@@ -246,11 +250,12 @@ public class OffersView extends VerticalLayout {
         modellingImage.setWidth("100%");
         H2 modellingHeading = new H2("3D Modeling");
         modellingHeading.addClassNames("card__heading", "offer-heading");
-        VerticalLayout modellingContent = new VerticalLayout(modellingImage, modellingHeading);
+        VerticalLayout modellingContent = new VerticalLayout(modellingImage);
         
         VerticalLayout modellingWrapper = new VerticalLayout();
         Button modellingPricing = new Button("View Pricing");
         modellingPricing.addClassName("pricing");
+        modellingPricing.addClassName("button-link");
         modellingPricing.setWidth("100%");
         modellingPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addPricingButtonListener(modellingPricing, "3D Modeling");
@@ -264,7 +269,7 @@ public class OffersView extends VerticalLayout {
         
         modellingTools.add(blender, maya, unity, unreal);
         modellingTools.setSpacing(true);
-        modellingWrapper.add(modellingTools, modellingPricing);
+        modellingWrapper.add(modellingHeading, modellingTools, modellingPricing);
         modellingCard.add(modellingContent, modellingWrapper);
 
         // Business Analysis Card
@@ -274,11 +279,12 @@ public class OffersView extends VerticalLayout {
         businessAnalysisImage.setWidth("100%");
         H2 businessAnalysisHeading = new H2("Business Analysis");
         businessAnalysisHeading.addClassNames("card__heading", "offer-heading");
-        VerticalLayout businessAnalysisContent = new VerticalLayout(businessAnalysisImage, businessAnalysisHeading);
+        VerticalLayout businessAnalysisContent = new VerticalLayout(businessAnalysisImage);
         
         VerticalLayout businessAnalysisWrapper = new VerticalLayout();
         Button businessAnalysisPricing = new Button("View Pricing");
         businessAnalysisPricing.addClassName("pricing");
+        businessAnalysisPricing.addClassName("button-link");
         businessAnalysisPricing.setWidth("100%");
         businessAnalysisPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addPricingButtonListener(businessAnalysisPricing, "Business Analysis");
@@ -294,11 +300,11 @@ public class OffersView extends VerticalLayout {
         Span lucidchart = new Span("Lucidchart");
         Span confluence = new Span("Confluence");
         Span msProject = new Span("MS Project");
-        Span trello = new Span("Trello");
+        Span trello = new Span("BABOK");
         
         businessAnalysisTools.add(jira, tableau, powerBi, excel, visio, miro, lucidchart, confluence, msProject, trello);
         businessAnalysisTools.setSpacing(true);
-        businessAnalysisWrapper.add(businessAnalysisTools, businessAnalysisPricing);
+        businessAnalysisWrapper.add(businessAnalysisHeading, businessAnalysisTools, businessAnalysisPricing);
         businessAnalysisCard.add(businessAnalysisContent, businessAnalysisWrapper);
 
         // Solutions Architecture Card
@@ -308,11 +314,12 @@ public class OffersView extends VerticalLayout {
         solutionsArchImage.setWidth("100%");
         H2 solutionsArchHeading = new H2("Solutions Architecture");
         solutionsArchHeading.addClassNames("card__heading", "offer-heading");
-        VerticalLayout solutionsArchContent = new VerticalLayout(solutionsArchImage, solutionsArchHeading);
+        VerticalLayout solutionsArchContent = new VerticalLayout(solutionsArchImage);
         
         VerticalLayout solutionsArchWrapper = new VerticalLayout();
         Button solutionsArchPricing = new Button("View Pricing");
         solutionsArchPricing.addClassName("pricing");
+        solutionsArchPricing.addClassName("button-link");
         solutionsArchPricing.setWidth("100%");
         solutionsArchPricing.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         addPricingButtonListener(solutionsArchPricing, "Solutions Architecture");
@@ -328,7 +335,7 @@ public class OffersView extends VerticalLayout {
         
         solutionsArchTools.add(terraform, ansible, aws, azure, kubernetes, docker);
         solutionsArchTools.setSpacing(true);
-        solutionsArchWrapper.add(solutionsArchTools, solutionsArchPricing);
+        solutionsArchWrapper.add(solutionsArchHeading, solutionsArchTools, solutionsArchPricing);
         solutionsArchCard.add(solutionsArchContent, solutionsArchWrapper);
 
         //...

@@ -1,6 +1,7 @@
 package com.businessdev.application.views.components;
 
 import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
@@ -9,6 +10,7 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.Location;
 
 public class MainNavigation extends VerticalLayout{
     private Button minimize;
@@ -41,10 +43,9 @@ public class MainNavigation extends VerticalLayout{
         logo2.setClassName("logo");
         logo2.getStyle().set("margin", "0")
                 .set("padding", "0")
-                .set("position", "relative")
-                .set("mix-blend-mode", "difference"); /* Changes color based on background */
+                .set("position", "relative"); /* Changes color based on background */
         //.set("filter", "invert(1)"); /* Inverts color from black to white */;
-        logo2.getElement().setProperty("innerHTML", "<svg id=\"Layer_2\" data-name=\"Layer 2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 96.93 50\">\n" +
+        logo2.getElement().setProperty("innerHTML", "<svg class=\"main-logo\" id=\"Layer_2\" data-name=\"Layer 2\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 96.93 50\">\n" +
                 "  <defs>\n" +
                 "    <style>\n" +
                 "      .cls-1 {\n" +
@@ -52,12 +53,12 @@ public class MainNavigation extends VerticalLayout{
                 "      }\n" +
                 "    </style>\n" +
                 "  </defs>\n" +
-                "  <g id=\"Layer_1-2\" data-name=\"Layer 1\">\n" +
+                "  <g id=\"Layer_1-3\" data-name=\"Layer 1\">\n" +
                 "    <g>\n" +
-                "      <path class=\"cls-1\" d=\"M37.96,30.81h0c0,10.45-8.54,18.99-18.98,18.99h0C8.53,49.8.06,41.35,0,30.91v-14.09c0-2.76,2.24-5,5-5h14.09c10.43.06,18.88,8.54,18.88,18.98Z\"/>\n" +
-                "      <path class=\"cls-1\" d=\"M76.27,11.82c2.76,0,5,2.24,5,5v14.09h-.11c0,10.49-8.49,18.99-18.98,18.99s-18.98-8.5-18.98-18.99,8.5-18.98,18.98-18.98v-.11h14.09Z\"/>\n" +
-                "      <path class=\"cls-1\" d=\"M35.3,3.02c.59-.95,1.34-1.68,2.27-2.2.95-.54,1.95-.81,3.02-.81s2.07.27,3.01.81c.93.57,1.67,1.31,2.24,2.24.56.9.85,1.9.85,2.98,0,1.88-.63,3.41-1.9,4.61-1.17,1.1-2.78,1.7-4.39,1.66-1.05-.03-2.02-.3-2.89-.81-.95-.54-1.69-1.3-2.24-2.27-.54-.99-.81-2.06-.81-3.18s.28-2.11.85-3.02Z\"/>\n" +
-                "      <path class=\"cls-1\" d=\"M85.55,40.72c.59-.95,1.34-1.68,2.27-2.2.95-.54,1.95-.81,3.02-.81s2.07.27,3.01.81c.93.57,1.67,1.31,2.24,2.24.56.9.85,1.9.85,2.98,0,1.88-.63,3.41-1.9,4.61-1.17,1.1-2.78,1.7-4.39,1.66-1.05-.03-2.02-.3-2.89-.81-.95-.54-1.69-1.3-2.24-2.27-.54-.99-.81-2.06-.81-3.18s.28-2.11.85-3.02Z\"/>\n" +
+                "      <path class=\"cls-3\" d=\"M37.96,30.81h0c0,10.45-8.54,18.99-18.98,18.99h0C8.53,49.8.06,41.35,0,30.91v-14.09c0-2.76,2.24-5,5-5h14.09c10.43.06,18.88,8.54,18.88,18.98Z\"/>\n" +
+                "      <path class=\"cls-3\" d=\"M76.27,11.82c2.76,0,5,2.24,5,5v14.09h-.11c0,10.49-8.49,18.99-18.98,18.99s-18.98-8.5-18.98-18.99,8.5-18.98,18.98-18.98v-.11h14.09Z\"/>\n" +
+                "      <path class=\"cls-3\" d=\"M35.3,3.02c.59-.95,1.34-1.68,2.27-2.2.95-.54,1.95-.81,3.02-.81s2.07.27,3.01.81c.93.57,1.67,1.31,2.24,2.24.56.9.85,1.9.85,2.98,0,1.88-.63,3.41-1.9,4.61-1.17,1.1-2.78,1.7-4.39,1.66-1.05-.03-2.02-.3-2.89-.81-.95-.54-1.69-1.3-2.24-2.27-.54-.99-.81-2.06-.81-3.18s.28-2.11.85-3.02Z\"/>\n" +
+                "      <path class=\"cls-3\" d=\"M85.55,40.72c.59-.95,1.34-1.68,2.27-2.2.95-.54,1.95-.81,3.02-.81s2.07.27,3.01.81c.93.57,1.67,1.31,2.24,2.24.56.9.85,1.9.85,2.98,0,1.88-.63,3.41-1.9,4.61-1.17,1.1-2.78,1.7-4.39,1.66-1.05-.03-2.02-.3-2.89-.81-.95-.54-1.69-1.3-2.24-2.27-.54-.99-.81-2.06-.81-3.18s.28-2.11.85-3.02Z\"/>\n" +
                 "    </g>\n" +
                 "  </g>\n" +
                 "</svg>");
@@ -128,7 +129,7 @@ public class MainNavigation extends VerticalLayout{
         logo3.getStyle().set("display", "flex")
                 .set("align-items", "center") 
                 .set("justify-content", "center")
-                .set("padding", "0")
+                .set("padding", "5px")
                 .set("margin", "0");
 
         logo3.setClassName("logo-on-menu");
@@ -138,6 +139,7 @@ public class MainNavigation extends VerticalLayout{
                 "    <style>\n" +
                 "      .cls-1 {\n" +
                 "        stroke-width: 0px;\n" +
+                "        width: 100%;\n" +
                 "      }\n" +
                 "    </style>\n" +
                 "  </defs>\n" +
@@ -206,7 +208,7 @@ public class MainNavigation extends VerticalLayout{
         homeText.setClassName("linkText");
         Paragraph offersText = new Paragraph("Offers");
         offersText.setClassName("linkText");
-        Paragraph servicesText = new Paragraph("Services");
+        Paragraph servicesText = new Paragraph("Survey");
         servicesText.setClassName("linkText");
         Paragraph aboutText = new Paragraph("About");
         aboutText.setClassName("linkText");
@@ -227,28 +229,31 @@ public class MainNavigation extends VerticalLayout{
         HorizontalLayout contactContainer = new HorizontalLayout(contactIcon, contactText);
         setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, contactIcon, contactText);
 
-        Anchor home = new Anchor (" ", homeContainer);
-        //home.setWidthFull();
+        Anchor home = new Anchor(" ", homeContainer);
         home.setClassName("link");
-        home.getStyle().setPadding("10px")
-                .setBorderRadius("5px");
+        home.getStyle().setBackgroundColor(isCurrentLocation("/") ? "var(--lumo-shade-10pct)" : "transparent")
+                .setBorderRadius("5px").setPadding("10px");
+
         Anchor offers = new Anchor("offers", offersContainer);
-        //offers.setWidthFull();
         offers.setClassName("link");
-        offers.getStyle().setPadding("10px").setBorderRadius("5px");
-        Anchor services = new Anchor("services", servicesContainer);
-        //services.setWidthFull();
+        offers.getStyle().setBackgroundColor(isCurrentLocation("offers") ? "var(--lumo-shade-15pct)!important" : "transparent")
+                .setBorderRadius("5px").setPadding("10px");
+
+        Anchor services = new Anchor("survey", servicesContainer);
         services.setClassName("link");
-        services.getStyle().setPadding("10px").setBorderRadius("5px");
+        services.getStyle().setBackgroundColor(isCurrentLocation("survey") ? "var(--lumo-shade-15pct)!important" : "transparent")
+                .setBorderRadius("5px").setPadding("10px");
+
         Anchor about = new Anchor("about", aboutContainer);
-        //about.setWidthFull();
         about.setClassName("link");
-        about.getStyle().setPadding("10px").setBorderRadius("5px");
+        about.getStyle().setBackgroundColor(isCurrentLocation("about") ? "var(--lumo-shade-15pct)!important" : "transparent")
+                .setBorderRadius("5px").setPadding("10px");
+
         Anchor contact = new Anchor("contact", contactContainer);
-        //contact.setWidthFull();
         contact.setClassName("link");
-        contact.getStyle().setPadding("10px").setBorderRadius("5px");
-        navSection2.add(home, offers, services, contact, about);
+        contact.getStyle().setBackgroundColor(isCurrentLocation("contact") ? "var(--lumo-shade-15pct)!important" : "transparent")
+                .setBorderRadius("5px").setPadding("10px");
+        navSection2.add(home, offers, contact, about);
         //...
         TextField chat = new TextField();
         chat.getStyle().set("flex", "1");
@@ -259,6 +264,7 @@ public class MainNavigation extends VerticalLayout{
 
         HorizontalLayout copyRightLayout = new HorizontalLayout();
         copyRightLayout.getStyle().set("height", "fit-content")
+                .set("display", "flex")
                 .set("padding", "0")
                 .set("height", "25px")
                 .set("font-size", "10px")
@@ -269,6 +275,7 @@ public class MainNavigation extends VerticalLayout{
         copyRightLayout.setWidthFull();
 
         Paragraph enterpriseNumber = new Paragraph("2024/470976/07");
+        enterpriseNumber.getStyle().set("margin-bottom", "0").set("padding-bottom", "0");
         Paragraph copyRight = new Paragraph("\u00A9 " + java.time.Year.now().getValue() + ". ");
         copyRight.getStyle().set("margin", "0").set("padding", "0");
         Paragraph copyRight2 = new Paragraph("All Rights Reserved.");
@@ -278,5 +285,26 @@ public class MainNavigation extends VerticalLayout{
         
         // Adding navBar and hello layout to the main layout
         add(navBar);
+    }
+
+    private boolean isCurrentLocation(String path) {
+        UI currentUI = UI.getCurrent();
+        if (currentUI == null) {
+            return false;
+        }
+        try {
+            Location location = currentUI.getInternals().getActiveViewLocation();
+            if (location == null) {
+                return false;
+            }
+            String currentPath = location.getPath();
+            // Handle root path (empty string or single space)
+            if (path.trim().isEmpty() || path.equals(" ")) {
+                return currentPath == null || currentPath.isEmpty() || currentPath.equals(" ");
+            }
+            return currentPath != null && currentPath.equals(path);
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
