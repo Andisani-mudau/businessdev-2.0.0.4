@@ -253,6 +253,12 @@
                                     <artifactId>spring-boot-devtools</artifactId>
                                 </exclude>
                             </excludes>
+                            <requiresUnpack>
+                                <dependency>
+                                    <groupId>com.vaadin</groupId>
+                                    <artifactId>vaadin-core</artifactId>
+                                </dependency>
+                            </requiresUnpack>
                         </configuration>
                     </plugin>
                     <plugin>
@@ -285,6 +291,28 @@
                                     <failOnError>true</failOnError>
                                     <nodeDownloadRoot>https://nodejs.org/dist/</nodeDownloadRoot>
                                     <nodeVersion>v20.11.0</nodeVersion>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>verify-frontend-build</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <echo message="Verifying Vaadin production bundle..."/>
+                                        <available file="${project.build.outputDirectory}/META-INF/VAADIN/config/flow-build-info.json" property="flow.build.info.exists"/>
+                                        <fail unless="flow.build.info.exists" message="ERROR: flow-build-info.json is missing! The build-frontend goal may have failed. Check build logs."/>
+                                        <echo message="✓ flow-build-info.json found"/>
+                                    </target>
                                 </configuration>
                             </execution>
                         </executions>
