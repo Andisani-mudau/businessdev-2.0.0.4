@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(
+    name = "spring.data.mongodb.uri",
+    matchIfMissing = false
+)
 public class ConsumerService {
     
     @Autowired

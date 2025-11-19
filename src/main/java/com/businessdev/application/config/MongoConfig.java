@@ -7,6 +7,10 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 @Configuration
 @EnableMongoRepositories(basePackages = "com.businessdev.application.repository")
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(
+    name = "spring.data.mongodb.uri",
+    matchIfMissing = false
+)
 public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Value("${spring.data.mongodb.database:businessdev}")

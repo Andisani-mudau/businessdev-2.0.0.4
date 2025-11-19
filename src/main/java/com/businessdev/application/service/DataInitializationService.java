@@ -15,6 +15,10 @@ import java.util.Arrays;
 import java.util.List;
 
 @org.springframework.stereotype.Service
+@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(
+    name = "spring.data.mongodb.uri",
+    matchIfMissing = false
+)
 public class DataInitializationService implements CommandLineRunner {
     
     @Autowired
@@ -31,21 +35,34 @@ public class DataInitializationService implements CommandLineRunner {
     
     @Override
     public void run(String... args) throws Exception {
-        initializeSampleData();
+        try {
+            initializeSampleData();
+        } catch (Exception e) {
+            // Log error but don't fail startup if data initialization fails
+            // This allows the application to start even if MongoDB is temporarily unavailable
+            System.err.println("Warning: Failed to initialize sample data: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
     private void initializeSampleData() {
-        // Only initialize if database is empty
-        if (productRepository.count() == 0) {
-            initializeProducts();
-        }
-        
-        if (serviceRepository.count() == 0) {
-            initializeServices();
-        }
-        
-        if (surveyQuestionRepository.count() == 0) {
-            initializeSurveyQuestions();
+        try {
+            // Only initialize if database is empty
+            if (productRepository.count() == 0) {
+                initializeProducts();
+            }
+            
+            if (serviceRepository.count() == 0) {
+                initializeServices();
+            }
+            
+            if (surveyQuestionRepository.count() == 0) {
+                initializeSurveyQuestions();
+            }
+        } catch (Exception e) {
+            // Handle MongoDB connection errors gracefully
+            System.err.println("Warning: Could not access MongoDB for data initialization: " + e.getMessage());
+            throw e;
         }
         
         if (surveyTemplateRepository.count() == 0) {

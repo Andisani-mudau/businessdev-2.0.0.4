@@ -5,6 +5,8 @@ import com.vaadin.flow.server.AppShellSettings;
 import com.vaadin.flow.theme.Theme;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 
 import java.util.Date;
@@ -16,7 +18,11 @@ import java.util.Date;
  * and some desktop browsers.
  *
  */
-@SpringBootApplication(exclude = {UserDetailsServiceAutoConfiguration.class})
+@SpringBootApplication(exclude = {
+    UserDetailsServiceAutoConfiguration.class,
+    MongoAutoConfiguration.class,
+    MongoDataAutoConfiguration.class
+})
 @Theme(value = "businessdev")
 public class Application implements AppShellConfigurator {
 

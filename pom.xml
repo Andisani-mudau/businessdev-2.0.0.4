@@ -249,7 +249,7 @@
                         <version>${vaadin.version}</version>
                         <executions>
                             <execution>
-                                <id>prepare-frontend</id>
+                                <id>prepare-frontend-prod</id>
                                 <phase>generate-resources</phase>
                                 <goals>
                                     <goal>prepare-frontend</goal>
@@ -261,7 +261,7 @@
                                 </configuration>
                             </execution>
                             <execution>
-                                <id>build-frontend</id>
+                                <id>build-frontend-prod</id>
                                 <phase>prepare-package</phase>
                                 <goals>
                                     <goal>build-frontend</goal>
