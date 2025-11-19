@@ -211,6 +211,9 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -236,10 +239,19 @@
                         <version>${vaadin.version}</version>
                         <executions>
                             <execution>
+                                <id>prepare-frontend</id>
                                 <goals>
                                     <goal>prepare-frontend</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>build-frontend</id>
+                                <goals>
                                     <goal>build-frontend</goal>
                                 </goals>
+                                <configuration>
+                                    <productionMode>true</productionMode>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
