@@ -1,15 +1,15 @@
 package com.businessdev.application.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
 @EnableMongoRepositories(basePackages = "com.businessdev.application.repository")
-@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(
-    name = "spring.data.mongodb.uri",
-    matchIfMissing = false
+@ConditionalOnExpression(
+    "!'${spring.data.mongodb.uri:}'.isEmpty() || !'${spring.data.mongodb.host:}'.isEmpty()"
 )
 public class MongoConfig extends AbstractMongoClientConfiguration {
 

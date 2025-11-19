@@ -19,9 +19,7 @@ import java.util.Date;
  *
  */
 @SpringBootApplication(exclude = {
-    UserDetailsServiceAutoConfiguration.class,
-    MongoAutoConfiguration.class,
-    MongoDataAutoConfiguration.class
+    UserDetailsServiceAutoConfiguration.class
 })
 @Theme(value = "businessdev")
 public class Application implements AppShellConfigurator {
