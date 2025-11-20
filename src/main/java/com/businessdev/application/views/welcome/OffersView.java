@@ -298,7 +298,7 @@ public class OffersView extends VerticalLayout {
         Span visio = new Span("Visio");
         Span miro = new Span("Miro");
         Span lucidchart = new Span("Lucidchart");
-        Span confluence = new Span("Confluence");
+        Span confluence = new Span("IBM SPSS");
         Span msProject = new Span("MS Project");
         Span trello = new Span("BABOK");
         
