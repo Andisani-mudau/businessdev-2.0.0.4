@@ -231,27 +231,27 @@ public class MainNavigation extends VerticalLayout{
 
         Anchor home = new Anchor(" ", homeContainer);
         home.setClassName("link");
-        home.getStyle().setBackgroundColor(isCurrentLocation(" ") ? "var(--lumo-shade-10pct)" : "transparent")
+        home.getStyle().setBackgroundColor(isCurrentLocation("") ? "var(--lumo-shade-10pct)" : "transparent")
                 .setBorderRadius("5px").setPadding("10px");
 
         Anchor offers = new Anchor("offers", offersContainer);
         offers.setClassName("link");
-        offers.getStyle().setBackgroundColor(isCurrentLocation("/offers") ? "var(--lumo-shade-15pct)!important" : "transparent")
+        offers.getStyle().setBackgroundColor(isCurrentLocation("offers") ? "var(--lumo-shade-10pct)" : "transparent")
                 .setBorderRadius("5px").setPadding("10px");
 
         Anchor services = new Anchor("survey", servicesContainer);
         services.setClassName("link");
-        services.getStyle().setBackgroundColor(isCurrentLocation("/survey") ? "var(--lumo-shade-15pct)!important" : "transparent")
+        services.getStyle().setBackgroundColor(isCurrentLocation("survey") ? "var(--lumo-shade-10pct)" : "transparent")
                 .setBorderRadius("5px").setPadding("10px");
 
         Anchor about = new Anchor("about", aboutContainer);
         about.setClassName("link");
-        about.getStyle().setBackgroundColor(isCurrentLocation("/about") ? "var(--lumo-shade-15pct)!important" : "transparent")
+        about.getStyle().setBackgroundColor(isCurrentLocation("about") ? "var(--lumo-shade-10pct)" : "transparent")
                 .setBorderRadius("5px").setPadding("10px");
 
         Anchor contact = new Anchor("contact", contactContainer);
         contact.setClassName("link");
-        contact.getStyle().setBackgroundColor(isCurrentLocation("/contact") ? "var(--lumo-shade-15pct)!important" : "transparent")
+        contact.getStyle().setBackgroundColor(isCurrentLocation("contact") ? "var(--lumo-shade-10pct)" : "transparent")
                 .setBorderRadius("5px").setPadding("10px");
         navSection2.add(home, offers, contact, about);
         //...
