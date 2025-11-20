@@ -20,10 +20,11 @@ public class SecurityConfig {
     public SecurityFilterChain actuatorSecurityFilterChain(HttpSecurity http) throws Exception {
         http
             .securityMatcher("/actuator/**")
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/actuator/health", "/actuator/info").permitAll()
                 .anyRequest().authenticated())
-            .httpBasic();
+            .httpBasic(httpBasic -> httpBasic.realmName("Actuator"));
         return http.build();
     }
 
@@ -35,9 +36,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
         } else {
+            // Disable CSRF for Vaadin - it handles its own security
             http
-                .csrf(csrf -> csrf
-                    .ignoringRequestMatchers("/api/**", "/actuator/**"))
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/actuator/**").permitAll()
                     .anyRequest().permitAll()); // Configure based on your needs

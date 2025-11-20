@@ -31,7 +31,7 @@ public class Application implements AppShellConfigurator {
         // Basic meta tags
         settings.addMetaTag("http-equiv", "X-UA-Compatible");
         settings.addMetaTag("theme-color", "#000000");
-        settings.addLink("manifest", "/etc/secrets/manifest.json");
+        // Manifest removed - not needed for basic functionality
         
         // Apple specific
         settings.addMetaTag("apple-mobile-web-app-capable", "yes");
