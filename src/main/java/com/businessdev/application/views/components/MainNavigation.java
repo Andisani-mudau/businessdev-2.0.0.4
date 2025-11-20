@@ -231,7 +231,7 @@ public class MainNavigation extends VerticalLayout{
 
         Anchor home = new Anchor(" ", homeContainer);
         home.setClassName("link");
-        home.getStyle().setBackgroundColor(isCurrentLocation("/") ? "var(--lumo-shade-10pct)" : "transparent")
+        home.getStyle().setBackgroundColor(isCurrentLocation(" ") ? "var(--lumo-shade-10pct)" : "transparent")
                 .setBorderRadius("5px").setPadding("10px");
 
         Anchor offers = new Anchor("offers", offersContainer);

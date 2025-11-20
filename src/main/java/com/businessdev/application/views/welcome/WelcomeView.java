@@ -12,7 +12,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 @PageTitle("businessdev.")
-@Route(value = " ", layout = MainLayout.class)
+@Route(value = "", layout = MainLayout.class)
 public class WelcomeView extends VerticalLayout {
 
     public WelcomeView() {
