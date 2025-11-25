@@ -230,7 +230,7 @@ public class MainNavigation extends VerticalLayout{
 
         Div home = new Div(homeContainer);
         home.setClassName("link");
-        home.getStyle().setBorderRadius("5px").setPadding("15px").setCursor("pointer");
+        home.getStyle().setBorderRadius("5px").setPadding("10px").setCursor("pointer");
         home.addClickListener(e -> {
                 UI.getCurrent().navigate("");
                 // Close after animation
@@ -239,7 +239,7 @@ public class MainNavigation extends VerticalLayout{
 
         Div offers = new Div(offersContainer);
         offers.setClassName("link");
-        offers.getStyle().setBorderRadius("5px").setPadding("15px").setCursor("pointer");
+        offers.getStyle().setBorderRadius("5px").setPadding("10px").setCursor("pointer");
         offers.addClickListener(e -> {
                 UI.getCurrent().navigate("offers");
                 // Close after animation
@@ -248,7 +248,7 @@ public class MainNavigation extends VerticalLayout{
 
         Div services = new Div(servicesContainer);
         services.setClassName("link");
-        services.getStyle().setBorderRadius("5px").setPadding("15px").setCursor("pointer");
+        services.getStyle().setBorderRadius("5px").setPadding("10px").setCursor("pointer");
         services.addClickListener(e -> {
                 UI.getCurrent().navigate("survey");
                 // Close after animation
@@ -257,7 +257,7 @@ public class MainNavigation extends VerticalLayout{
         
         Div about = new Div(aboutContainer);
         about.setClassName("link");
-        about.getStyle().setBorderRadius("5px").setPadding("15px").setCursor("pointer");
+        about.getStyle().setBorderRadius("5px").setPadding("10px").setCursor("pointer");
         about.addClickListener(e -> {
                 UI.getCurrent().navigate("about");
                 // Close after animation
@@ -266,7 +266,7 @@ public class MainNavigation extends VerticalLayout{
         
         Div contact = new Div(contactContainer);
         contact.setClassName("link");
-        contact.getStyle().setBorderRadius("5px").setPadding("15px").setCursor("pointer");
+        contact.getStyle().setBorderRadius("5px").setPadding("10px").setCursor("pointer");
         contact.addClickListener(e -> {
                 UI.getCurrent().navigate("contact");
                 // Close after animation

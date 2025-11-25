@@ -88,7 +88,7 @@ public class WelcomeView extends VerticalLayout {
         moreInfo.getStyle()
             .set("cursor", "pointer")
             .set("font-weight", "500")
-            .set("font-size", "16px")
+            .set("font-size", "12px")
             .set("padding", "10px 30px")
             .set("border-radius", "5px");
         moreInfo.addClassName("scroll-animate");
