@@ -232,12 +232,17 @@ public class MainNavigation extends VerticalLayout{
         Anchor home = new Anchor(" ", homeContainer);
         home.setClassName("link");
         home.getStyle().setBorderRadius("5px").setPadding("10px");
-        home.addClickListener(l -> {
+        home.getElement().addEventListener("click", event -> {
+    UI.getCurrent().nevigate("");
     menu.remove(menuContent);
-});
+}).addEventData("event.preventDefault()");
 
         Anchor offers = new Anchor("offers", offersContainer);
         offers.setClassName("link");
+        offers.getElement().addEventListener("click", event -> {
+    UI.getCurrent().nevigate("offers");
+    menu.remove(menuContent);
+}).addEventData("event.preventDefault()");
         offers.getStyle().setBorderRadius("5px").setPadding("10px");
 
         Anchor services = new Anchor("survey", servicesContainer);
