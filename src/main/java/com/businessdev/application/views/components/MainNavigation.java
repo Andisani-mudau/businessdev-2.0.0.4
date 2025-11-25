@@ -3,7 +3,6 @@ package com.businessdev.application.views.components;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -229,25 +228,50 @@ public class MainNavigation extends VerticalLayout{
         HorizontalLayout contactContainer = new HorizontalLayout(contactIcon, contactText);
         setHorizontalComponentAlignment(FlexComponent.Alignment.CENTER, contactIcon, contactText);
 
-        Anchor home = new Anchor(" ", homeContainer);
+        Div home = new Div(homeContainer);
         home.setClassName("link");
-        home.getStyle().setBorderRadius("5px").setPadding("10px");
+        home.getStyle().setBorderRadius("5px").setPadding("15px").setCursor("pointer");
+        home.addClickListener(e -> {
+                UI.getCurrent().navigate("");
+                // Close after animation
+                menu.remove(menuContent);
+            });
 
-        Anchor offers = new Anchor("offers", offersContainer);
+        Div offers = new Div(offersContainer);
         offers.setClassName("link");
-        offers.getStyle().setBorderRadius("5px").setPadding("10px");
+        offers.getStyle().setBorderRadius("5px").setPadding("15px").setCursor("pointer");
+        offers.addClickListener(e -> {
+                UI.getCurrent().navigate("offers");
+                // Close after animation
+                menu.remove(menuContent);
+            });
 
-        Anchor services = new Anchor("survey", servicesContainer);
+        Div services = new Div(servicesContainer);
         services.setClassName("link");
-        services.getStyle().setBorderRadius("5px").setPadding("10px");
-
-        Anchor about = new Anchor("about", aboutContainer);
+        services.getStyle().setBorderRadius("5px").setPadding("15px").setCursor("pointer");
+        services.addClickListener(e -> {
+                UI.getCurrent().navigate("survey");
+                // Close after animation
+                menu.remove(menuContent);
+            });
+        
+        Div about = new Div(aboutContainer);
         about.setClassName("link");
-        about.getStyle().setBorderRadius("5px").setPadding("10px");
-
-        Anchor contact = new Anchor("contact", contactContainer);
+        about.getStyle().setBorderRadius("5px").setPadding("15px").setCursor("pointer");
+        about.addClickListener(e -> {
+                UI.getCurrent().navigate("about");
+                // Close after animation
+                menu.remove(menuContent);
+            });
+        
+        Div contact = new Div(contactContainer);
         contact.setClassName("link");
-        contact.getStyle().setBorderRadius("5px").setPadding("10px");
+        contact.getStyle().setBorderRadius("5px").setPadding("15px").setCursor("pointer");
+        contact.addClickListener(e -> {
+                UI.getCurrent().navigate("contact");
+                // Close after animation
+                menu.remove(menuContent);
+            });
         navSection2.add(home, offers, contact, about);
         //...
         TextField chat = new TextField();
