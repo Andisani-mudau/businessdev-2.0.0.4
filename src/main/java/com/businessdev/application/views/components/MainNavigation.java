@@ -232,6 +232,9 @@ public class MainNavigation extends VerticalLayout{
         Anchor home = new Anchor(" ", homeContainer);
         home.setClassName("link");
         home.getStyle().setBorderRadius("5px").setPadding("10px");
+        home.addClickListener(l -> {
+    menu.remove(menuContent);
+});
 
         Anchor offers = new Anchor("offers", offersContainer);
         offers.setClassName("link");
