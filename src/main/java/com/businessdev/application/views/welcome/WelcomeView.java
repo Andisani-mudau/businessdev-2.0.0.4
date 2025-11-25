@@ -99,6 +99,7 @@ public class WelcomeView extends VerticalLayout {
                 .set("height", "auto")
                 .set("object-position", "center");
         image.addClassName("scroll-animate-image-1");
+        image.addClassName("scroll-animate-image");
 	Div sectionOne  = new Div(heading, paragraph, moreInfo);
 	sectionOne.getStyle().set("padding", "0")
                 .set("flex", "1 1 400px")
