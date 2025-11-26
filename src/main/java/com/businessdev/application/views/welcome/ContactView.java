@@ -811,7 +811,7 @@ public class ContactView extends VerticalLayout implements BeforeEnterObserver {
         signal.add(signalSeparator, createLinkIcon());
         signal.setClassName("socialLink");
         
-        Anchor email = new Anchor("mailto:customer@businessdev.co.za");
+        Anchor email = new Anchor("mailto:info@businessdev.co.za");
         HorizontalLayout emailSeparator = new HorizontalLayout(emailIcon, emailText);
         email.add(emailSeparator, createLinkIcon());
         email.setClassName("socialLink");
